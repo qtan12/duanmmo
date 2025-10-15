@@ -1,0 +1,383 @@
+<!-- Mobile Menu Overlay - Using jModal -->
+<div id="mobileMenuModal" class="jmodal hidden lg:hidden">
+  <div class="jmodal-slide-right">
+    <!-- Mobile Menu Header -->
+    <div class="bg-gradient-to-r from-emerald-500 to-green-600 p-6 text-white">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold">Menu</h2>
+          <p class="text-emerald-100 text-sm">Khám phá sản phẩm và dịch vụ</p>
+        </div>
+        <button data-jmodal-close class="text-white hover:text-gray-200 transition-colors">
+        <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+      </div>
+      <!-- Mobile Search -->
+      <form action="search.html" method="GET" class="relative mt-4">
+        <i data-lucide="search"
+          class="absolute left-3 top-1/2 transform -translate-y-1/2 text-emerald-700 w-5 h-5"></i>
+        <input type="text" name="q" placeholder="Tìm kiếm sản phẩm..."
+          class="input pl-10 bg-white/90 border-emerald-400 focus:border-white">
+      </form>
+    </div>
+
+    <!-- Mobile Menu Items -->
+    <div class="flex-1 overflow-y-auto custom-scrollbar" style="max-height: calc(100vh - 280px);">
+      <div class="p-4 space-y-1">
+        <!-- Sản Phẩm Mobile -->
+        <div x-data="{ open: false }">
+          <button @click="open = !open"
+            class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-100 transition-colors">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="package" class="w-5 h-5 text-emerald-600"></i>
+            <span class="font-medium text-gray-900">Sản phẩm</span>
+          </div>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform" :class="{ 'rotate-180': open }"></i>
+          </button>
+          <div x-show="open" class="pl-4 mt-1 space-y-2">
+            
+            <!-- Backlink/Textlink/Entity -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="link" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Backlink/Textlink/Entity</div>
+                    <div class="text-xs text-gray-500">SEO & Link Building</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/backlink" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Backlink</a>
+                <a href="/textlink" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Textlink</a>
+                <a href="/entity" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Entity</a>
+              </div>
+              <hr class="border-dashed" />
+            </div>
+
+            <!-- Tài khoản Email -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="mail" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Tài khoản Email</div>
+                    <div class="text-xs text-gray-500">Email Accounts</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/email/gmail" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tài khoản Gmail</a>
+                <a href="/email/hotmail" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Hotmail/Yahoo/khác</a>
+                <a href="/email/domain" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Email Domain</a>
+              </div>
+            </div>
+
+            <!-- Tài khoản Facebook -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="facebook" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Tài khoản Facebook</div>
+                    <div class="text-xs text-gray-500">Facebook Accounts</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/facebook/clone" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tài khoản Clone</a>
+                <a href="/facebook/vie" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tài khoản Vie</a>
+                <a href="/facebook/bm-ads" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">BM/Ads</a>
+                <a href="/facebook/fanpage" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Fanpage/Group</a>
+              </div>
+            </div>
+
+            <!-- Tài khoản Social khác -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="users" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Tài khoản Social khác</div>
+                    <div class="text-xs text-gray-500">Social Media</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/social/tiktok" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">TikTok</a>
+                <a href="/social/twitter" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Twitter X</a>
+                <a href="/social/youtube" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">YouTube</a>
+                <a href="/social/instagram" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Instagram/Reddit</a>
+                <a href="/social/shopee" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Shopee/Lazada/eBay</a>
+              </div>
+            </div>
+
+            <!-- Data & Tools MMO -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="database" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Data & Tools MMO</div>
+                    <div class="text-xs text-gray-500">Data & Automation</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/data/sdt" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Data SĐT mua hàng</a>
+                <a href="/tools/seo" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tools SEO</a>
+                <a href="/tools/automation" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tools Automation</a>
+                <a href="/tools/mmo" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tools MMO Khác</a>
+              </div>
+            </div>
+
+            <!-- License Phần Mềm -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="key" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">License Phần Mềm</div>
+                    <div class="text-xs text-gray-500">Software Licenses</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/license/windows" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Windows/Office/Antivirus</a>
+                <a href="/license/design" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Photoshop/AI/Canva</a>
+                <a href="/license/marketing" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Phần mềm Marketing</a>
+              </div>
+            </div>
+
+            <!-- VPN/Proxy/Server -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">VPN/Proxy/Server</div>
+                    <div class="text-xs text-gray-500">Infrastructure</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/server/hosting" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Hosting/VPS/Dedicated</a>
+                <a href="/proxy/residential" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Proxy Dân cư</a>
+                <a href="/proxy/mobile" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Proxy Mobile</a>
+                <a href="/proxy/server" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Proxy Server</a>
+              </div>
+            </div>
+
+            <!-- Khóa Học/TUT MMO -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="graduation-cap" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Khóa Học/TUT MMO</div>
+                    <div class="text-xs text-gray-500">Learning & Tutorials</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/course/marketing" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Khóa học SEO/Ads</a>
+                <a href="/course/affiliate" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Khóa học Affiliate</a>
+                <a href="/course/mmo" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Khóa học MMO</a>
+                <a href="/course/tut" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Bán TUT MMO</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Dịch vụ Mobile -->
+        <div x-data="{ open: false }">
+          <button @click="open = !open"
+            class="w-full flex items-center justify-between p-3 rounded-lg hover:bg-gray-100 transition-colors">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="briefcase" class="w-5 h-5 text-emerald-600"></i>
+            <span class="font-medium text-gray-900">Dịch vụ</span>
+          </div>
+          <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform" :class="{ 'rotate-180': open }"></i>
+          </button>
+          <div x-show="open" class="pl-4 mt-1 space-y-2">
+            
+            <!-- Thiết kế Website -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="monitor" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Thiết kế Website</div>
+                    <div class="text-xs text-gray-500">Web Design</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/services/website/selling" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Website bán hàng</a>
+                <a href="/services/website/landing" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Landing Page</a>
+                <a href="/services/website/seo" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Website SEO/Blog</a>
+                <a href="/services/website/affiliate" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Website Affiliate</a>
+              </div>
+            </div>
+
+            <!-- Tăng tương tác -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="trending-up" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Tăng tương tác</div>
+                    <div class="text-xs text-gray-500">Engagement Services</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/services/engagement/like" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tăng Like/Follow/Sub</a>
+                <a href="/services/engagement/views" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tăng Views Video</a>
+                <a href="/services/engagement/livestream" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tăng mắt Livestream</a>
+                <a href="/services/engagement/comment" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Comment/Seeding</a>
+                <a href="/services/engagement/ratings" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Dịch vụ Ratings</a>
+              </div>
+            </div>
+
+            <!-- Dịch vụ Marketing -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="megaphone" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Dịch vụ Marketing</div>
+                    <div class="text-xs text-gray-500">Marketing Services</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/services/marketing/facebook-ads" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Chạy Ads Facebook</a>
+                <a href="/services/marketing/google-ads" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Chạy Ads Google</a>
+                <a href="/services/marketing/email" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Email Marketing</a>
+                <a href="/services/marketing/content" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Content Marketing</a>
+                <a href="/services/marketing/design" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Thiết kế đồ họa</a>
+              </div>
+            </div>
+
+            <!-- Dịch vụ phần mềm -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="code" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Dịch vụ phần mềm</div>
+                    <div class="text-xs text-gray-500">Software Services</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/services/software/custom" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Phát triển phần mềm tùy chỉnh</a>
+                <a href="/services/software/automation" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tự động hóa quy trình</a>
+                <a href="/services/software/integration" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tích hợp hệ thống</a>
+              </div>
+            </div>
+
+            <!-- Dịch vụ website -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="globe" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Dịch vụ website</div>
+                    <div class="text-xs text-gray-500">Web Services</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/services/web/maintenance" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Bảo trì website</a>
+                <a href="/services/web/optimization" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Tối ưu hóa hiệu suất</a>
+                <a href="/services/web/security" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">Bảo mật website</a>
+              </div>
+            </div>
+
+            <!-- Dịch vụ SEO -->
+            <div x-data="{ subOpen: false }" class="border-l-2 border-gray-200 pl-3">
+              <button @click="subOpen = !subOpen" class="w-full flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="search" class="w-4 h-4 text-emerald-600"></i>
+                  <div class="text-left">
+                    <div class="text-sm font-medium text-gray-900">Dịch vụ SEO</div>
+                    <div class="text-xs text-gray-500">SEO Services</div>
+                  </div>
+                </div>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400 transition-transform" :class="{ 'rotate-90': subOpen }"></i>
+              </button>
+              <div x-show="subOpen" class="ml-6 mt-1 space-y-1">
+                <a href="/services/seo/onpage" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">SEO On-page</a>
+                <a href="/services/seo/offpage" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">SEO Off-page</a>
+                <a href="/services/seo/technical" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">SEO Technical</a>
+                <a href="/services/seo/content" class="block px-3 py-2 text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded">SEO Content</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Liên Hệ -->
+        <a href="/contact/" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+          <i data-lucide="phone" class="w-5 h-5 text-emerald-600"></i>
+          <span class="font-medium text-gray-900">Liên Hệ</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Mobile Menu Footer -->
+    <div class="p-4 border-t border-gray-200 bg-gray-50">
+      <template x-if="user">
+        <div class="flex items-center space-x-3 p-3 bg-white rounded-xl mb-3 border border-gray-200">
+          <div class="w-12 h-12 rounded-full bg-gradient-to-r from-emerald-400 to-green-500 flex items-center justify-center text-white font-semibold">
+            <span x-text="user.name ? user.name.charAt(0).toUpperCase() : 'U'">U</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-semibold text-gray-900 truncate" x-text="user.name">User Name</div>
+            <div class="text-xs text-gray-500 truncate" x-text="user.email">user@example.com</div>
+          </div>
+        </div>
+      </template>
+      <div class="space-y-2">
+        <template x-if="!user">
+          <button @click="openAuthModal('login')" class="btn btn-primary w-full">Đăng nhập</button>
+        </template>
+        <template x-if="user">
+          <button @click="logout()" class="btn btn-secondary w-full">Đăng xuất</button>
+        </template>
+      </div>
+      <div class="flex items-center justify-center space-x-4 mt-4">
+        <a href="#"
+          class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
+        <i data-lucide="facebook" class="w-4 h-4"></i>
+        </a>
+        <a href="#"
+          class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
+        <i data-lucide="twitter" class="w-4 h-4"></i>
+        </a>
+        <a href="#"
+          class="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 transition-colors cursor-pointer">
+        <i data-lucide="instagram" class="w-4 h-4"></i>
+        </a>
+      </div>
+      <p class="text-center text-xs text-gray-500 mt-4">MMO Store - Premium Digital Products</p>
+      <p class="text-center text-xs text-gray-500">Email: info@mmostore.com</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,181 @@
+<!-- main content -->
+<section class="container py-4 sm:py-6">
+    <nav class="flex items-center space-x-1 sm:space-x-2 text-responsive-sm text-gray-500 mb-6 overflow-x-auto pb-2">
+        <a class="hover:text-emerald-600 whitespace-nowrap" href="/">Trang chủ</a>
+        <i data-lucide="chevron-right" class="size-4 flex-shrink-0"></i>
+        <a class="hover:text-emerald-600 whitespace-nowrap " href="/accounts">Tài khoản Premium</a>
+        <i data-lucide="chevron-right" class="size-4 flex-shrink-0"></i>
+        <span class="text-gray-900 text-responsive-sm truncate">Netflix Premium 1 Năm - 4K Ultra HD</span>
+    </nav>
+    <!-- Ảnh -->
+    <div class="grid lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-6 sm:mb-8">
+        <div class="space-y-2 sm:space-y-3">
+            <!-- Ảnh chính -->
+            <img alt="Netflix Premium 1 Năm - 4K Ultra HD" class="w-full h-48 sm:h-64 lg:h-80 object-contain" src="/placeholder.svg?height=500&width=500&text=Netflix+Main">
+            
+            <!-- Ảnh phụ (Thumbnails) -->
+            <div class="grid grid-cols-4 gap-1 sm:gap-2 mt-3">
+                <div class="h-16 sm:h-20 cursor-pointer border border-gray-200 rounded-md overflow-hidden hover:border-blue-500 transition-colors">
+                    <img alt="Netflix 1" class="w-full h-full object-cover" src="/placeholder.svg?height=80&width=80&text=1">
+                </div>
+                <div class="h-16 sm:h-20 cursor-pointer border border-gray-200 rounded-md overflow-hidden hover:border-blue-500 transition-colors">
+                    <img alt="Netflix 2" class="w-full h-full object-cover" src="/placeholder.svg?height=80&width=80&text=2">
+                </div>
+                <div class="h-16 sm:h-20 cursor-pointer border border-gray-200 rounded-md overflow-hidden hover:border-blue-500 transition-colors">
+                    <img alt="Netflix 3" class="w-full h-full object-cover" src="/placeholder.svg?height=80&width=80&text=3">
+                </div>
+                <div class="h-16 sm:h-20 cursor-pointer border border-gray-200 rounded-md overflow-hidden hover:border-blue-500 transition-colors">
+                    <img alt="Netflix 4" class="w-full h-full object-cover" src="/placeholder.svg?height=80&width=80&text=4">
+                </div>
+            </div>
+             
+            <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-4 border-t border-gray-200">
+                <div class="text-center">
+                    <i data-lucide="shield" class="w-6 h-6 text-emerald-600 mx-auto mb-1"></i>
+                    <p class="text-xs font-medium text-gray-900">Bảo hành 12 tháng</p>
+                    <p class="text-xs text-gray-500">Thay thế miễn phí</p>
+                </div>
+                <div class="text-center">
+                    <i data-lucide="truck" class="w-6 h-6 text-blue-600 mx-auto mb-1"></i>
+                    <p class="text-xs font-medium text-gray-900">Giao hàng tức thì</p>
+                    <p class="text-xs text-gray-500">Nhận ngay sau thanh toán</p>
+                </div>
+                <div class="text-center">
+                    <i data-lucide="headphones" class="w-6 h-6 text-purple-600 mx-auto mb-1"></i>
+                    <p class="text-xs font-medium text-gray-900">Hỗ trợ 24/7</p>
+                    <p class="text-xs text-gray-500">Tư vấn miễn phí</p>
+                </div>
+            </div>
+        </div>
+        <!-- Column right -->
+        <div class="space-y-3 sm:space-y-4 lg:space-y-5">
+            
+            <h1 class="text-responsive-lg font-bold text-gray-900 mb-2 sm:mb-0">Netflix Premium 1 Năm - 4K Ultra HD</h1>
+            <div class="flex flex-row gap-2 items-center mb-2 ">
+                <div class="flex items-center space-x-1">
+                    <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                    <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                    <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                    <i data-lucide="star" class="w-4 h-4 fill-yellow-400 text-yellow-400"></i>
+                    <i data-lucide="star" class="w-4 h-4 text-gray-300"></i>
+                    <span class=" text-gray-500 ml-1 text-responsive-xs">4.8</span>
+                </div>
+                <span class="text-gray-500 text-responsive-xs">(1247 đánh giá)</span><span class="text-gray-500 hidden sm:inline">•</span><span class="text-gray-500 text-responsive-xs">3420 đã bán</span>
+            </div>
+                
+            <div class="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-md p-4 mb-2">
+                <div class="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-3 mb-1">
+                    <div class="flex items-center space-x-2 sm:space-x-3">
+                        <span class="text-responsive-lg font-semibold text-emerald-600" x-text="getSelectedPrice()">899.000đ</span>
+                        <span class="text-responsive-xs text-gray-500 line-through">2.990.000đ</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Số lượng -->
+            <div class="space-y-3">
+                <div class="flex flex-row items-start sm:items-center sm:space-x-3  mb-2 ">
+                    <div class="flex items-center space-x-2 flex-1 min-w-0">
+                        <span class="font-bold text-gray-900 whitespace-nowrap text-responsive-sm">Số lượng:</span>
+                        <div class="flex items-center btn btn-outline btn-sm w-fit flex-shrink-0">
+                            <button @click="decreaseQuantity()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-responsive-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground rounded-md px-2 h-8 w-8 rounded-l-lg">
+                                <i data-lucide="minus" class="w-3 h-3"></i>
+                            </button>
+                            <span class="w-8 text-center text-responsive-xs" x-text="quantity">1</span>
+                            <button @click="increaseQuantity()" class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-responsive-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground rounded-md px-2 h-8 w-8 rounded-r-lg">
+                                <i data-lucide="plus" class="w-3 h-3"></i>
+                            </button>
+                        </div>
+                        <span class="text-responsive-xs text-gray-500 whitespace-nowrap">(50 có sẵn)</span>
+                    </div>
+                    <button @click="share()" class="btn btn-outline btn-md  flex-shrink-0">
+                        <i data-lucide="share-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Chọn loại -->
+            <div class="space-y-3">
+                <h3 class="font-bold text-gray-900 text-responsive-sm">Chọn loại Gmail:</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <label class="flex items-left p-3 btn btn-outline cursor-pointer hover:bg-gray-50" 
+                        :class="selectedGmailType === 'gmail-vn-aged-20-50' ? 'bg-emerald-50 border-emerald-600' : ''">
+                    <input type="radio" 
+                        name="gmailType" 
+                        value="gmail-vn-aged-20-50" 
+                        @change="selectGmailType('gmail-vn-aged-20-50')"
+                        :checked="selectedGmailType === 'gmail-vn-aged-20-50'"
+                        class="mr-3 text-emerald-600 focus:ring-emerald-500 hidden sm:block">
+                    <span class="text-responsive-xs text-left whitespace-nowrap  max-w-full w-full overflow-hidden " 
+                        :class="selectedGmailType === 'gmail-vn-aged-20-50' ? 'text-emerald-600' : 'text-gray-900'">
+                    Gmail VN Đã Ngâm 20-50 Ngày - 899.000đ
+                    </span>
+                    </label>
+                    <label class="flex items-left p-3 btn btn-outline cursor-pointer hover:bg-gray-50" 
+                        :class="selectedGmailType === 'gmail-vn-aged-30-80' ? 'bg-emerald-50 border-emerald-600' : ''">
+                    <input type="radio" 
+                        name="gmailType" 
+                        value="gmail-vn-aged-30-80" 
+                        @change="selectGmailType('gmail-vn-aged-30-80')"
+                        :checked="selectedGmailType === 'gmail-vn-aged-30-80'"
+                        class="mr-3 text-emerald-600 focus:ring-emerald-500 hidden sm:block">
+                    <span class="text-responsive-xs text-left whitespace-nowrap  max-w-full w-full overflow-hidden " 
+                        :class="selectedGmailType === 'gmail-vn-aged-30-80' ? 'text-emerald-600' : 'text-gray-900'">
+                    Gmail VN Đã Ngâm 30-80 Ngày - 999.000đ
+                    </span>
+                    </label>
+                    <label class="flex items-left p-3 btn btn-outline cursor-pointer hover:bg-gray-50" 
+                        :class="selectedGmailType === 'gmail-vn-aged-40-90' ? 'bg-emerald-50 border-emerald-600' : ''">
+                    <input type="radio" 
+                        name="gmailType" 
+                        value="gmail-vn-aged-40-90" 
+                        @change="selectGmailType('gmail-vn-aged-40-90')"
+                        :checked="selectedGmailType === 'gmail-vn-aged-40-90'"
+                        class="mr-3 text-emerald-600 focus:ring-emerald-500 hidden sm:block">
+                    <span class="text-responsive-xs text-left whitespace-nowrap  max-w-full w-full overflow-hidden " 
+                        :class="selectedGmailType === 'gmail-vn-aged-40-90' ? 'text-emerald-600' : 'text-gray-900'">
+                    Gmail VN Đã Ngâm 40-90 Ngày - 1.099.000đ
+                    </span>
+                    </label>
+                    <label class="flex items-left p-3 btn btn-outline cursor-pointer hover:bg-gray-50" 
+                        :class="selectedGmailType === 'gmail-vn-aged-60-120' ? 'bg-emerald-50 border-emerald-600' : ''">
+                    <input type="radio" 
+                        name="gmailType" 
+                        value="gmail-vn-aged-60-120" 
+                        @change="selectGmailType('gmail-vn-aged-60-120')"
+                        :checked="selectedGmailType === 'gmail-vn-aged-60-120'"
+                        class="mr-3 text-emerald-600 focus:ring-emerald-500 hidden sm:block">
+                    <span class="text-responsive-xs text-left whitespace-nowrap  max-w-full w-full overflow-hidden " 
+                        :class="selectedGmailType === 'gmail-vn-aged-60-120' ? 'text-emerald-600' : 'text-gray-900'">
+                    Gmail VN Đã Ngâm 60-120 Ngày - 1.199.000đ
+                    </span>
+                    </label>
+                    <label class="flex items-left p-3 btn btn-outline cursor-pointer hover:bg-gray-50" 
+                        :class="selectedGmailType === 'gmail-vn-new-1day' ? 'bg-emerald-50 border-emerald-600' : ''">
+                    <input type="radio" 
+                        name="gmailType" 
+                        value="gmail-vn-new-1day" 
+                        @change="selectGmailType('gmail-vn-new-1day')"
+                        :checked="selectedGmailType === 'gmail-vn-new-1day'"
+                        class="mr-3 text-emerald-600 focus:ring-emerald-500 hidden sm:block">
+                    <span class="text-responsive-xs text-left whitespace-nowrap  max-w-full w-full overflow-hidden " 
+                        :class="selectedGmailType === 'gmail-vn-new-1day' ? 'text-emerald-600' : 'text-gray-900'">
+                    Gmail VN Mới Reg 1 Ngày - 799.000đ
+                    </span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex flex-row gap-3 mt-4">
+                <button @click="addToCart()" :disabled="isAddingToCart" class="btn btn-primary btn-md w-full flex items-center justify-center gap-2" :class="isAddingToCart ? 'opacity-50 cursor-not-allowed' : ''">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                    <span class="text-responsive-sm ">Thêm vào giỏ</span>
+                </button>
+                <button @click="buyNow()" :disabled="isBuyingNow" class="btn btn-secondary btn-md w-full flex items-center justify-center gap-2" :class="isBuyingNow ? 'opacity-50 cursor-not-allowed' : ''">
+                    <i data-lucide="zap" class="w-5 h-5"></i>
+                    <span class="text-responsive-sm ">Mua Ngay</span>
+                </button>
+            </div>
+            
+        </div>
+        
+        
+    </div>
+</section>

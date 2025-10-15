@@ -1,0 +1,177 @@
+<!-- Comments Section -->
+<div class="card p-6 mt-6" x-data="commentSystem()">
+    <div class="flex items-center justify-between mb-1 sm:mb-4">
+        <h3 class="card-title font-semibold ">Bình luận (<span x-text="totalComments"></span>)</h3>
+        <div class="flex items-center space-x-2 text-responsive-sm text-gray-500">
+            <i data-lucide="message-circle" class="size-4"></i>
+            <span>Thảo luận về bài viết</span>
+        </div>
+    </div>
+    <!-- Comment Form -->
+    <div class="card-content mb-4">
+        <h4 class="font-semibold text-responsive-sm mb-3">Viết bình luận</h4>
+        <form class="space-y-4" @submit.prevent="submitComment">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-responsive-sm font-semibold  mb-1">Tên *</label>
+                    <input type="text" x-model="commentForm.name" class="w-full input"
+                        :class="{'border-red-500': commentForm.errors.name}" placeholder="Nhập tên của bạn" required>
+                    <p x-show="commentForm.errors.name" x-text="commentForm.errors.name"
+                        class="text-red-500 text-responsive-sm mt-1"></p>
+                </div>
+                <div>
+                    <label class="block text-responsive-sm font-semibold  mb-1">Email *</label>
+                    <input type="email" x-model="commentForm.email" class="w-full input"
+                        :class="{'border-red-500': commentForm.errors.email}" placeholder="Nhập email của bạn" required>
+                    <p x-show="commentForm.errors.email" x-text="commentForm.errors.email"
+                        class="text-red-500 text-responsive-sm mt-1"></p>
+                </div>
+            </div>
+            <div>
+                <label class="block text-responsive-sm font-semibold mb-1">Bình luận *</label>
+                <textarea rows="4" x-model="commentForm.content" class="w-full textarea"
+                    :class="{'border-red-500': commentForm.errors.content}"
+                    placeholder="Chia sẻ suy nghĩ của bạn về bài viết..." required></textarea>
+                <p x-show="commentForm.errors.content" x-text="commentForm.errors.content"
+                    class="text-red-500 text-responsive-sm mt-1"></p>
+            </div>
+            <div class="flex flex-col gap-4">
+                <label class="flex items-center space-x-2 text-responsive-sm text-gray-600">
+                    <input type="checkbox" x-model="commentForm.notify">
+                    <span class="text-responsive-sm">Thông báo cho tôi khi có bình luận mới</span>
+                </label>
+                <button type="submit" class="btn btn-primary btn-md w-full" :disabled="commentForm.submitting"
+                    :class="{'opacity-50 cursor-not-allowed': commentForm.submitting}">
+                    <span x-show="!commentForm.submitting">Gửi bình luận</span>
+                    <span x-show="commentForm.submitting">Đang gửi...</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- Comments List -->
+    <div class="space-y-6">
+        <template x-for="comment in visibleComments" :key="comment.id">
+            <div class="flex space-x-2">
+                <div class="size-10 rounded-full flex items-center justify-center flex-shrink-0"
+                    :class="comment.avatarBg">
+                    <span class="font-semibold" :class="comment.avatarText" x-text="comment.initial"></span>
+                </div>
+                <div class="flex-1">
+                    <div class="bg-gray-100 rounded-lg p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-2">
+                                <h5 class="font-semibold" x-text="comment.name"></h5>
+                                <span class="text-responsive-xs text-gray-500" x-text="comment.timeAgo"></span>
+                            </div>
+                            <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                                <i data-lucide="more-horizontal" class="size-4"></i>
+                            </button>
+                        </div>
+                        <p class=" text-responsive-sm leading-relaxed mb-3" x-text="comment.content"></p>
+                        <div class="flex items-center space-x-4 text-responsive-xs text-gray-500">
+                            <button @click="voteComment(comment.id, 'like')"
+                                class="flex items-center space-x-1 transition-colors"
+                                :class="comment.userVote === 'like' ? 'text-emerald-600' : 'hover:text-emerald-600'">
+                                <i data-lucide="thumbs-up" class="size-3"></i>
+                                <span x-text="comment.likes"></span>
+                            </button>
+                            <button @click="voteComment(comment.id, 'dislike')"
+                                class="flex items-center space-x-1 transition-colors"
+                                :class="comment.userVote === 'dislike' ? 'text-red-600' : 'hover:text-emerald-600'">
+                                <i data-lucide="thumbs-down" class="size-3"></i>
+                                <span x-text="comment.dislikes"></span>
+                            </button>
+                            <button @click="toggleReply(comment.id)" class="hover:text-emerald-600 transition-colors">
+                                Trả lời
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Reply Form -->
+                    <div x-show="comment.showReply" x-transition class="m-4">
+                        <div class="bg-gray-100 rounded-lg p-4">
+                            <h6 class="font-semibold  mb-3 text-responsive-sm">Trả lời bình luận</h6>
+                            <form @submit.prevent="submitReply(comment.id)">
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-responsive-xs font-semibold  mb-1">Tên *</label>
+                                        <input type="text" x-model="replyForm.name" class="w-full input text-sm"
+                                            placeholder="Nhập tên của bạn" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-responsive-xs font-semibold  mb-1">Email *</label>
+                                        <input type="email" x-model="replyForm.email" class="w-full input text-sm"
+                                            placeholder="Nhập email của bạn" required>
+                                    </div>
+                                    <div>
+                                        <label class="block text-responsive-xs font-semibold  mb-1">Trả lời *</label>
+                                        <textarea rows="3" x-model="replyForm.content" class="w-full textarea"
+                                            placeholder="Viết trả lời của bạn..." required></textarea>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                            :disabled="replyForm.submitting">
+                                            <span x-show="!replyForm.submitting">Gửi trả lời</span>
+                                            <span x-show="replyForm.submitting">Đang gửi...</span>
+                                        </button>
+                                        <button type="button" @click="cancelReply(comment.id)"
+                                            class="btn btn-secondary btn-sm">
+                                            Hủy
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Replies -->
+                    <template x-for="reply in comment.replies" :key="reply.id">
+                        <div class="m-4">
+                            <div class="card p-4">
+                                <!-- Reply Header -->
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                                        :class="reply.avatarBg">
+                                        <span class="font-semibold text-responsive-sm" :class="reply.avatarText"
+                                            x-text="reply.initial"></span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center flex-wrap sm:gap-2">
+                                            <h6 class="font-semibold text-responsive-sm" x-text="reply.name"></h6>
+                                            <span class="text-responsive-xs text-gray-500"
+                                                x-text="reply.timeAgo"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Reply Content -->
+                                <p class=" text-responsive-sm leading-relaxed mb-3" x-text="reply.content"></p>
+                                <!-- Reply Actions -->
+                                <div class="flex items-center space-x-4 text-responsive-xs text-gray-500">
+                                    <button @click="voteReply(comment.id, reply.id, 'like')"
+                                        class="flex items-center space-x-1 transition-colors hover:text-emerald-600"
+                                        :class="reply.userVote === 'like' ? 'text-emerald-600' : 'text-gray-500'">
+                                        <i data-lucide="thumbs-up" class="size-3"></i>
+                                        <span x-text="reply.likes"></span>
+                                    </button>
+                                    <button @click="voteReply(comment.id, reply.id, 'dislike')"
+                                        class="flex items-center space-x-1 transition-colors hover:text-red-600"
+                                        :class="reply.userVote === 'dislike' ? 'text-red-600' : 'text-gray-500'">
+                                        <i data-lucide="thumbs-down" class="size-3"></i>
+                                        <span x-text="reply.dislikes"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+        <!-- Load More Comments -->
+        <div x-show="hasMoreComments" class="text-center pt-2 sm:pt-4">
+            <button @click="loadMoreComments"
+                class="text-emerald-600 hover:text-emerald-700 font-semibold text-sm transition-colors"
+                :disabled="loadingMore" :class="{'opacity-50 cursor-not-allowed': loadingMore}">
+                <span x-show="!loadingMore">Xem thêm bình luận (<span x-text="remainingComments"></span>)</span>
+                <span x-show="loadingMore">Đang tải...</span>
+            </button>
+        </div>
+    </div>
+</div>

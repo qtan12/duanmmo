@@ -1,0 +1,125 @@
+<!-- Kết quả search -->
+<section class="py-8">
+    <div class="container">
+        <div
+            x-data="{
+                q: '',
+                sort: 'relevance',
+                page: 1,
+                perPage: 12,
+                allItems: [
+                    { id: 'backlink-premium', name: 'Backlink Premium', category: 'SEO & Link Building', price: 500000, icon: 'link' },
+                    { id: 'facebook-clone-vip', name: 'Facebook Clone VIP', category: 'Tài khoản Facebook', price: 150000, icon: 'facebook' },
+                    { id: 'tools-seo-pro', name: 'Tools SEO Pro', category: 'Data & Tools MMO', price: 1200000, icon: 'search' },
+                    { id: 'gmail-clone-vip', name: 'Gmail Clone VIP', category: 'Tài khoản Email', price: 200000, icon: 'mail' },
+                    { id: 'tiktok-clone-premium', name: 'TikTok Clone Premium', category: 'Tài khoản Social khác', price: 300000, icon: 'music' },
+                    { id: 'windows-11-pro', name: 'Windows 11 Pro License', category: 'License Phần Mềm', price: 800000, icon: 'monitor' },
+                    { id: 'instagram-clone-vip', name: 'Instagram Clone VIP', category: 'Tài khoản Social khác', price: 250000, icon: 'instagram' },
+                    { id: 'photoshop-license', name: 'Photoshop License', category: 'License Phần Mềm', price: 1500000, icon: 'image' }
+                ],
+                get filtered() {
+                    if (!this.q) return this.allItems;
+                    const t = this.q.toLowerCase();
+                    return this.allItems.filter(i => 
+                        i.name.toLowerCase().includes(t) ||
+                        i.category.toLowerCase().includes(t)
+                    );
+                },
+                get sorted() {
+                    const arr = [...this.filtered];
+                    if (this.sort === 'price_asc') arr.sort((a,b)=>a.price-b.price);
+                    if (this.sort === 'price_desc') arr.sort((a,b)=>b.price-a.price);
+                    return arr;
+                },
+                get total() { return this.sorted.length; },
+                get totalPages() { return Math.max(1, Math.ceil(this.total / this.perPage)); },
+                get paged() {
+                    const start = (this.page - 1) * this.perPage;
+                    return this.sorted.slice(start, start + this.perPage);
+                },
+                formatPrice(v){
+                    try { return new Intl.NumberFormat('vi-VN').format(v) + '₫'; } catch(e) { return v + '₫'; }
+                },
+                addToCart(item) {
+                    // Gọi function addToCart từ cart-manager.js
+                    if (typeof window.addToCart === 'function') {
+                        window.addToCart(item);
+                    } else {
+                        console.log('Adding to cart:', item);
+                    }
+                }
+            }"
+            x-init="(() => { const params = new URLSearchParams(window.location.search); q = params.get('q') || ''; page = 1; })()"
+            class="space-y-4"
+        >
+                <div class="flex items-center gap-2">
+                    <h2 class="text-responsive-lg font-bold">Kết quả tìm kiếm</h2>
+                    <template x-if="q">
+                        <span class="text-responsive-sm text-gray-500">cho “<span x-text="q"></span>”</span>
+                    </template>
+                    <span class="text-responsive-sm text-gray-500" x-text="'(' + total + ' kết quả)'">
+                    </span>
+                </div>
+
+            <div x-show="total === 0" class="bg-white border rounded-lg p-8 text-center" x-effect="setTimeout(() => lucide.createIcons(), 100)">
+                <i data-lucide="search" class="w-10 h-10 text-gray-300 mx-auto mb-3"></i>
+                <div class="text-gray-700 font-medium">Không tìm thấy kết quả</div>
+                <div class="text-gray-500 text-sm">Thử từ khóa khác hoặc kiểm tra chính tả</div>
+            </div>
+
+            <div x-show="total > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" x-effect="setTimeout(() => lucide.createIcons(), 100)">
+                <template x-for="item in paged" :key="item.id">
+                    <div class="card p-4">
+                        <a href=""><h3 class="item-title" x-text="item.name"></h3></a>
+                        <div class="flex">
+                            <div class="item-thumbnail">
+                                <img src="assets/images/gmail.png" :alt="item.name" class="w-full h-full object-cover rounded-lg">
+                            </div>
+                            <div class="flex-1 min-w-0 space-y-1">
+                                <div class="flex items-center justify-between gap-2">
+                                    <a href="#" class="item-category" x-text="item.category"></a>
+                                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                                        <i data-lucide="star" class="item-rating"></i>
+                                        <span class="text-responsive-xs text-gray-500 ">4.9</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                                        <i data-lucide="user" class="item-icon"></i>
+                                        <a href="#" class="item-link">John Doe</a>
+                                    </div>
+                                    <div class="flex gap-1 text-responsive-xs text-gray-500 ">
+                                        <i data-lucide="shopping-cart" class="item-icon"></i>
+                                        <span>900</span>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-1">
+                            <span class="item-price" x-text="formatPrice(item.price)"></span>
+                            <button @click="addToCart(item)" class="btn btn-primary btn-sm">
+                            <i data-lucide="shopping-cart" class="size-4 mr-1 "></i>
+                            Mua
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Pagination -->
+                        <div class="mt-6 sm:mt-8 flex justify-center">
+                            <nav class="pagination">
+                                <a href="#" class="pagination-item disabled text-responsive-xs">&laquo;</a>
+                                <a href="#" class="pagination-item active text-responsive-xs">1</a>
+                                <a href="#" class="pagination-item text-responsive-xs">2</a>
+                                <a href="#" class="pagination-item text-responsive-xs">3</a>
+                                <span class="pagination-item text-responsive-xs">...</span>
+                                <a href="#" class="pagination-item text-responsive-xs">125</a>
+                                <a href="#" class="pagination-item text-responsive-xs">&raquo;</a>
+                            </nav>
+                        </div>
+        </div>
+    </div>
+</section>

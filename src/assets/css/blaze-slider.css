@@ -1,0 +1,337 @@
+/* ========================================================================
+   BLAZE-SLIDER.CSS - Blaze Slider Component Styles
+   ======================================================================== */
+
+/* ========================================================================
+   @LAYER COMPONENTS - Blaze Slider Components
+   ======================================================================== */
+@layer components {
+    
+    /* ========================================================================
+       BLAZE SLIDER CORE GROUP: Các thuộc tính cơ bản cho Blaze Slider
+       ======================================================================== */
+    .blaze-slider {
+        --slides-to-show: 1;
+        --slide-gap: 20px;
+    }
+
+    .blaze-container {
+        @apply relative;
+    }
+
+    .blaze-track-container {
+        @apply overflow-hidden;
+    }
+
+    .blaze-track {
+        will-change: transform;
+        touch-action: pan-y;
+        @apply flex gap-[var(--slide-gap)];
+        --slide-width: calc(
+            (100% - (var(--slides-to-show) - 1) * var(--slide-gap)) /
+            var(--slides-to-show)
+        );
+        box-sizing: border-box;
+    }
+
+    .blaze-track > * {
+        box-sizing: border-box;
+        width: var(--slide-width);
+        @apply flex-shrink-0;
+    }
+
+    /* ========================================================================
+       HOT PRODUCTS SLIDER GROUP: Các thuộc tính cho Hot Products Slider
+       ======================================================================== */
+    .hot-products-slider.blaze-slider {
+        --slides-to-show: 2;
+    }
+
+    @media (max-width: 640px) {
+        .hot-products-slider.blaze-slider {
+            --slides-to-show: 1;
+        }
+    }
+
+    .hot-products-slider .blaze-pagination {
+        @apply flex items-center justify-center gap-2 my-4 px-4;
+        font-size: 0; /* Hide default text */
+    }
+
+    .hot-products-slider .blaze-prev,
+    .hot-products-slider .blaze-next {
+        @apply hidden; /* Hide default arrows */
+    }
+
+    .hot-products-slider .blaze-pagination button {
+        @apply h-3 w-3 rounded-full border-0 cursor-pointer transition-all duration-300 ease-in-out outline-none;
+        background: rgba(49, 198, 99, 0.7); /* Semi-transparent emerald */
+    }
+
+    .hot-products-slider .blaze-pagination button:hover {
+        @apply scale-110;
+        background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .hot-products-slider .blaze-pagination button:focus {
+        @apply outline-2 outline-offset-2;
+        outline-color: #10b981;
+    }
+
+    .hot-products-slider .blaze-pagination button.active {
+        background: rgba(16, 185, 129, 1); /* Full emerald */
+    }
+
+    /* ========================================================================
+       TESTIMONIALS SLIDER GROUP: Các thuộc tính cho Testimonials Slider
+       ======================================================================== */
+    .testimonials-slider.blaze-slider {
+        --slides-to-show: 1;
+        --slide-gap: 0px;
+    }
+
+    .testimonials-slider .blaze-prev,
+    .testimonials-slider .blaze-next {
+        @apply absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-300 ease-in-out shadow-md;
+    }
+
+    .testimonials-slider .blaze-prev {
+        @apply -left-6;
+    }
+
+    .testimonials-slider .blaze-next {
+        @apply -right-6;
+    }
+
+    .testimonials-slider .blaze-prev:hover,
+    .testimonials-slider .blaze-next:hover {
+        @apply bg-emerald-500 border-emerald-500 text-white scale-110;
+    }
+
+    .testimonials-slider .blaze-prev:active,
+    .testimonials-slider .blaze-next:active {
+        @apply scale-95;
+    }
+
+    .testimonials-slider .blaze-pagination {
+        @apply flex items-center justify-center gap-2 mt-6 px-4;
+        font-size: 0;
+    }
+
+    .testimonials-slider .blaze-pagination button {
+        @apply h-3 w-3 rounded-full border-0 cursor-pointer transition-all duration-300 ease-in-out outline-none;
+        background: rgba(16, 185, 129, 0.3);
+    }
+
+    .testimonials-slider .blaze-pagination button:hover {
+        @apply scale-110;
+        background-color: rgba(16, 185, 129, 0.8);
+    }
+
+    .testimonials-slider .blaze-pagination button:focus {
+        @apply outline-2 outline-offset-2;
+        outline-color: #10b981;
+    }
+
+    .testimonials-slider .blaze-pagination button.active {
+        background: rgba(16, 185, 129, 1);
+    }
+
+    /* ========================================================================
+       RESPONSIVE NAVIGATION GROUP: Các thuộc tính responsive cho Navigation
+       ======================================================================== */
+    @media (max-width: 768px) {
+        .testimonials-slider .blaze-prev,
+        .testimonials-slider .blaze-next {
+            @apply w-10 h-10;
+        }
+
+        .testimonials-slider .blaze-prev {
+            @apply -left-5;
+        }
+
+        .testimonials-slider .blaze-next {
+            @apply -right-5;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .testimonials-slider .blaze-prev,
+        .testimonials-slider .blaze-next {
+            @apply hidden;
+        }
+    }
+
+    /* ========================================================================
+       RELATED PRODUCTS SLIDER GROUP: Các thuộc tính cho Related Products Slider
+       ======================================================================== */
+      /* Related Products Slider */
+		.related-products-slider.blaze-slider {
+            --slides-to-show: 4;
+            --slide-gap: 1.5rem;
+            }
+            @media (max-width: 1290px) {
+            .related-products-slider.blaze-slider {
+            --slides-to-show: 3;
+            }
+            }
+            @media (max-width: 1024px) {
+            .related-products-slider.blaze-slider {
+            --slides-to-show: 2;
+            }
+            }
+            
+            @media (max-width: 640px) {
+            .related-products-slider.blaze-slider {
+            --slides-to-show: 1;
+            }
+            }
+    /* Related Products Slider Navigation */
+    .related-products-slider .blaze-prev, 
+    .related-products-slider .blaze-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 2px solid #e5e7eb;
+        background: white;
+        color: #6b7280;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .related-products-slider .blaze-prev {
+        left: -24px;
+    }
+    .related-products-slider .blaze-next {
+        right: -24px;
+    }
+    .related-products-slider .blaze-prev:hover,
+    .related-products-slider .blaze-next:hover {
+        background: #10b981;
+        border-color: #10b981;
+        color: white;
+        transform: translateY(-50%) scale(1.1);
+    }
+    .related-products-slider .blaze-prev:active,
+    .related-products-slider .blaze-next:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+    /* Related Products Slider Pagination */
+    .related-products-slider .blaze-pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin: 24px 0 0 0;
+        padding: 0 16px;
+        font-size: 0;
+    }
+    .related-products-slider .blaze-pagination button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(49, 198, 99, 0.7);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+    .related-products-slider .blaze-pagination button.active {
+        background-color: #10b981;
+        transform: scale(1.2);
+    }
+    .related-products-slider .blaze-pagination button:hover {
+        background-color: rgba(16, 185, 129, 0.8);
+        transform: scale(1.1);
+    }
+    .related-products-slider .blaze-pagination button.active:hover {
+        background-color: #059669;
+        transform: scale(1.3);
+    }
+    .related-products-slider .blaze-pagination button:focus {
+        outline: 2px solid #10b981;
+        outline-offset: 2px;
+    }
+    /* Responsive navigation buttons */
+    @media (max-width: 768px) {
+        .related-products-slider .blaze-prev,
+        .related-products-slider .blaze-next {
+            width: 40px;
+            height: 40px;
+        }
+        .related-products-slider .blaze-prev {
+            left: -20px;
+        }
+        .related-products-slider .blaze-next {
+            right: -20px;
+        }
+    }
+    @media (max-width: 640px) {
+        .related-products-slider .blaze-prev,
+        .related-products-slider .blaze-next {
+            width: 36px;
+            height: 36px;
+        }
+        .related-products-slider .blaze-prev {
+            left: -18px;
+        }
+        .related-products-slider .blaze-next {
+            right: -18px;
+        }
+    }
+
+    /* ========================================================================
+       SLIDER ANIMATIONS GROUP: Các thuộc tính cho Slider Animations
+       ======================================================================== */
+    .blaze-slider .blaze-track {
+        @apply transition-transform duration-300 ease-in-out;
+    }
+
+    .blaze-slider .blaze-track.sliding {
+        @apply transition-none;
+    }
+
+    /* ========================================================================
+       SLIDER ACCESSIBILITY GROUP: Các thuộc tính cho Slider Accessibility
+       ======================================================================== */
+    .blaze-slider .blaze-track:focus {
+        @apply outline-2 outline-offset-2 outline-emerald-500;
+    }
+
+    .blaze-slider .blaze-track:focus-visible {
+        @apply outline-2 outline-offset-2 outline-emerald-500;
+    }
+
+    /* ========================================================================
+       SLIDER LOADING GROUP: Các thuộc tính cho Slider Loading States
+       ======================================================================== */
+    .blaze-slider.loading .blaze-track {
+        @apply opacity-50;
+    }
+
+    .blaze-slider.loading .blaze-pagination {
+        @apply opacity-50 pointer-events-none;
+    }
+
+    /* ========================================================================
+       SLIDER CUSTOM STYLES GROUP: Các thuộc tính tùy chỉnh cho Slider
+       ======================================================================== */
+    .blaze-slider.custom-shadow .blaze-track {
+        @apply shadow-lg;
+    }
+
+    .blaze-slider.custom-border .blaze-track {
+        @apply border border-gray-200 rounded-lg;
+    }
+
+    .blaze-slider.custom-padding .blaze-track {
+        @apply p-4;
+    }
+}

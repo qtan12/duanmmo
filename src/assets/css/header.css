@@ -1,0 +1,196 @@
+/* ========================================================================
+   HEADER.CSS - Header Component Styles
+   ======================================================================== */
+
+/* ========================================================================
+   @LAYER COMPONENTS - Header Specific Components
+   ======================================================================== */
+@layer components {
+    
+    /* ========================================================================
+       HEADER LAYOUT GROUP: Các thuộc tính cho Header Layout
+       ======================================================================== */
+    .header {
+        @apply sticky top-0 z-50 w-full border-b border-gray-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60;
+    }
+
+    .header-container {
+        @apply container flex h-16 items-center justify-between;
+    }
+
+    .header-logo {
+        @apply flex items-center space-x-2;
+    }
+
+    .header-nav {
+        @apply hidden items-center space-x-6 md:flex;
+    }
+
+    .header-actions {
+        @apply flex items-center space-x-4;
+    }
+
+    /* ========================================================================
+       MOBILE MENU GROUP: Các thuộc tính cho Mobile Menu
+       ======================================================================== */
+    .mobile-menu-button {
+        @apply inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 md:hidden;
+    }
+
+    .mobile-menu-overlay {
+        @apply fixed inset-0 z-50 bg-black/50 md:hidden;
+    }
+
+    .mobile-menu-panel {
+        @apply fixed right-0 top-0 z-50 h-full w-80 max-w-sm transform bg-white shadow-xl transition-transform duration-300 ease-in-out;
+    }
+
+    .mobile-menu-panel.closed {
+        @apply translate-x-full;
+    }
+
+    .mobile-menu-panel.open {
+        @apply translate-x-0;
+    }
+
+    .mobile-menu-header {
+        @apply flex items-center justify-between border-b border-gray-200 px-6 py-4;
+    }
+
+    .mobile-menu-close {
+        @apply rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900;
+    }
+
+    .mobile-menu-content {
+        @apply px-6 py-4;
+    }
+
+    /* ========================================================================
+       NAVIGATION GROUP: Các thuộc tính cho Navigation
+       ======================================================================== */
+    .nav-link {
+        @apply overflow-hidden text-ellipsis whitespace-nowrap font-medium text-gray-600 transition-colors duration-150 hover:text-emerald-600;
+    }
+
+    .nav-dropdown {
+        @apply relative;
+    }
+
+    .nav-dropdown-trigger {
+        @apply flex items-center overflow-hidden text-ellipsis whitespace-nowrap font-medium text-gray-600 transition-colors duration-150 hover:text-emerald-600;
+    }
+
+    .nav-dropdown-menu {
+        @apply invisible absolute left-[-100%] top-full z-50 mt-2 scale-95 rounded-xl border border-gray-200 bg-white opacity-0 shadow-xl transition-all duration-500;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown-trigger:hover + .nav-dropdown-menu,
+    .nav-dropdown-menu:hover {
+        @apply visible scale-100 opacity-100;
+    }
+
+    /* ========================================================================
+       MOBILE MENU GROUP: Các thuộc tính cho Mobile Menu
+       ======================================================================== */
+    .mobile-menu-item {
+        @apply flex items-center space-x-3 rounded-xl p-3 transition-colors duration-150 hover:bg-gray-50;
+    }
+
+    .mobile-submenu-header {
+        @apply mb-2 flex items-center border-b border-gray-200 px-2 pb-2 pt-4 text-xs font-bold uppercase tracking-wider text-gray-600;
+    }
+
+    .mobile-submenu-header:first-of-type {
+        @apply pt-2;
+    }
+
+    .mobile-menu-expandable {
+        @apply flex cursor-pointer items-center justify-between rounded-xl p-3 transition-colors duration-150 hover:bg-gray-50;
+    }
+
+    .mobile-submenu-item {
+        @apply flex items-center rounded-lg p-2 text-sm text-gray-600 transition-colors duration-150 hover:bg-emerald-50 hover:text-emerald-600;
+    }
+
+    .mobile-submenu-item i {
+        @apply flex-shrink-0;
+    }
+
+    .dropdown-col {
+        @apply space-y-2;
+    }
+
+    .dropdown-item {
+        @apply block rounded-lg px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900;
+    }
+
+    .dropdown-item.active {
+        @apply bg-emerald-50 text-emerald-600;
+    }
+
+    .dropdown-divider {
+        @apply my-2 border-t border-gray-200;
+    }
+
+    .dropdown-header {
+        @apply px-3 py-2 text-xs font-semibold uppercase tracking-wider text-gray-500;
+    }
+
+    /* ================= Additional dropdown/nav variants from original ================= */
+    .dropdown-two-col { @apply grid grid-cols-2 gap-6; }
+    .dropdown-three-col { @apply grid grid-cols-3 gap-6; }
+    .dropdown-col-header { @apply mb-3 border-b border-gray-100 px-2 pb-2 text-xs font-bold uppercase tracking-wider text-emerald-600; }
+    .dropdown-col-header-with-icon { @apply mb-3 flex items-center gap-2 border-b border-gray-100 px-2 pb-2 text-xs font-bold uppercase tracking-wider text-emerald-600; }
+    .dropdown-col-header-with-icon i { @apply mr-2 h-4 w-4 text-emerald-500; }
+    .nav-menu-divider { @apply my-3 mx-2 border-t border-gray-100; }
+
+    /* Visual dividers for 2/3 column mega menus */
+    .nav-dropdown-menu.two-col .dropdown-two-col { @apply relative; }
+    .nav-dropdown-menu.two-col .dropdown-two-col::before { content: ''; @apply absolute left-1/2 top-0 h-full w-px -translate-x-px bg-gray-200; }
+    .nav-dropdown-menu.three-col .dropdown-three-col { @apply relative; }
+    .nav-dropdown-menu.three-col .dropdown-three-col::before { content: ''; @apply absolute left-1/3 top-0 h-full w-px -translate-x-px bg-gray-200; }
+    .nav-dropdown-menu.three-col .dropdown-three-col::after { content: ''; @apply absolute left-2/3 top-0 h-full w-px -translate-x-px bg-gray-200; }
+
+    /* ========================================================================
+       SEARCH GROUP: Các thuộc tính cho Search
+       ======================================================================== */
+    .search-container {
+        @apply relative hidden md:block;
+    }
+
+    .search-input {
+        @apply w-64 rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 pl-10 text-sm placeholder:text-gray-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500;
+    }
+
+    .search-icon {
+        @apply absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400;
+    }
+
+    /* ========================================================================
+       USER MENU GROUP: Các thuộc tính cho User Menu
+       ======================================================================== */
+    .user-menu {
+        @apply relative;
+    }
+
+    .user-avatar {
+        @apply h-8 w-8 rounded-full;
+    }
+
+    .user-menu-button {
+        @apply flex items-center space-x-2 rounded-lg p-2 text-gray-700 hover:bg-gray-100;
+    }
+
+    .user-menu-dropdown {
+        @apply absolute right-0 top-full z-50 mt-2 w-48 rounded-lg border border-gray-200 bg-white shadow-lg;
+    }
+
+    .user-menu-item {
+        @apply block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100;
+    }
+
+    .user-menu-divider {
+        @apply border-t border-gray-200;
+    }
+}

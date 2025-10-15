@@ -1,0 +1,144 @@
+
+
+<!DOCTYPE html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>MMO Store - Premium Digital Products</title>
+		<meta name="description"
+			content="Cửa hàng bán tài khoản premium, key license, VPN và các sản phẩm số chất lượng cao với giá tốt nhất.">
+		<script type="text/javascript">
+			const API_URL = "https://panel.dongnai.net/api/v2/";
+		</script>
+        <!-- Add Inline Hidden Class for Fix CLS -->
+        <style>
+        .hidden {
+            display: none;
+        }
+		</style>
+		<!-- all css -->
+        <link rel="stylesheet" href="assets/css/styles.css" />
+
+		
+		
+		<!-- 1. CAC THU VIEN CAN SU DUNG -->
+		<!-- Notification Library -->
+		<script src="assets/js/libs/notification.js" defer></script>
+		<!-- Initialize FastNotice -->
+		<script>
+			// Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+			document.addEventListener('DOMContentLoaded', function () {
+			    window.fastNotice = new FastNotice({
+			        position: 'top-center',    // Vị trí mặc định
+			        duration: 3000,              // Thời gian hiển thị (ms)
+			        maxNotifications: 3          // Số notification tối đa
+			    });
+			});
+		</script>
+		<!-- Lucide Icons - Custom Build -->
+		<script src="assets/js/lucide-custom.min.js" defer></script>
+		<!-- jModal manager -->
+		<script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+		<!-- Load BlazeSlider Library -->
+		<script src="assets/js/libs/blaze-slider.js" defer></script>
+		<!-- Libs Tabs JS Thuần -->
+		<script src="assets/js/libs/tabs.js" defer></script>
+		<!-- Image Fallback Utility -->
+		<script src="assets/js/libs/image-fallback.js" defer></script>
+
+
+		<!-- 2. CAC CODE JS TU VIET. -->
+		<!-- Cart Manager Libs JS -->
+		<script src="assets/js/cart-manager.js" defer></script>
+		<!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+		<script src="assets/js/header.js" defer></script>
+		<!-- Homepage Component JS -->
+		<script src="assets/js/homemmo.js" defer></script>
+		<!-- Run BlazeSlider -->
+		<script src="assets/js/sliders.js" defer></script>
+		<!-- Contact Component JS -->
+		<script src="assets/js/contact.js" defer></script>
+
+		<!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+		<script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+		
+		<!-- Contact Form Handler -->
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const contactForm = document.getElementById('contactForm');
+				
+				if (contactForm) {
+					contactForm.addEventListener('submit', function(e) {
+						e.preventDefault();
+						
+						// Lấy dữ liệu form
+						const formData = new FormData(contactForm);
+						const data = {
+							firstName: formData.get('firstName'),
+							email: formData.get('email'),
+							phone: formData.get('phone'),
+							subject: formData.get('subject'),
+							message: formData.get('message')
+						};
+						
+						// Validation cơ bản
+						if (!data.firstName || !data.email || !data.subject || !data.message) {
+							window.fastNotice?.show('Vui lòng điền đầy đủ thông tin bắt buộc!', 'error');
+							return;
+						}
+						
+						// Validate email
+						const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+						if (!emailRegex.test(data.email)) {
+							window.fastNotice?.show('Email không hợp lệ!', 'error');
+							return;
+						}
+						
+						// Hiển thị loading
+						const submitBtn = contactForm.querySelector('button[type="submit"]');
+						const originalText = submitBtn.innerHTML;
+						submitBtn.innerHTML = '<i data-lucide="loader-2" class="w-5 h-5 inline mr-2 animate-spin"></i>Đang gửi...';
+						submitBtn.disabled = true;
+						
+						// Simulate API call (thay thế bằng API thực tế)
+						setTimeout(() => {
+							// Reset button
+							submitBtn.innerHTML = originalText;
+							submitBtn.disabled = false;
+							
+							// Show success message
+							window.fastNotice?.show('Tin nhắn đã được gửi thành công! Chúng tôi sẽ phản hồi sớm nhất có thể.', 'success');
+							
+							// Reset form
+							contactForm.reset();
+							
+							// Log data (trong thực tế sẽ gửi lên server)
+							console.log('Contact form data:', data);
+						}, 2000);
+					});
+				}
+			});
+		</script>
+		
+	</head>
+	<body class="min-h-screen bg-white">
+		<!-- header -->
+		<!-- include:./blocks/header.html -->
+
+		<!-- Main Content Area -->
+		<main class="min-h-screen bg-gray-50">
+			<!-- Hero Section -->
+			<!-- include:./blocks/sections/contact/hero.html -->
+
+			<!-- Contact Form & Info Section -->
+			<!-- include:./blocks/sections/contact/form.html -->
+
+			<!-- FAQ Section -->
+			<!-- include:./blocks/sections/contact/faq.html -->
+		</main>
+
+		<!-- Footer -->
+        <!-- include:./blocks/footer.html -->
+	</body>
+</html>
