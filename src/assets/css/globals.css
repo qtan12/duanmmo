@@ -128,6 +128,9 @@
     .btn-outline {
         @apply border border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
     }
+    .btn-delete {
+        @apply text-red-600 border border-red-300 hover:bg-red-50
+    }
 
     .btn-ghost {
         @apply border border-gray-300 text-gray-600 hover:bg-transparent hover:text-emerald-600 transition-colors duration-150;
@@ -170,6 +173,7 @@
     .btn-success {
         @apply bg-gradient-to-r from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white shadow-sm hover:shadow-md focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all;
     }
+    
 
     /* ========================================================================
        INPUT GROUP: Các thuộc tính cho Input

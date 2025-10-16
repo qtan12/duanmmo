@@ -39,6 +39,10 @@ credit-card
 lock
 alert-circle
 user-check
+arrow-left
+minus
+shield
+award
 youtube
 message-circle
 grid-3x3
@@ -49,7 +53,6 @@ loader-2
 clock
 send
 github
-minus
 calendar
 eye
 heart
@@ -62,7 +65,6 @@ linkedin
 more-horizontal
 thumbs-up
 thumbs-down
-shield
 share-2
 zap
 store
@@ -73,7 +75,6 @@ music
 server
 image
 quote
-award
 package-plus
 home
 printer

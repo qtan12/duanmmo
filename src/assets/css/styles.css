@@ -10,3 +10,5 @@
 @import "./blaze-slider.css";
 /* Các thành phần cho Footer dùng chung all trang */
 @import "./footer.css";
+/* Các thành phần cho Cart dùng chung all trang */
+@import "./cart.css";

@@ -163,6 +163,85 @@
     }
 
     /* ========================================================================
+       FLASH SALE SLIDER GROUP: Các thuộc tính cho Flash Sale Slider
+       ======================================================================== */
+       .flash-sale-slider.blaze-slider {
+        --slides-to-show: 1;
+        --slide-gap: 0px;
+    }
+
+    .flash-sale-slider .blaze-prev,
+    .flash-sale-slider .blaze-next {
+        @apply absolute top-1/2 -translate-y-1/2 w-12 h-12 bg-white border border-gray-200 rounded-full flex items-center justify-center cursor-pointer z-10 transition-all duration-300 ease-in-out shadow-md;
+    }
+
+    .flash-sale-slider .blaze-prev {
+        @apply -left-6;
+    }
+
+    .flash-sale-slider .blaze-next {
+        @apply -right-6;
+    }
+
+    .flash-sale-slider .blaze-prev:hover,
+    .flash-sale-slider .blaze-next:hover {
+        @apply bg-emerald-500 border-emerald-500 text-white scale-110;
+    }
+
+    .flash-sale-slider .blaze-prev:active,
+    .flash-sale-slider .blaze-next:active {
+        @apply scale-95;
+    }
+
+    .flash-sale-slider .blaze-pagination {
+        @apply flex items-center justify-center gap-2 mt-6 px-4;
+        font-size: 0;
+    }
+
+    .flash-sale-slider .blaze-pagination button {
+        @apply h-3 w-3 rounded-full border-0 cursor-pointer transition-all duration-300 ease-in-out outline-none;
+        background: rgba(16, 185, 129, 0.3);
+    }
+
+    .flash-sale-slider .blaze-pagination button:hover {
+        @apply scale-110;
+        background-color: rgba(16, 185, 129, 0.8);
+    }
+
+    .flash-sale-slider .blaze-pagination button:focus {
+        @apply outline-2 outline-offset-2;
+        outline-color: #10b981;
+    }
+
+    .flash-sale-slider .blaze-pagination button.active {
+        background: rgba(16, 185, 129, 1);
+    }
+
+    /* ========================================================================
+       RESPONSIVE NAVIGATION GROUP: Các thuộc tính responsive cho Navigation
+       ======================================================================== */
+    @media (max-width: 768px) {
+        .flash-sale-slider .blaze-prev,
+        .flash-sale-slider .blaze-next {
+            @apply w-10 h-10;
+        }
+
+        .flash-sale-slider .blaze-prev {
+            @apply -left-5;
+        }
+
+        .flash-sale-slider .blaze-next {
+            @apply -right-5;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .flash-sale-slider .blaze-prev,
+        .flash-sale-slider .blaze-next {
+            @apply hidden;
+        }
+    }
+    /* ========================================================================
        RELATED PRODUCTS SLIDER GROUP: Các thuộc tính cho Related Products Slider
        ======================================================================== */
       /* Related Products Slider */

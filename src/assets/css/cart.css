@@ -1,0 +1,5 @@
+@layer components {
+    .i-delete {
+        @apply absolute top-2 right-2 size-6 lg:size-7 text-red-500 hover:bg-red-50 rounded-full flex items-center justify-center transition-colors z-10 bg-white shadow-md
+    }
+}
