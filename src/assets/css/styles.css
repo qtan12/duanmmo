@@ -12,3 +12,5 @@
 @import "./footer.css";
 /* Các thành phần cho Cart dùng chung all trang */
 @import "./cart.css";
+/* Các thành phần cho Detail dùng chung all trang */
+@import "./detail.css";

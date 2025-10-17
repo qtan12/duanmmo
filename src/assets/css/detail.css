@@ -1,0 +1,8 @@
+@layer components {
+    .nav-left {
+        @apply absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors border border-gray-200
+    }
+    .nav-right {
+        @apply absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10 bg-white rounded-full p-2 shadow-md hover:bg-gray-50 transition-colors border border-gray-200
+    }
+}

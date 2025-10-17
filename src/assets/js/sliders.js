@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+   
+
     // Countdown Flash-sale (đếm ngược tới 23:59 hôm nay)
     const hEl = document.getElementById('fs-h');
     const mEl = document.getElementById('fs-m');
@@ -105,4 +107,44 @@ document.addEventListener('DOMContentLoaded', function() {
         tick();
         setInterval(tick, 1000);
     }
+     // Initialize Product Thumbnails Slider (chỉ khi có >= 5 ảnh)
+     const thumbnailsSlider = document.querySelector('.product-thumbnails-slider');
+     if (thumbnailsSlider) {
+         const slides = thumbnailsSlider.querySelectorAll('.blaze-slide');
+         const slideCount = slides.length;
+         
+         if (slideCount >= 5) {
+             // Có từ 5 ảnh trở lên -> khởi tạo slider
+             new BlazeSlider(thumbnailsSlider, {
+                 all: {
+                     slidesToShow: 4,
+                     slidesToScroll: 1,
+                     enableAutoplay: false,
+                 },
+                 '(min-width: 640px)': {
+                     slidesToShow: 5,
+                 },
+                 '(min-width: 900px)': {
+                    slidesToShow: 6,
+                },
+                 '(min-width: 1024px)': {
+                     slidesToShow: 5,
+                 }
+             });
+          } else {
+              // Dưới 5 ảnh -> hiển thị dạng grid bình thường
+              const track = thumbnailsSlider.querySelector('.blaze-track');
+              if (track) {
+                  track.style.display = 'grid';
+                  track.style.gridTemplateColumns = `repeat(auto-fit, minmax(4rem, 1fr))`;
+                  track.style.gap = '0.5rem';
+                  track.style.maxWidth = `${slideCount * 5}rem`; // Giới hạn width để không bị giãn
+              }
+              // Ẩn nút navigation
+              const prevBtn = thumbnailsSlider.querySelector('.blaze-prev');
+              const nextBtn = thumbnailsSlider.querySelector('.blaze-next');
+              if (prevBtn) prevBtn.style.display = 'none';
+              if (nextBtn) nextBtn.style.display = 'none';
+          }
+     }
 });

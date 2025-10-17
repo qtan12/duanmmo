@@ -65,10 +65,10 @@ linkedin
 more-horizontal
 thumbs-up
 thumbs-down
+chevron-left
 share-2
 zap
 store
-chevron-left
 shopping-bag
 play
 music
