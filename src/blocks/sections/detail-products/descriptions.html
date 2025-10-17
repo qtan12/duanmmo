@@ -1,0 +1,75 @@
+<!-- Mô tả sản phẩm -->
+<section class="sm:container mb-6">
+    <div class="card p-6">
+        <div class="prose max-w-none">
+            <h3 class="card-title">Mô tả sản phẩm</h3>
+            <p class="card-description">Tài khoản Netflix Premium chính hãng với chất lượng 4K Ultra HD, hỗ trợ 4 thiết
+                bị cùng lúc. Bảo hành 12 tháng, thay thế miễn phí nếu có lỗi.</p>
+
+            <div x-data="{ expanded: false }" class="mt-4">
+                <!-- Short description -->
+                <div x-show="!expanded" class="space-y-3">
+                    <h4 class="font-semibold text-gray-800 text-lg">🎬 Trải nghiệm giải trí đỉnh cao</h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        Với tài khoản Netflix Premium, bạn sẽ được trải nghiệm thư viện phim và chương trình truyền hình
+                        khổng lồ với hơn 15,000+ nội dung đa dạng. Từ những bộ phim bom tấn Hollywood mới nhất đến các
+                        series độc quyền Netflix, anime Nhật Bản, phim Hàn Quốc, và nhiều nội dung địa phương phong phú.
+                    </p>
+                </div>
+
+                <!-- Full description (hidden by default) -->
+                <div x-show="expanded" class="space-y-3">
+                    <h4 class="font-semibold text-gray-800 text-lg">🎬 Trải nghiệm giải trí đỉnh cao</h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        Với tài khoản Netflix Premium, bạn sẽ được trải nghiệm thư viện phim và chương trình truyền hình
+                        khổng lồ với hơn 15,000+ nội dung đa dạng. Từ những bộ phim bom tấn Hollywood mới nhất đến các
+                        series độc quyền Netflix, anime Nhật Bản, phim Hàn Quốc, và nhiều nội dung địa phương phong phú.
+                    </p>
+
+                    <h4 class="font-semibold text-gray-800 text-lg">📱 Linh hoạt trên mọi thiết bị</h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        Xem Netflix trên tối đa 4 thiết bị cùng lúc - điện thoại, máy tính, TV thông minh, máy tính
+                        bảng. Chuyển đổi giữa các thiết bị một cách mượt mà, tiếp tục xem từ nơi bạn đã dừng lại. Hỗ trợ
+                        tải xuống offline để xem khi không có internet.
+                    </p>
+
+                    <h4 class="font-semibold text-gray-800 text-lg">🔒 An toàn và bảo mật</h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        Tài khoản được tạo từ tài khoản gốc chính hãng, đảm bảo tính ổn định và bảo mật cao. Không lo bị
+                        khóa tài khoản hay mất quyền truy cập. Hệ thống bảo hành 24/7 sẵn sàng hỗ trợ bạn mọi lúc.
+                    </p>
+
+                    <h4 class="font-semibold text-gray-800 text-lg">⚡ Giao hàng siêu tốc</h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        Nhận tài khoản ngay sau khi thanh toán thành công (trong vòng 5-10 phút). Thông tin đăng nhập
+                        được gửi qua email và tin nhắn SMS. Hướng dẫn sử dụng chi tiết kèm theo để bạn có thể bắt đầu
+                        xem ngay lập tức.
+                    </p>
+                </div>
+
+                <!-- Toggle button -->
+                <div class="flex justify-center mt-4">
+                    <button @click="expanded = !expanded" class="btn btn-secondary btn-sm ">
+                        <span x-text="expanded ? 'Thu gọn' : 'Đọc thêm'"></span>
+                        <svg class="ml-1 w-4 h-4 transition-transform" :class="{ 'rotate-180': expanded }" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="bg-emerald-50 rounded-md p-2 sm:p-4">
+                    <h4 class="font-semibold text-emerald-800 mb-2 text-responsive-xs">Lưu ý quan trọng:</h4>
+                    <ul class="text-emerald-700 text-responsive-xs space-y-1">
+                        <li>• Tài khoản được giao ngay sau khi thanh toán thành công</li>
+                        <li>• Vui lòng không thay đổi thông tin tài khoản để tránh bị khóa</li>
+                        <li>• Liên hệ hỗ trợ nếu gặp bất kỳ vấn đề nào</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>

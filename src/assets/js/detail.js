@@ -252,6 +252,405 @@ function faqComponent() {
     };
 }
 
+// Reviews Component with Load More functionality
+function reviewsComponent() {
+    return {
+        // State - Reviews List
+        displayedReviews: [],
+        totalReviews: 0,
+        currentPage: 1,
+        perPage: 6,
+        isLoading: false,
+        hasMore: true,
+        productId: null, // Product ID from URL or data attribute
+        useSimulatedData: true, // Toggle between simulated and real API
+
+        // State - New Review Form
+        newReview: {
+            name: '',
+            rating: 0,
+            comment: ''
+        },
+        hoverRating: 0,
+        isSubmitting: false,
+        errors: {},
+
+        // Initialize component
+        async init() {
+            console.log('Reviews component initialized.');
+            
+            // Get product ID from URL or data attribute
+            this.productId = this.getProductId();
+            
+            // Load initial reviews
+            await this.loadInitialReviews();
+        },
+
+        // Get product ID from URL or element data attribute
+        getProductId() {
+            // Try to get from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id') || urlParams.get('product_id');
+            
+            if (productId) return productId;
+            
+            // Fallback to default for demo
+            return 'default-product-123';
+        },
+
+        // Load initial reviews
+        async loadInitialReviews() {
+            this.isLoading = true;
+            
+            try {
+                if (this.useSimulatedData) {
+                    // Simulated data for demo/development
+                    await this.fetchReviewsSimulated(1);
+                } else {
+                    // Real API call
+                    await this.fetchReviewsFromAPI(1);
+                }
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+                if (window.fastNotice) {
+                    window.fastNotice.error('Không thể tải đánh giá. Vui lòng thử lại!');
+                }
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
+        // Fetch reviews from real API (pagination query)
+        async fetchReviewsFromAPI(page) {
+            try {
+                // Real API endpoint with pagination
+                const response = await fetch(`/api/products/${this.productId}/reviews?page=${page}&per_page=${this.perPage}`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch reviews');
+                }
+
+                const data = await response.json();
+                
+                // Expected API response format:
+                // {
+                //     data: [...reviews],
+                //     meta: {
+                //         current_page: 1,
+                //         total: 1247,
+                //         per_page: 6,
+                //         last_page: 208,
+                //         has_more: true
+                //     }
+                // }
+
+                if (page === 1) {
+                    this.displayedReviews = data.data;
+                } else {
+                    this.displayedReviews = [...this.displayedReviews, ...data.data];
+                }
+
+                this.totalReviews = data.meta.total;
+                this.currentPage = data.meta.current_page;
+                this.hasMore = data.meta.has_more || (this.currentPage < data.meta.last_page);
+
+                return data;
+            } catch (error) {
+                console.error('API fetch error:', error);
+                throw error;
+            }
+        },
+
+        // Simulated API response (for demo/development)
+        async fetchReviewsSimulated(page) {
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            const names = [
+                'Nguyễn Văn Hùng', 'Trần Thị Bích', 'Lê Minh Đức', 'Phạm Thu Hà',
+                'Hoàng Văn Nam', 'Vũ Thị Lan', 'Đặng Quốc Huy', 'Bùi Thị Mai',
+                'Ngô Văn Tùng', 'Phan Thị Hương', 'Lý Minh Tuấn', 'Đinh Thị Thảo'
+            ];
+
+            const comments = [
+                'Sản phẩm tuyệt vời! Giao hàng nhanh, hỗ trợ nhiệt tình. Sẽ tiếp tục ủng hộ shop trong tương lai.',
+                'Chất lượng tốt, giá cả hợp lý. Tuy nhiên phần hướng dẫn sử dụng hơi khó hiểu một chút.',
+                'Rất đáng tiền. Mọi thứ hoạt động hoàn hảo.',
+                'Dịch vụ chăm sóc khách hàng xuất sắc. Sản phẩm đúng như mô tả.',
+                'Giao hàng nhanh, đóng gói cẩn thận. Sẽ giới thiệu cho bạn bè.',
+                'Sản phẩm chất lượng cao, giá tốt. Rất hài lòng với lần mua này.',
+                'Đã sử dụng được 2 tuần, hoạt động rất ổn định.',
+                'Shop tư vấn nhiệt tình, sản phẩm chính hãng 100%.',
+                'Mình rất thích sản phẩm này, vượt xa mong đợi.',
+                'Giao hàng hơi chậm nhưng sản phẩm rất tốt.',
+                'Chất lượng xuất sắc, giá cả phải chăng. Recommend!',
+                'Sản phẩm tốt, đúng mô tả. Sẽ quay lại ủng hộ shop.'
+            ];
+
+            const timeUnits = ['ngày', 'tuần', 'tháng'];
+            const totalReviews = 1247;
+            const lastPage = Math.ceil(totalReviews / this.perPage);
+
+            // Generate reviews for current page
+            const startIndex = (page - 1) * this.perPage;
+            const newReviews = [];
+
+            for (let i = 0; i < this.perPage && (startIndex + i) < totalReviews; i++) {
+                const reviewIndex = startIndex + i;
+                const randomName = names[Math.floor(Math.random() * names.length)];
+                const randomComment = comments[Math.floor(Math.random() * comments.length)];
+                const randomRating = Math.floor(Math.random() * 2) + 4; // 4-5 stars mostly
+                const randomTimeValue = Math.floor(Math.random() * 30) + 1;
+                const randomTimeUnit = timeUnits[Math.floor(Math.random() * timeUnits.length)];
+                const randomAvatarId = String.fromCharCode(97 + (reviewIndex % 26));
+
+                newReviews.push({
+                    id: reviewIndex + 1,
+                    name: randomName,
+                    avatar: `https://i.pravatar.cc/40?u=a042581f4e29026704${randomAvatarId}`,
+                    rating: randomRating,
+                    time: `${randomTimeValue} ${randomTimeUnit} trước`,
+                    comment: randomComment
+                });
+            }
+
+            // Simulate API response
+            const mockResponse = {
+                data: newReviews,
+                meta: {
+                    current_page: page,
+                    total: totalReviews,
+                    per_page: this.perPage,
+                    last_page: lastPage,
+                    has_more: page < lastPage
+                }
+            };
+
+            // Update state
+            if (page === 1) {
+                this.displayedReviews = mockResponse.data;
+            } else {
+                this.displayedReviews = [...this.displayedReviews, ...mockResponse.data];
+            }
+
+            this.totalReviews = mockResponse.meta.total;
+            this.currentPage = mockResponse.meta.current_page;
+            this.hasMore = mockResponse.meta.has_more;
+
+            return mockResponse;
+        },
+
+        // Load more reviews
+        async loadMore() {
+            if (this.isLoading || !this.hasMore) return;
+
+            this.isLoading = true;
+
+            try {
+                const nextPage = this.currentPage + 1;
+                
+                if (this.useSimulatedData) {
+                    await this.fetchReviewsSimulated(nextPage);
+                } else {
+                    await this.fetchReviewsFromAPI(nextPage);
+                }
+
+                // Show success notification
+                if (window.fastNotice) {
+                    const loadedCount = Math.min(this.perPage, this.totalReviews - ((nextPage - 1) * this.perPage));
+                    window.fastNotice.success(`Đã tải thêm ${loadedCount} đánh giá`);
+                }
+
+                // Smooth scroll to new reviews
+                this.scrollToNewReviews();
+            } catch (error) {
+                console.error('Error loading more reviews:', error);
+                if (window.fastNotice) {
+                    window.fastNotice.error('Không thể tải thêm đánh giá. Vui lòng thử lại!');
+                }
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
+        // Smooth scroll to new content
+        scrollToNewReviews() {
+            setTimeout(() => {
+                const container = document.getElementById('reviews-container');
+                if (container) {
+                    const reviewElements = container.querySelectorAll('.flex.items-start');
+                    if (reviewElements.length > this.perPage) {
+                        const targetIndex = Math.max(0, reviewElements.length - this.perPage - 1);
+                        const targetElement = reviewElements[targetIndex];
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    }
+                }
+            }, 100);
+        },
+
+        // ============= SUBMIT REVIEW FORM =============
+
+        // Validate review form
+        validateReviewForm() {
+            this.errors = {};
+            let isValid = true;
+
+            // Validate name
+            if (!this.newReview.name || this.newReview.name.trim() === '') {
+                this.errors.name = 'Vui lòng nhập tên của bạn';
+                isValid = false;
+            } else if (this.newReview.name.trim().length < 2) {
+                this.errors.name = 'Tên phải có ít nhất 2 ký tự';
+                isValid = false;
+            } else if (this.newReview.name.trim().length > 100) {
+                this.errors.name = 'Tên không được quá 100 ký tự';
+                isValid = false;
+            }
+
+            // Validate rating
+            if (!this.newReview.rating || this.newReview.rating < 1 || this.newReview.rating > 5) {
+                this.errors.rating = 'Vui lòng chọn số sao đánh giá';
+                isValid = false;
+            }
+
+            // Validate comment
+            if (!this.newReview.comment || this.newReview.comment.trim() === '') {
+                this.errors.comment = 'Vui lòng nhập bình luận của bạn';
+                isValid = false;
+            } else if (this.newReview.comment.trim().length < 10) {
+                this.errors.comment = 'Bình luận phải có ít nhất 10 ký tự';
+                isValid = false;
+            } else if (this.newReview.comment.trim().length > 1000) {
+                this.errors.comment = 'Bình luận không được quá 1000 ký tự';
+                isValid = false;
+            }
+
+            return isValid;
+        },
+
+        // Submit review
+        async submitReview() {
+            // Validate form
+            if (!this.validateReviewForm()) {
+                if (window.fastNotice) {
+                    window.fastNotice.error('Vui lòng kiểm tra lại thông tin!');
+                }
+                return;
+            }
+
+            this.isSubmitting = true;
+
+            try {
+                if (this.useSimulatedData) {
+                    await this.submitReviewSimulated();
+                } else {
+                    await this.submitReviewToAPI();
+                }
+
+                // Show success notification
+                if (window.fastNotice) {
+                    window.fastNotice.success('Đã gửi đánh giá thành công! Cảm ơn bạn đã đóng góp ý kiến.');
+                }
+
+                // Reset form
+                this.resetReviewForm();
+
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                if (window.fastNotice) {
+                    window.fastNotice.error('Không thể gửi đánh giá. Vui lòng thử lại sau!');
+                }
+            } finally {
+                this.isSubmitting = false;
+            }
+        },
+
+        // Submit review to real API
+        async submitReviewToAPI() {
+            try {
+                const response = await fetch(`/api/products/${this.productId}/reviews`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Add auth token if needed
+                        // 'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        name: this.newReview.name.trim(),
+                        rating: this.newReview.rating,
+                        comment: this.newReview.comment.trim(),
+                        product_id: this.productId
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to submit review');
+                }
+
+                const data = await response.json();
+
+                // Add new review to the top of the list
+                if (data.review) {
+                    this.displayedReviews.unshift(data.review);
+                    this.totalReviews++;
+                }
+
+                return data;
+            } catch (error) {
+                console.error('API submit error:', error);
+                throw error;
+            }
+        },
+
+        // Simulated submit review (for demo/development)
+        async submitReviewSimulated() {
+            // Simulate network delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
+
+            // Generate random avatar
+            const randomAvatarId = String.fromCharCode(97 + Math.floor(Math.random() * 26));
+
+            // Create new review object
+            const newReviewData = {
+                id: Date.now(), // Use timestamp as ID
+                name: this.newReview.name.trim(),
+                rating: this.newReview.rating,
+                comment: this.newReview.comment.trim(),
+                time: 'Vừa xong',
+                avatar: `https://i.pravatar.cc/40?u=new${randomAvatarId}`
+            };
+
+            // Add to the top of the list
+            this.displayedReviews.unshift(newReviewData);
+            this.totalReviews++;
+
+            // Scroll to top to see new review
+            setTimeout(() => {
+                const container = document.getElementById('reviews-container');
+                if (container) {
+                    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+
+            return newReviewData;
+        },
+
+        // Reset review form
+        resetReviewForm() {
+            this.newReview = {
+                name: '',
+                rating: 0,
+                comment: ''
+            };
+            this.hoverRating = 0;
+            this.errors = {};
+        }
+    };
+}
+
 // Export for use in HTML
 window.productDetailComponent = productDetailComponent;
 window.faqComponent = faqComponent;
+window.reviewsComponent = reviewsComponent;

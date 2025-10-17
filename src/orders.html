@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMO Store - Premium Digital Products</title>
+    <meta name="description"
+        content="Cửa hàng bán tài khoản premium, key license, VPN và các sản phẩm số chất lượng cao với giá tốt nhất.">
+    <script type="text/javascript">
+        const API_URL = "https://panel.dongnai.net/api/v2/";
+    </script>
+    <!-- Add Inline Hidden Class for Fix CLS -->
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- all css -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+
+
+    <!-- 1. CAC THU VIEN CAN SU DUNG -->
+    <!-- Notification Library -->
+    <script src="assets/js/libs/notification.js" defer></script>
+    <!-- Initialize FastNotice -->
+    <script>
+        // Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+        document.addEventListener('DOMContentLoaded', function () {
+            window.fastNotice = new FastNotice({
+                position: 'top-center',    // Vị trí mặc định
+                duration: 3000,              // Thời gian hiển thị (ms)
+                maxNotifications: 3          // Số notification tối đa
+            });
+        });
+    </script>
+    <!-- Lucide Icons - Custom Build -->
+    <script src="assets/js/lucide-custom.min.js" defer></script>
+    <!-- jModal manager -->
+    <script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+    <!-- Load BlazeSlider Library -->
+    <script src="assets/js/libs/blaze-slider.js" defer></script>
+    <!-- Libs Tabs JS Thuần -->
+    <script src="assets/js/libs/tabs.js" defer></script>
+    <!-- Image Fallback Utility -->
+    <script src="assets/js/libs/image-fallback.js" defer></script>
+
+
+    <!-- 2. CAC CODE JS TU VIET. -->
+    <!-- Cart Manager Libs JS -->
+    <script src="assets/js/cart-manager.js" defer></script>
+    <!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+    <script src="assets/js/header.js" defer></script>
+    <!-- Homepage Component JS -->
+    <script src="assets/js/homemmo.js" defer></script>
+    <!-- Run BlazeSlider -->
+    <script src="assets/js/sliders.js" defer></script>
+    <!-- Orders Component JS -->
+    <script src="assets/js/orders.js" defer></script>
+
+    <!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+    <script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+
+
+</head>
+
+<body class="min-h-screen bg-gray-100">
+    <!-- header -->
+    <!-- include:./blocks/header.html -->
+
+    <!-- Main Content Area -->
+    <main class="sm:container mx-auto py-4 sm:py-8" x-data="ordersManager()">
+        <div class="mb-8">
+            <!-- Header Section -->
+            <div class=" p-4 mb-6">
+                <h1 class="card-title mb-1 sm:mb-2">Quản lý đơn hàng</h1>
+                <p class="card-description">Theo dõi và quản lý tất cả đơn hàng của bạn</p>
+            </div>
+
+            <!-- Order Type Tabs & Search -->
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-6">
+                <div class="flex card p-1 gap-1 sm:gap-2">
+                    <button @click="orderType = 'purchase'"
+                        :class="orderType === 'purchase' ? 'btn-primary' : 'btn-outline'"
+                        class="btn btn-sm sm:btn-md gap-1 flex-1 sm:flex-initial">
+                        <i data-lucide="shopping-bag" class="size-4"></i>
+                        <span class="text-xs sm:text-sm">Đơn mua</span>
+                    </button>
+                    <button @click="orderType = 'sale'" :class="orderType === 'sale' ? 'btn-primary' : 'btn-outline'"
+                        class="btn btn-sm sm:btn-md gap-1 flex-1 sm:flex-initial">
+                        <i data-lucide="store" class="size-4"></i>
+                        <span class="text-xs sm:text-sm">Đơn bán</span>
+                    </button>
+                </div>
+
+                <form class="flex-1 sm:max-w-md" @submit.prevent="searchOrders()">
+                    <div class="relative">
+                        <i data-lucide="search"
+                            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"></i>
+                        <input x-model="searchQuery" placeholder="Tìm theo mã đơn, sản phẩm..."
+                            class="w-full input pl-10 bg-gray-50 text-responsive-sm" type="text">
+                    </div>
+                </form>
+
+                <!-- <button @click="showFilter = !showFilter" :class="showFilter ? 'btn-primary' : 'btn-outline'"
+                    class="btn btn-md">
+                    <i data-lucide="filter" class="size-4"></i>
+                    <span class="hidden sm:inline">Lọc</span>
+                </button> -->
+            </div>
+
+            <!-- Status Filter Tabs -->
+            <div class="tabs">
+                <div class="tabs-menus overflow-x-auto scrollbar-hide">
+                    <button @click="statusFilter = 'all'"
+                        :class="statusFilter === 'all' ? 'active bg-green-500 text-white' : 'text-gray-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="all">
+                        <i data-lucide="package" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Tổng đơn</span>
+                        <span class="badge badge-secondary" x-text="stats.total">45</span>
+                    </button>
+
+                    <button @click="statusFilter = 'pending'"
+                        :class="statusFilter === 'pending' ? 'active bg-yellow-500 text-white' : 'text-yellow-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="pending">
+                        <i data-lucide="clock" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Chờ xử lý</span>
+                        <span class="badge badge-secondary" x-text="stats.pending">8</span>
+                    </button>
+
+                    <button @click="statusFilter = 'processing'"
+                        :class="statusFilter === 'processing' ? 'active bg-blue-500 text-white' : 'text-blue-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="processing">
+                        <i data-lucide="truck" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Đang xử lý</span>
+                        <span class="badge badge-secondary" x-text="stats.processing">12</span>
+                    </button>
+
+                    <button @click="statusFilter = 'processed'"
+                        :class="statusFilter === 'processed' ? 'active bg-purple-500 text-white' : 'text-purple-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="processed">
+                        <i data-lucide="circle-check-big" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Đã xử lý</span>
+                        <span class="badge badge-secondary" x-text="stats.processed">15</span>
+                    </button>
+
+                    <button @click="statusFilter = 'completed'"
+                        :class="statusFilter === 'completed' ? 'active bg-green-500 text-white' : 'text-green-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="completed">
+                        <i data-lucide="circle-check-big" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Đã hoàn thành</span>
+                        <span class="badge badge-secondary" x-text="stats.completed">7</span>
+                    </button>
+
+                    <button @click="statusFilter = 'dispute'"
+                        :class="statusFilter === 'dispute' ? 'active bg-orange-500 text-white' : 'text-orange-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="dispute">
+                        <i data-lucide="triangle-alert" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Đơn khiếu nại</span>
+                        <span class="badge badge-secondary" x-text="stats.dispute">2</span>
+                    </button>
+
+                    <button @click="statusFilter = 'cancelled'"
+                        :class="statusFilter === 'cancelled' ? 'active bg-red-500 text-white' : 'text-red-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="cancelled">
+                        <i data-lucide="ban" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Đơn hủy</span>
+                        <span class="badge badge-secondary" x-text="stats.cancelled">1</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders List Section -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <!-- Loading State -->
+            <div x-show="isLoading" class="text-center py-12 px-4">
+                <div class="loading loading-lg mx-auto mb-4"></div>
+                <p class="text-responsive-sm text-gray-600">Đang tải danh sách đơn hàng...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div x-show="!isLoading && displayedOrders.length === 0" class="card py-12 px-4 text-center">
+                <i data-lucide="package" class="size-16 text-gray-300 mx-auto mb-4"></i>
+                <h3 class="card-title  mb-2">Không có đơn hàng</h3>
+                <p class="card-description mb-4">Không có đơn hàng nào ở trạng thái này.</p>
+                <a href="/products.html" class="btn btn-primary btn-md">
+                    <i data-lucide="shopping-cart" class="size-4"></i>
+                    Bắt đầu mua sắm
+                </a>
+            </div>
+
+            <!-- Orders List -->
+            <div x-show="!isLoading && displayedOrders.length > 0" class="divide-y divide-gray-200">
+                <template x-for="order in displayedOrders" :key="order.id">
+                    <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
+                        <!-- Order Header -->
+                        <div class="flex flex-row sm:items-center justify-between gap-3 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-shrink-0">
+                                    <div class="size-12 bg-blue-100 rounded-lg flex-center">
+                                        <i data-lucide="package" class="size-6 text-blue-600"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="text-responsive-xs text-gray-500">Mã đơn:</span>
+                                        <span class="font-semibold text-gray-900" x-text="order.code"></span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-responsive-xs text-gray-500">
+                                        <i data-lucide="clock" class="size-4"></i>
+                                        <span x-text="order.date"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span :class="getStatusClass(order.status)" class="badge badge-primary"
+                                    x-text="getStatusText(order.status)"></span>
+                            </div>
+                        </div>
+
+                        <!-- Product Info -->
+                        <div class="mb-3 pl-0 sm:pl-15">
+                            <h4 class="text-responsive-sm font-medium text-gray-900 mb-1 one-line"
+                                x-text="order.productName"></h4>
+                            <div class="flex items-center gap-2">
+                                <span class="text-responsive-xs text-gray-500">Giá trị đơn hàng:</span>
+                                <span class="item-price" x-text="formatPrice(order.total)"></span>
+                            </div>
+                        </div>
+
+                        <!-- Order Actions -->
+                        <div class="flex flex-wrap items-center gap-2 pl-0 sm:pl-15">
+                            <button @click="viewOrderDetail(order.id)" class="btn btn-sm btn-outline">
+                                <i data-lucide="eye" class="size-4"></i>
+                                Xem chi tiết
+                            </button>
+
+                            <button x-show="order.status === 'pending'" @click="cancelOrder(order.id)"
+                                class="btn btn-sm btn-delete">
+                                <i data-lucide="x-circle" class="size-4"></i>
+                                Hủy đơn
+                            </button>
+
+                            <button x-show="order.status === 'completed'" @click="reorder(order.id)"
+                                class="btn btn-sm btn-primary">
+                                <i data-lucide="refresh-cw" class="size-4"></i>
+                                Mua lại
+                            </button>
+
+                            <button x-show="order.status === 'completed'" @click="reviewOrder(order.id)"
+                                class="btn btn-sm btn-outline">
+                                <i data-lucide="star" class="size-4"></i>
+                                Đánh giá
+                            </button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Load More Section -->
+            <div x-show="!isLoading && displayedOrders.length > 0" class="p-4 sm:p-6 border-t border-gray-200">
+                <div class="flex flex-col items-center gap-4">
+                    <div class="text-responsive-sm text-gray-600">
+                        Hiển thị <span class="font-medium" x-text="displayedOrders.length"></span> / <span
+                            class="font-medium" x-text="totalOrders"></span> đơn hàng
+                    </div>
+
+                    <!-- Load More Button -->
+                    <button x-show="hasMore" @click="loadMoreOrders()" :disabled="isLoadingMore"
+                        class="btn btn-primary btn-md px-8" :class="{ 'opacity-70 cursor-not-allowed': isLoadingMore }">
+                        <span x-show="!isLoadingMore" class="flex items-center gap-2">
+                            <i data-lucide="chevron-down" class="size-4"></i>
+                            Xem thêm đơn hàng
+                        </span>
+                        <span x-show="isLoadingMore" class="flex items-center gap-2">
+                            <i data-lucide="loader-circle" class="size-5 animate-spin"></i>
+                            Đang tải...
+                        </span>
+                    </button>
+
+                    <!-- All loaded message -->
+                    <div x-show="!hasMore && displayedOrders.length > 0" class="text-center">
+                        <p class="text-gray-500 text-sm">Đã hiển thị tất cả đơn hàng</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <!-- include:./blocks/footer.html -->
+</body>
+
+</html>

@@ -113,24 +113,26 @@ document.addEventListener('DOMContentLoaded', function() {
          const slides = thumbnailsSlider.querySelectorAll('.blaze-slide');
          const slideCount = slides.length;
          
-         if (slideCount >= 5) {
-             // Có từ 5 ảnh trở lên -> khởi tạo slider
-             new BlazeSlider(thumbnailsSlider, {
-                 all: {
-                     slidesToShow: 4,
-                     slidesToScroll: 1,
-                     enableAutoplay: false,
+          if (slideCount >= 5) {
+              // Có từ 5 ảnh trở lên -> khởi tạo slider
+              new BlazeSlider(thumbnailsSlider, {
+                  all: {
+                      slidesToShow: 4,
+                      slidesToScroll: 1,
+                      enableAutoplay: false,
+                      loop: false, // Không lặp vòng
+                      enablePagination: false, // Tắt pagination dots
+                  },
+                  '(min-width: 640px)': {
+                      slidesToShow: 5,
+                  },
+                  '(min-width: 900px)': {
+                     slidesToShow: 6,
                  },
-                 '(min-width: 640px)': {
-                     slidesToShow: 5,
-                 },
-                 '(min-width: 900px)': {
-                    slidesToShow: 6,
-                },
-                 '(min-width: 1024px)': {
-                     slidesToShow: 5,
-                 }
-             });
+                  '(min-width: 1024px)': {
+                      slidesToShow: 5,
+                  }
+              });
           } else {
               // Dưới 5 ảnh -> hiển thị dạng grid bình thường
               const track = thumbnailsSlider.querySelector('.blaze-track');

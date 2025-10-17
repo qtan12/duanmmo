@@ -78,6 +78,12 @@ quote
 package-plus
 home
 printer
+filter
+circle-check-big
+triangle-alert
+ban
+refresh-cw
+loader-circle
 sliders-horizontal
 tag
 file-text
