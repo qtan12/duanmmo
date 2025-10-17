@@ -9,6 +9,7 @@ function productDetailComponent() {
         isAddingToCart: false,
         isBuyingNow: false,
         selectedGmailType: 'gmail-vn-aged-20-50',
+        selectedColor: 'xanh-da-troi', // Default color
         
         // Product data will be loaded from API or server
         product: null,
@@ -80,6 +81,20 @@ function productDetailComponent() {
             this.selectedGmailType = typeId;
         },
 
+        selectColor(colorId) {
+            this.selectedColor = colorId;
+        },
+
+        getSelectedColor() {
+            const colorMap = {
+                'xanh-da-troi': 'Xanh Da Trời',
+                'den-khong-gian': 'Đen Không Gian',
+                'trang-may': 'Trắng Mây',
+                'vang-nhat': 'Vàng Nhạt'
+            };
+            return colorMap[this.selectedColor] || 'Xanh Da Trời';
+        },
+
         decreaseQuantity() {
             if (this.quantity > 1) {
                 this.quantity--;
@@ -131,6 +146,7 @@ function productDetailComponent() {
 
             const name = nameMap[this.selectedGmailType];
             const price = priceMap[this.selectedGmailType];
+            const colorName = this.getSelectedColor();
 
             if (!name || !price) {
                 this.isAddingToCart = false;
@@ -139,13 +155,14 @@ function productDetailComponent() {
 
             // Add to cart using Cart Manager
             const cartItem = {
-                id: this.selectedGmailType,
-                name: name,
+                id: `${this.selectedGmailType}-${this.selectedColor}`,
+                name: `${name} - ${colorName}`,
                 category: 'Tài khoản Streaming',
                 price: price,
                 originalPrice: 2990000,
                 image: '/placeholder.svg?height=500&width=500&text=Netflix+Main',
-                icon: this.getProductIcon()
+                icon: this.getProductIcon(),
+                color: colorName
             };
 
             // Add multiple items based on quantity

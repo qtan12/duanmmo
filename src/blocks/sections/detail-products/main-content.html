@@ -43,7 +43,31 @@
                                         src="/placeholder.svg?height=80&width=80&text=3">
                                 </div>
                             </div>
+                            <!-- Slide 4 -->
+                            <div class="blaze-slide">
+                                <div
+                                    class="h-16 cursor-pointer border border-gray-200 rounded-md overflow-hidden hover:border-blue-500 transition-colors">
+                                    <img alt="Netflix 4" class="w-full h-full object-cover"
+                                        src="/placeholder.svg?height=80&width=80&text=4">
+                                </div>
+                            </div>
+                            <!-- Slide 5 -->
+                            <div class="blaze-slide">
+                                <div
+                                    class="h-16 cursor-pointer border border-gray-200 rounded-md overflow-hidden hover:border-blue-500 transition-colors">
+                                    <img alt="Netflix 5" class="w-full h-full object-cover"
+                                        src="/placeholder.svg?height=80&width=80&text=5">
+                                </div>
+                            </div>
 
+                            <!-- Slide 6 -->
+                            <div class="blaze-slide">
+                                <div
+                                    class="h-16 cursor-pointer border border-gray-200 rounded-md overflow-hidden hover:border-blue-500 transition-colors">
+                                    <img alt="Netflix 6" class="w-full h-full object-cover"
+                                        src="/placeholder.svg?height=80&width=80&text=6">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -59,24 +83,23 @@
             <div class="grid grid-cols-3 gap-2 sm:gap-3 pt-4 border-t border-gray-200">
                 <div class="text-center">
                     <i data-lucide="shield" class="size-6 text-emerald-600 mx-auto mb-1"></i>
-                    <p class="text-responsive-xs font-medium text-gray-900">Bảo hành 12 tháng</p>
+                    <p class="text-responsive-sm font-semibold ">Bảo hành 12 tháng</p>
                     <p class="text-responsive-xs text-gray-500">Thay thế miễn phí</p>
                 </div>
                 <div class="text-center">
                     <i data-lucide="truck" class="size-6 text-blue-600 mx-auto mb-1"></i>
-                    <p class="text-responsive-xs font-medium text-gray-900">Giao hàng tức thì</p>
+                    <p class="text-responsive-sm font-semibold ">Giao hàng tức thì</p>
                     <p class="text-responsive-xs text-gray-500">Nhận ngay sau thanh toán</p>
                 </div>
                 <div class="text-center">
                     <i data-lucide="headphones" class="size-6 text-purple-600 mx-auto mb-1"></i>
-                    <p class="text-responsive-xs font-medium text-gray-900">Hỗ trợ 24/7</p>
+                    <p class="text-responsive-sm font-semibold ">Hỗ trợ 24/7</p>
                     <p class="text-responsive-xs text-gray-500">Tư vấn miễn phí</p>
                 </div>
             </div>
         </div>
         <!-- Column right -->
         <div class="space-y-3 sm:space-y-4 lg:space-y-5">
-
             <h1 class="text-responsive-lg font-bold text-gray-900 mb-2 sm:mb-0">Netflix Premium 1 Năm - 4K Ultra HD</h1>
             <div class="flex flex-row gap-2 items-center mb-2 ">
                 <div class="flex items-center space-x-1">
@@ -184,6 +207,64 @@
                     </label>
                 </div>
             </div>
+
+            <!-- Chọn màu sắc -->
+            <!-- <div class="space-y-3">
+                <h3 class="font-bold text-gray-900 text-responsive-sm">Màu sắc:</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <label class="flex items-center p-3 btn btn-outline cursor-pointer hover:bg-gray-50"
+                        :class="selectedColor === 'xanh-da-troi' ? 'bg-emerald-50 border-emerald-600' : ''">
+                        <input type="radio" name="productColor" value="xanh-da-troi"
+                            @change="selectColor('xanh-da-troi')" :checked="selectedColor === 'xanh-da-troi'"
+                            class="hidden">
+                        <div class="flex items-center gap-2 w-full">
+                            <div class="w-5 h-5 rounded-md bg-sky-400 border border-gray-300 flex-shrink-0"></div>
+                            <span class="text-responsive-xs text-left whitespace-nowrap overflow-hidden"
+                                :class="selectedColor === 'xanh-da-troi' ? 'text-emerald-600 font-medium' : 'text-gray-900'">
+                                Xanh Da Trời
+                            </span>
+                        </div>
+                    </label>
+                    <label class="flex items-center p-3 btn btn-outline cursor-pointer hover:bg-gray-50"
+                        :class="selectedColor === 'den-khong-gian' ? 'bg-emerald-50 border-emerald-600' : ''">
+                        <input type="radio" name="productColor" value="den-khong-gian"
+                            @change="selectColor('den-khong-gian')" :checked="selectedColor === 'den-khong-gian'"
+                            class="hidden">
+                        <div class="flex items-center gap-2 w-full">
+                            <div class="w-5 h-5 rounded-md bg-gray-900 border border-gray-300 flex-shrink-0"></div>
+                            <span class="text-responsive-xs text-left whitespace-nowrap overflow-hidden"
+                                :class="selectedColor === 'den-khong-gian' ? 'text-emerald-600 font-medium' : 'text-gray-900'">
+                                Đen Không Gian
+                            </span>
+                        </div>
+                    </label>
+                    <label class="flex items-center p-3 btn btn-outline cursor-pointer hover:bg-gray-50"
+                        :class="selectedColor === 'trang-may' ? 'bg-emerald-50 border-emerald-600' : ''">
+                        <input type="radio" name="productColor" value="trang-may" @change="selectColor('trang-may')"
+                            :checked="selectedColor === 'trang-may'" class="hidden">
+                        <div class="flex items-center gap-2 w-full">
+                            <div class="w-5 h-5 rounded-md bg-white border border-gray-300 flex-shrink-0"></div>
+                            <span class="text-responsive-xs text-left whitespace-nowrap overflow-hidden"
+                                :class="selectedColor === 'trang-may' ? 'text-emerald-600 font-medium' : 'text-gray-900'">
+                                Trắng Mây
+                            </span>
+                        </div>
+                    </label>
+                    <label class="flex items-center p-3 btn btn-outline cursor-pointer hover:bg-gray-50"
+                        :class="selectedColor === 'vang-nhat' ? 'bg-emerald-50 border-emerald-600' : ''">
+                        <input type="radio" name="productColor" value="vang-nhat" @change="selectColor('vang-nhat')"
+                            :checked="selectedColor === 'vang-nhat'" class="hidden">
+                        <div class="flex items-center gap-2 w-full">
+                            <div class="w-5 h-5 rounded-md bg-amber-300 border border-gray-300 flex-shrink-0"></div>
+                            <span class="text-responsive-xs text-left whitespace-nowrap overflow-hidden"
+                                :class="selectedColor === 'vang-nhat' ? 'text-emerald-600 font-medium' : 'text-gray-900'">
+                                Vàng Nhạt
+                            </span>
+                        </div>
+                    </label>
+                </div>
+            </div> -->
+
             <div class="flex flex-row gap-3 mt-4">
                 <button @click="addToCart()" :disabled="isAddingToCart"
                     class="btn btn-primary btn-md w-full flex items-center justify-center gap-2"
