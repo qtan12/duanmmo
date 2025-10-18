@@ -19,6 +19,7 @@ document.addEventListener('alpine:init', () => {
         currentPage: 1,
         totalPages: 1,
         hasMoreProducts: false,
+        isLoadingMore: false,
         
         init() {
             this.setupEventListeners();
@@ -216,15 +217,44 @@ document.addEventListener('alpine:init', () => {
             this.hasMoreProducts = endIndex < visibleProducts.length;
         },
         
-        loadMoreProducts() {
-            if (this.hasMoreProducts) {
-                this.currentPage++;
-                this.updateProductVisibility();
+        async loadMoreProducts() {
+            if (this.hasMoreProducts && !this.isLoadingMore) {
+                this.isLoadingMore = true;
+                
+                try {
+                    // Simulate loading delay for better UX
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    this.currentPage++;
+                    this.updateProductVisibility();
+                    
+                    // Show success notification
+                    if (window.fastNotice) {
+                        const loadedCount = Math.min(this.productsPerPage, this.filteredProducts.length - ((this.currentPage - 1) * this.productsPerPage));
+                        window.fastNotice.show({
+                            type: 'success',
+                            message: `Đã tải thêm ${loadedCount} sản phẩm`,
+                            duration: 2000
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error loading more products:', error);
+                    if (window.fastNotice) {
+                        window.fastNotice.show({
+                            type: 'error',
+                            message: 'Không thể tải thêm sản phẩm. Vui lòng thử lại!',
+                            duration: 3000
+                        });
+                    }
+                } finally {
+                    this.isLoadingMore = false;
+                }
             }
         },
         
         resetLoadMore() {
             this.currentPage = 1;
+            this.isLoadingMore = false;
             this.calculateTotalPages();
             this.updateProductVisibility();
         }

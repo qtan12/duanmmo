@@ -75,17 +75,34 @@
 			<div class="flex-1">
 				<!-- include:blocks/sections/products/top-content.html -->
 				<!-- include:blocks/sections/products/main-content.html -->
-				<!-- Pagination - Simplified for static HTML -->
-				<div class="flex justify-center py-6">
-					<nav class="pagination">
-						<a href="#" class="pagination-item disabled text-responsive-sm">&laquo;</a>
-						<a href="#" class="pagination-item active text-responsive-sm">1</a>
-						<a href="#" class="pagination-item text-responsive-sm">2</a>
-						<a href="#" class="pagination-item text-responsive-sm">3</a>
-						<span class="pagination-item text-responsive-sm">...</span>
-						<a href="#" class="pagination-item text-responsive-sm">125</a>
-						<a href="#" class="pagination-item text-responsive-sm">&raquo;</a>
-					</nav>
+				<!-- Load More Section -->
+				<div x-show="filteredProducts.length > 0" class="py-6">
+					<div class="flex flex-col items-center gap-4">
+						<div class="text-responsive-sm text-gray-600">
+							Hiển thị <span class="font-medium"
+								x-text="Math.min(currentPage * productsPerPage, filteredProducts.length)"></span> /
+							<span class="font-medium" x-text="filteredProducts.length"></span> sản phẩm
+						</div>
+
+						<!-- Load More Button -->
+						<button x-show="hasMoreProducts" @click="loadMoreProducts()" :disabled="isLoadingMore"
+							class="btn btn-primary btn-md px-8"
+							:class="{ 'opacity-70 cursor-not-allowed': isLoadingMore }">
+							<span x-show="!isLoadingMore" class="flex items-center gap-2">
+								<i data-lucide="chevron-down" class="size-4"></i>
+								Xem thêm sản phẩm
+							</span>
+							<span x-show="isLoadingMore" class="flex items-center gap-2">
+								<i data-lucide="loader-circle" class="size-5 animate-spin"></i>
+								Đang tải...
+							</span>
+						</button>
+
+						<!-- All loaded message -->
+						<div x-show="!hasMoreProducts && filteredProducts.length > 0" class="text-center">
+							<p class="text-gray-500 text-sm">Đã hiển thị tất cả sản phẩm</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
