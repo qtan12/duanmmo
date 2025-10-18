@@ -85,5 +85,8 @@ ban
 refresh-cw
 loader-circle
 sliders-horizontal
+dollar-sign
+arrow-up-down
+package-x
 tag
 file-text

@@ -1,30 +1,9 @@
-<!-- Header with Sort and View Options -->
-<div class="card mb-6 p-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-2 ">
-        <div>
-            <h1 class="section-title font-bold">Tất cả sản phẩm</h1>
-            <p class="text-gray-500 text-responsive-sm mt-1">
-                Hiển thị <span x-text="filteredProducts.length"></span> sản phẩm
-                <span x-show="getFilterCount() > 0" class="text-emerald-600">
-                </span>
-            </p>
-        </div>
-
-        <!-- Search Input -->
-        <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
-            </div>
-            <input type="search" x-model="searchQuery" @input="applyFilters()" placeholder="Tìm kiếm sản phẩm..."
-                class="input pl-10 w-full sm:w-80">
-        </div>
-    </div>
-
-
-    <!-- Filter Bar -->
+<!-- Filter Bar -->
+<div class="mb-6">
     <!-- Mobile Filter Toggle -->
-    <div class="md:hidden">
-        <button @click="filterOpen = !filterOpen" class="w-full card-filter mb-2">
+    <div class="md:hidden mb-2">
+        <button @click="filterOpen = !filterOpen"
+            class="w-full flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
                     <i data-lucide="filter" class="w-4 h-4 text-white"></i>
@@ -42,7 +21,7 @@
     </div>
 
     <!-- Desktop Filter -->
-    <div class="hidden md:block py-6">
+    <div class="hidden md:block p-6 card">
         <!-- Header -->
         <div class="flex items-center justify-between mb-6">
             <div class="flex items-center gap-3">
@@ -227,5 +206,4 @@
             </button>
         </div>
     </div>
-</div>
 </div>

@@ -20,7 +20,6 @@
 	<link rel="stylesheet" href="assets/css/styles.css" />
 
 
-
 	<!-- 1. CAC THU VIEN CAN SU DUNG -->
 	<!-- Notification Library -->
 	<script src="assets/js/libs/notification.js" defer></script>
@@ -54,6 +53,8 @@
 	<script src="assets/js/header.js" defer></script>
 	<!-- Homepage Component JS -->
 	<script src="assets/js/homemmo.js" defer></script>
+	<!-- Products Component JS -->
+	<script src="assets/js/products.js" defer></script>
 	<!-- Run BlazeSlider -->
 	<script src="assets/js/sliders.js" defer></script>
 
@@ -69,25 +70,22 @@
 
 	<!-- Main Content Area -->
 	<main class="min-h-screen bg-gray-100">
-		<div class="sm:container mx-auto lg:py-6" x-data="{ filterOpen: false }">
-			<div class="flex flex-col lg:flex-row gap-4 ">
-				<!-- include:blocks/sections/products/sidebar.html -->
-				<!-- Products Content -->
-				<div class="flex-1">
-					<!-- include:blocks/sections/products/top-content.html -->
-					<!-- include:blocks/sections/products/main-content.html -->
-					<!-- Pagination -->
-					<div class="flex justify-center py-6">
-						<nav class="pagination">
-							<a href="#" class="pagination-item disabled text-responsive-sm">&laquo;</a>
-							<a href="#" class="pagination-item active text-responsive-sm">1</a>
-							<a href="#" class="pagination-item text-responsive-sm">2</a>
-							<a href="#" class="pagination-item text-responsive-sm">3</a>
-							<span class="pagination-item text-responsive-sm">...</span>
-							<a href="#" class="pagination-item text-responsive-sm">125</a>
-							<a href="#" class="pagination-item text-responsive-sm">&raquo;</a>
-						</nav>
-					</div>
+		<div class="sm:container mx-auto lg:py-6" x-data="productsPage()">
+			<!-- Products Content -->
+			<div class="flex-1">
+				<!-- include:blocks/sections/products/top-content.html -->
+				<!-- include:blocks/sections/products/main-content.html -->
+				<!-- Pagination - Simplified for static HTML -->
+				<div class="flex justify-center py-6">
+					<nav class="pagination">
+						<a href="#" class="pagination-item disabled text-responsive-sm">&laquo;</a>
+						<a href="#" class="pagination-item active text-responsive-sm">1</a>
+						<a href="#" class="pagination-item text-responsive-sm">2</a>
+						<a href="#" class="pagination-item text-responsive-sm">3</a>
+						<span class="pagination-item text-responsive-sm">...</span>
+						<a href="#" class="pagination-item text-responsive-sm">125</a>
+						<a href="#" class="pagination-item text-responsive-sm">&raquo;</a>
+					</nav>
 				</div>
 			</div>
 		</div>

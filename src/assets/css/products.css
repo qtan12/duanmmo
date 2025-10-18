@@ -1,0 +1,6 @@
+@layer components {
+    .card-filter {
+        @apply flex items-center justify-between p-2 bg-white rounded-lg shadow-sm border;
+    }
+    
+}

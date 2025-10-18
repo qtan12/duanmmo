@@ -14,3 +14,5 @@
 @import "./cart.css";
 /* Các thành phần cho Detail dùng chung all trang */
 @import "./detail.css";
+/* Các thành phần cho Products dùng chung all trang */
+@import "./products.css";

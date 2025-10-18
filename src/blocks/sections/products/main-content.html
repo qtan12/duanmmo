@@ -1,31 +1,41 @@
 <!-- Products Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 px-4 sm:px-0">
-    <!-- Product 1 -->
-    <div class="card p-4">
-        <a href="/detail">
-            <h3 class="item-title">Gmail Việt Nam Đã Ngâm 1-20 Ngày Dùng Siêu Trâu Chưa Qua Dịch Vụ</h3>
+    <!-- Empty State -->
+    <div x-show="filteredProducts.length === 0" class="col-span-full flex justify-center items-center py-12">
+        <div class="text-center">
+            <i data-lucide="package-x" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+            <p class="text-gray-500 text-lg">Không tìm thấy sản phẩm nào</p>
+        </div>
+    </div>
+
+    <!-- Product 1: Premium Backlink Package -->
+    <div class="card p-4 product-item" data-id="1" data-category="backlink" data-price="250000" data-rating="4.8"
+        data-sold="150" data-name="Premium Backlink Package" data-seller="BacklinkPro"
+        x-show="isProductVisible('backlink', 250000, 4.8, 'Premium Backlink Package', 'BacklinkPro')"
+        style="display: none;">
+        <a href="/detail?id=1">
+            <h3 class="item-title">Premium Backlink Package</h3>
         </a>
         <div class="flex">
             <div class="item-thumbnail">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Gmail_Icon_%282013-2020%29.svg/250px-Gmail_Icon_%282013-2020%29.svg.png"
-                    alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
+                <img src="assets/images/gmail.png" alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
             </div>
             <div class="flex-1 min-w-0 space-y-1">
                 <div class="flex items-center justify-between gap-2">
-                    <a href="#" class="item-category">SEO & Link Building</a>
-                    <div class="flex space-x-1 ">
+                    <a href="/products-categories.html" class="item-category">SEO & Link Building</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
                         <i data-lucide="star" class="item-rating"></i>
                         <span class="text-responsive-xs text-gray-500 ">4.9</span>
                     </div>
                 </div>
 
                 <div class="flex items-center justify-between gap-2">
-                    <div class="flex gap-1">
-                        <i data-lucide="user" class="item-user"></i>
-                        <a href="#" class="item-link">John Doe</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">John Doe</a>
                     </div>
                     <div class="flex gap-1 text-responsive-xs text-gray-500 ">
-                        <i data-lucide="shopping-cart" class="item-cart"></i>
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
                         <span>900</span>
                     </div>
                 </div>
@@ -33,45 +43,50 @@
             </div>
         </div>
         <div class="flex items-center justify-between mt-1">
-            <span class="item-price">500,000₫</span>
-            <button onclick="addToCart({
-                id: 'backlink-premium',
-                name: 'Backlink Premium',
-                category: 'SEO & Link Building',
-                price: 500000,
-                icon: 'link'
+            <span class="item-price">250.000₫</span>
+            <button @click="addProductToCart({
+                id: 1,
+                name: 'Premium Backlink Package',
+                category: 'backlink',
+                price: 250000,
+                rating: 4.8,
+                sold: 150,
+                seller: 'BacklinkPro',
+                image: '/assets/images/gmail.png'
             })" class="btn btn-primary btn-sm">
-                <i data-lucide="shopping-cart" class="size-4 mr-1 "></i>
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
                 Mua
             </button>
         </div>
     </div>
-    <!-- Product 2 -->
-    <div class="card p-4">
-        <a href="/detail">
-            <h3 class="item-title">Gmail Việt Nam Đã Ngâm 1-20 Ngày Dùng Siêu Trâu Chưa Qua Dịch Vụ</h3>
+
+    <!-- Product 2: Gmail Accounts Bulk -->
+    <div class="card p-4 product-item" data-id="2" data-category="email" data-price="150000" data-rating="4.5"
+        data-sold="89" data-name="Gmail Accounts Bulk" data-seller="EmailMaster"
+        x-show="isProductVisible('email', 150000, 4.5, 'Gmail Accounts Bulk', 'EmailMaster')" style="display: none;">
+        <a href="/detail?id=2">
+            <h3 class="item-title">Gmail Accounts Bulk</h3>
         </a>
         <div class="flex">
             <div class="item-thumbnail">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Gmail_Icon_%282013-2020%29.svg/250px-Gmail_Icon_%282013-2020%29.svg.png"
-                    alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
+                <img src="assets/images/gmail.png" alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
             </div>
             <div class="flex-1 min-w-0 space-y-1">
                 <div class="flex items-center justify-between gap-2">
-                    <a href="#" class="item-category">SEO & Link Building</a>
-                    <div class="flex space-x-1 ">
+                    <a href="/products-categories.html" class="item-category">SEO & Link Building</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
                         <i data-lucide="star" class="item-rating"></i>
                         <span class="text-responsive-xs text-gray-500 ">4.9</span>
                     </div>
                 </div>
 
                 <div class="flex items-center justify-between gap-2">
-                    <div class="flex gap-1">
-                        <i data-lucide="user" class="item-user"></i>
-                        <a href="#" class="item-link">John Doe</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">John Doe</a>
                     </div>
                     <div class="flex gap-1 text-responsive-xs text-gray-500 ">
-                        <i data-lucide="shopping-cart" class="item-cart"></i>
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
                         <span>900</span>
                     </div>
                 </div>
@@ -79,45 +94,50 @@
             </div>
         </div>
         <div class="flex items-center justify-between mt-1">
-            <span class="item-price">500,000₫</span>
-            <button onclick="addToCart({
-                id: 'backlink-premium',
-                name: 'Backlink Premium',
-                category: 'SEO & Link Building',
-                price: 500000,
-                icon: 'link'
+            <span class="item-price">150.000₫</span>
+            <button @click="addProductToCart({
+                id: 2,
+                name: 'Gmail Accounts Bulk',
+                category: 'email',
+                price: 150000,
+                rating: 4.5,
+                sold: 89,
+                seller: 'EmailMaster',
+                image: '/assets/images/gmail.png'
             })" class="btn btn-primary btn-sm">
-                <i data-lucide="shopping-cart" class="size-4 mr-1 "></i>
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
                 Mua
             </button>
         </div>
     </div>
-    <!-- Product 3 -->
-    <div class="card p-4">
-        <a href="/detail">
-            <h3 class="item-title">Gmail Việt Nam Đã Ngâm 1-20 Ngày Dùng Siêu Trâu Chưa Qua Dịch Vụ</h3>
+
+    <!-- Product 3: Facebook Ads Manager -->
+    <div class="card p-4 product-item" data-id="3" data-category="facebook" data-price="500000" data-rating="4.9"
+        data-sold="45" data-name="Facebook Ads Manager" data-seller="FBExpert"
+        x-show="isProductVisible('facebook', 500000, 4.9, 'Facebook Ads Manager', 'FBExpert')" style="display: none;">
+        <a href="/detail?id=3">
+            <h3 class="item-title">Facebook Ads Manager</h3>
         </a>
         <div class="flex">
             <div class="item-thumbnail">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Gmail_Icon_%282013-2020%29.svg/250px-Gmail_Icon_%282013-2020%29.svg.png"
-                    alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
+                <img src="assets/images/gmail.png" alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
             </div>
             <div class="flex-1 min-w-0 space-y-1">
                 <div class="flex items-center justify-between gap-2">
-                    <a href="#" class="item-category">SEO & Link Building</a>
-                    <div class="flex space-x-1 ">
+                    <a href="/products-categories.html" class="item-category">SEO & Link Building</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
                         <i data-lucide="star" class="item-rating"></i>
                         <span class="text-responsive-xs text-gray-500 ">4.9</span>
                     </div>
                 </div>
 
                 <div class="flex items-center justify-between gap-2">
-                    <div class="flex gap-1">
-                        <i data-lucide="user" class="item-user"></i>
-                        <a href="#" class="item-link">John Doe</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">John Doe</a>
                     </div>
                     <div class="flex gap-1 text-responsive-xs text-gray-500 ">
-                        <i data-lucide="shopping-cart" class="item-cart"></i>
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
                         <span>900</span>
                     </div>
                 </div>
@@ -125,45 +145,50 @@
             </div>
         </div>
         <div class="flex items-center justify-between mt-1">
-            <span class="item-price">500,000₫</span>
-            <button onclick="addToCart({
-                id: 'backlink-premium',
-                name: 'Backlink Premium',
-                category: 'SEO & Link Building',
+            <span class="item-price">500.000₫</span>
+            <button @click="addProductToCart({
+                id: 3,
+                name: 'Facebook Ads Manager',
+                category: 'facebook',
                 price: 500000,
-                icon: 'link'
+                rating: 4.9,
+                sold: 45,
+                seller: 'FBExpert',
+                image: '/assets/images/gmail.png'
             })" class="btn btn-primary btn-sm">
-                <i data-lucide="shopping-cart" class="size-4 mr-1 "></i>
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
                 Mua
             </button>
         </div>
     </div>
-    <!-- Product 3 -->
-    <div class="card p-4">
-        <a href="/detail">
-            <h3 class="item-title">Gmail Việt Nam Đã Ngâm 1-20 Ngày Dùng Siêu Trâu Chưa Qua Dịch Vụ</h3>
+
+    <!-- Product 4: Social Media Toolkit -->
+    <div class="card p-4 product-item" data-id="4" data-category="social" data-price="300000" data-rating="4.6"
+        data-sold="120" data-name="Social Media Toolkit" data-seller="SocialPro"
+        x-show="isProductVisible('social', 300000, 4.6, 'Social Media Toolkit', 'SocialPro')" style="display: none;">
+        <a href="/detail?id=4">
+            <h3 class="item-title">Social Media Toolkit</h3>
         </a>
         <div class="flex">
             <div class="item-thumbnail">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Gmail_Icon_%282013-2020%29.svg/250px-Gmail_Icon_%282013-2020%29.svg.png"
-                    alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
+                <img src="assets/images/gmail.png" alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
             </div>
             <div class="flex-1 min-w-0 space-y-1">
                 <div class="flex items-center justify-between gap-2">
-                    <a href="#" class="item-category">SEO & Link Building</a>
-                    <div class="flex space-x-1 ">
+                    <a href="/products-categories.html" class="item-category">SEO & Link Building</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
                         <i data-lucide="star" class="item-rating"></i>
                         <span class="text-responsive-xs text-gray-500 ">4.9</span>
                     </div>
                 </div>
 
                 <div class="flex items-center justify-between gap-2">
-                    <div class="flex gap-1">
-                        <i data-lucide="user" class="item-user"></i>
-                        <a href="#" class="item-link">John Doe</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">John Doe</a>
                     </div>
                     <div class="flex gap-1 text-responsive-xs text-gray-500 ">
-                        <i data-lucide="shopping-cart" class="item-cart"></i>
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
                         <span>900</span>
                     </div>
                 </div>
@@ -171,45 +196,50 @@
             </div>
         </div>
         <div class="flex items-center justify-between mt-1">
-            <span class="item-price">500,000₫</span>
-            <button onclick="addToCart({
-                id: 'backlink-premium',
-                name: 'Backlink Premium',
-                category: 'SEO & Link Building',
-                price: 500000,
-                icon: 'link'
+            <span class="item-price">300.000₫</span>
+            <button @click="addProductToCart({
+                id: 4,
+                name: 'Social Media Toolkit',
+                category: 'social',
+                price: 300000,
+                rating: 4.6,
+                sold: 120,
+                seller: 'SocialPro',
+                image: '/assets/images/gmail.png'
             })" class="btn btn-primary btn-sm">
-                <i data-lucide="shopping-cart" class="size-4 mr-1 "></i>
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
                 Mua
             </button>
         </div>
     </div>
-    <!-- Product 3 -->
-    <div class="card p-4">
-        <a href="/detail">
-            <h3 class="item-title">Gmail Việt Nam Đã Ngâm 1-20 Ngày Dùng Siêu Trâu Chưa Qua Dịch Vụ</h3>
+
+    <!-- Product 5: SEO Analysis Tool -->
+    <div class="card p-4 product-item" data-id="5" data-category="tools" data-price="750000" data-rating="4.7"
+        data-sold="67" data-name="SEO Analysis Tool" data-seller="SEOMaster"
+        x-show="isProductVisible('tools', 750000, 4.7, 'SEO Analysis Tool', 'SEOMaster')" style="display: none;">
+        <a href="/detail?id=5">
+            <h3 class="item-title">SEO Analysis Tool</h3>
         </a>
         <div class="flex">
             <div class="item-thumbnail">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Gmail_Icon_%282013-2020%29.svg/250px-Gmail_Icon_%282013-2020%29.svg.png"
-                    alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
+                <img src="assets/images/gmail.png" alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
             </div>
             <div class="flex-1 min-w-0 space-y-1">
                 <div class="flex items-center justify-between gap-2">
-                    <a href="#" class="item-category">SEO & Link Building</a>
-                    <div class="flex space-x-1 ">
+                    <a href="/products-categories.html" class="item-category">SEO & Link Building</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
                         <i data-lucide="star" class="item-rating"></i>
                         <span class="text-responsive-xs text-gray-500 ">4.9</span>
                     </div>
                 </div>
 
                 <div class="flex items-center justify-between gap-2">
-                    <div class="flex gap-1">
-                        <i data-lucide="user" class="item-user"></i>
-                        <a href="#" class="item-link">John Doe</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">John Doe</a>
                     </div>
                     <div class="flex gap-1 text-responsive-xs text-gray-500 ">
-                        <i data-lucide="shopping-cart" class="item-cart"></i>
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
                         <span>900</span>
                     </div>
                 </div>
@@ -217,45 +247,51 @@
             </div>
         </div>
         <div class="flex items-center justify-between mt-1">
-            <span class="item-price">500,000₫</span>
-            <button onclick="addToCart({
-                id: 'backlink-premium',
-                name: 'Backlink Premium',
-                category: 'SEO & Link Building',
-                price: 500000,
-                icon: 'link'
+            <span class="item-price">750.000₫</span>
+            <button @click="addProductToCart({
+                id: 5,
+                name: 'SEO Analysis Tool',
+                category: 'tools',
+                price: 750000,
+                rating: 4.7,
+                sold: 67,
+                seller: 'SEOMaster',
+                image: '/assets/images/gmail.png'
             })" class="btn btn-primary btn-sm">
-                <i data-lucide="shopping-cart" class="size-4 mr-1 "></i>
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
                 Mua
             </button>
         </div>
     </div>
-    <!-- Product 3 -->
-    <div class="card p-4">
-        <a href="/detail">
-            <h3 class="item-title">Gmail Việt Nam Đã Ngâm 1-20 Ngày Dùng Siêu Trâu Chưa Qua Dịch Vụ</h3>
+
+    <!-- Product 6: Windows 11 Pro License -->
+    <div class="card p-4 product-item" data-id="6" data-category="license" data-price="1200000" data-rating="4.9"
+        data-sold="234" data-name="Windows 11 Pro License" data-seller="LicenseKing"
+        x-show="isProductVisible('license', 1200000, 4.9, 'Windows 11 Pro License', 'LicenseKing')"
+        style="display: none;">
+        <a href="/detail?id=6">
+            <h3 class="item-title">Windows 11 Pro License</h3>
         </a>
         <div class="flex">
             <div class="item-thumbnail">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Gmail_Icon_%282013-2020%29.svg/250px-Gmail_Icon_%282013-2020%29.svg.png"
-                    alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
+                <img src="assets/images/gmail.png" alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
             </div>
             <div class="flex-1 min-w-0 space-y-1">
                 <div class="flex items-center justify-between gap-2">
-                    <a href="#" class="item-category">SEO & Link Building</a>
-                    <div class="flex space-x-1 ">
+                    <a href="/products-categories.html" class="item-category">SEO & Link Building</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
                         <i data-lucide="star" class="item-rating"></i>
                         <span class="text-responsive-xs text-gray-500 ">4.9</span>
                     </div>
                 </div>
 
                 <div class="flex items-center justify-between gap-2">
-                    <div class="flex gap-1">
-                        <i data-lucide="user" class="item-user"></i>
-                        <a href="#" class="item-link">John Doe</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">John Doe</a>
                     </div>
                     <div class="flex gap-1 text-responsive-xs text-gray-500 ">
-                        <i data-lucide="shopping-cart" class="item-cart"></i>
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
                         <span>900</span>
                     </div>
                 </div>
@@ -263,15 +299,121 @@
             </div>
         </div>
         <div class="flex items-center justify-between mt-1">
-            <span class="item-price">500,000₫</span>
-            <button onclick="addToCart({
-                id: 'backlink-premium',
-                name: 'Backlink Premium',
-                category: 'SEO & Link Building',
-                price: 500000,
-                icon: 'link'
+            <span class="item-price">1.200.000₫</span>
+            <button @click="addProductToCart({
+                id: 6,
+                name: 'Windows 11 Pro License',
+                category: 'license',
+                price: 1200000,
+                rating: 4.9,
+                sold: 234,
+                seller: 'LicenseKing',
+                image: '/assets/images/gmail.png'
             })" class="btn btn-primary btn-sm">
-                <i data-lucide="shopping-cart" class="size-4 mr-1 "></i>
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
+                Mua
+            </button>
+        </div>
+    </div>
+
+    <!-- Product 7: Premium VPN Service -->
+    <div class="card p-4 product-item" data-id="7" data-category="vpn" data-price="200000" data-rating="4.8"
+        data-sold="180" data-name="Premium VPN Service" data-seller="VPNPro"
+        x-show="isProductVisible('vpn', 200000, 4.8, 'Premium VPN Service', 'VPNPro')" style="display: none;">
+        <a href="/detail?id=7">
+            <h3 class="item-title">Premium VPN Service</h3>
+        </a>
+        <div class="flex">
+            <div class="item-thumbnail">
+                <img src="assets/images/gmail.png" alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
+            </div>
+            <div class="flex-1 min-w-0 space-y-1">
+                <div class="flex items-center justify-between gap-2">
+                    <a href="/products-categories.html" class="item-category">SEO & Link Building</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="star" class="item-rating"></i>
+                        <span class="text-responsive-xs text-gray-500 ">4.9</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">John Doe</a>
+                    </div>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500 ">
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
+                        <span>900</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="flex items-center justify-between mt-1">
+            <span class="item-price">200.000₫</span>
+            <button @click="addProductToCart({
+                id: 7,
+                name: 'Premium VPN Service',
+                category: 'vpn',
+                price: 200000,
+                rating: 4.8,
+                sold: 180,
+                seller: 'VPNPro',
+                image: '/assets/images/gmail.png'
+            })" class="btn btn-primary btn-sm">
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
+                Mua
+            </button>
+        </div>
+    </div>
+
+    <!-- Product 8: Digital Marketing Course -->
+    <div class="card p-4 product-item" data-id="8" data-category="course" data-price="800000" data-rating="4.9"
+        data-sold="95" data-name="Digital Marketing Course" data-seller="MarketingGuru"
+        x-show="isProductVisible('course', 800000, 4.9, 'Digital Marketing Course', 'MarketingGuru')"
+        style="display: none;">
+        <a href="/detail?id=8">
+            <h3 class="item-title">Digital Marketing Course</h3>
+        </a>
+        <div class="flex">
+            <div class="item-thumbnail">
+                <img src="assets/images/gmail.png" alt="Backlink Premium" class="w-full h-full object-cover rounded-lg">
+            </div>
+            <div class="flex-1 min-w-0 space-y-1">
+                <div class="flex items-center justify-between gap-2">
+                    <a href="/products-categories.html" class="item-category">SEO & Link Building</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="star" class="item-rating"></i>
+                        <span class="text-responsive-xs text-gray-500 ">4.9</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">John Doe</a>
+                    </div>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500 ">
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
+                        <span>900</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="flex items-center justify-between mt-1">
+            <span class="item-price">800.000₫</span>
+            <button @click="addProductToCart({
+                id: 8,
+                name: 'Digital Marketing Course',
+                category: 'course',
+                price: 800000,
+                rating: 4.9,
+                sold: 95,
+                seller: 'MarketingGuru',
+                image: '/assets/images/gmail.png'
+            })" class="btn btn-primary btn-sm">
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
                 Mua
             </button>
         </div>
