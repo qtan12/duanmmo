@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMO Store - Bảng điều khiển</title>
+    <meta name="description"
+        content="Cửa hàng bán tài khoản premium, key license, VPN và các sản phẩm số chất lượng cao với giá tốt nhất.">
+    <script type="text/javascript">
+        const API_URL = "https://panel.dongnai.net/api/v2/";
+    </script>
+    <!-- Add Inline Hidden Class for Fix CLS -->
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- all css -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <!-- 1. CAC THU VIEN CAN SU DUNG -->
+    <!-- Notification Library -->
+    <script src="assets/js/libs/notification.js" defer></script>
+    <!-- Initialize FastNotice -->
+    <script>
+        // Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+        document.addEventListener('DOMContentLoaded', function () {
+            window.fastNotice = new FastNotice({
+                position: 'top-center',    // Vị trí mặc định
+                duration: 3000,              // Thời gian hiển thị (ms)
+                maxNotifications: 3          // Số notification tối đa
+            });
+        });
+    </script>
+    <!-- Lucide Icons - Custom Build -->
+    <script src="assets/js/lucide-custom.min.js" defer></script>
+    <!-- jModal manager -->
+    <script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+    <!-- Load BlazeSlider Library -->
+    <script src="assets/js/libs/blaze-slider.js" defer></script>
+    <!-- Libs Tabs JS Thuần -->
+    <script src="assets/js/libs/tabs.js" defer></script>
+    <!-- Image Fallback Utility -->
+    <script src="assets/js/libs/image-fallback.js" defer></script>
+    <!-- 2. CAC CODE JS TU VIET. -->
+    <!-- Cart Manager Libs JS -->
+    <script src="assets/js/cart-manager.js" defer></script>
+    <!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+    <script src="assets/js/header.js" defer></script>
+    <!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+    <script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+</head>
+
+<body class="min-h-screen bg-gray-100">
+    <!-- header -->
+    <!-- include:./blocks/header.html -->
+    <!-- Main Content Area -->
+    <main class="sm:container mx-auto py-4 sm:py-8" x-data="{ activeTab: 'overview' }">
+        <div class="mb-8">
+            <!-- Header Section -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                <div class="p-4">
+                    <h1 class="card-title mb-1 sm:mb-2">Xin chào, <span class="text-gradient">Nguyễn Văn A</span>! 👋
+                    </h1>
+                    <p class="card-description">Quản lý tài khoản và theo dõi hoạt động mua bán của bạn</p>
+                </div>
+                <div class="flex items-center gap-3 px-4">
+                    <a class="btn btn-outline btn-md flex items-center gap-2" href="/notification">
+                        <i data-lucide="bell" class="size-4"></i>
+                        <span>Thông báo</span>
+                    </a>
+                    <a class="btn btn-primary btn-md flex items-center gap-2" href="/dashboard/products/new">
+                        <i data-lucide="plus" class="size-4"></i>
+                        <span>Đăng sản phẩm</span>
+                    </a>
+                </div>
+            </div>
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
+                <!-- Đơn hàng đã mua -->
+                <div class="card card-content hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="size-10 sm:size-12 rounded-xl bg-blue-100 flex items-center justify-center">
+                            <i data-lucide="shopping-bag" class="size-5 sm:size-6 text-blue-600"></i>
+                        </div>
+                        <div class="flex items-center gap-1 text-responsive-xs text-success">
+                            <i data-lucide="trending-up" class="size-4"></i>
+                            <span>+12%</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xl sm:text-2xl font-bold text-gray-900 mb-1">24</div>
+                        <div class="text-responsive-xs text-gray-600 mb-1">Đơn hàng đã mua</div>
+                        <div class="text-xs text-gray-500">Tổng số đơn hàng đã mua</div>
+                    </div>
+                </div>
+                <!-- Đơn hàng đã bán -->
+                <div class="card card-content hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="size-10 sm:size-12 rounded-xl bg-green-100 flex items-center justify-center">
+                            <i data-lucide="package" class="size-5 sm:size-6 text-green-600"></i>
+                        </div>
+                        <div class="flex items-center gap-1 text-responsive-xs text-success">
+                            <i data-lucide="trending-up" class="size-4"></i>
+                            <span>+8%</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xl sm:text-2xl font-bold text-gray-900 mb-1">156</div>
+                        <div class="text-responsive-xs text-gray-600 mb-1">Đơn hàng đã bán</div>
+                        <div class="text-xs text-gray-500">Tổng số đơn hàng đã bán</div>
+                    </div>
+                </div>
+                <!-- Doanh thu -->
+                <div class="card card-content hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="size-10 sm:size-12 rounded-xl bg-purple-100 flex items-center justify-center">
+                            <i data-lucide="dollar-sign" class="size-5 sm:size-6 text-purple-600"></i>
+                        </div>
+                        <div class="flex items-center gap-1 text-responsive-xs text-success">
+                            <i data-lucide="trending-up" class="size-4"></i>
+                            <span>+15%</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xl sm:text-2xl font-bold text-gray-900 mb-1">12.5M</div>
+                        <div class="text-responsive-xs text-gray-600 mb-1">Doanh thu tháng này</div>
+                        <div class="text-xs text-gray-500">Doanh thu trong tháng</div>
+                    </div>
+                </div>
+                <!-- Đánh giá -->
+                <div class="card card-content hover:shadow-md transition-shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="size-10 sm:size-12 rounded-xl bg-yellow-100 flex items-center justify-center">
+                            <i data-lucide="star" class="size-5 sm:size-6 text-yellow-600"></i>
+                        </div>
+                        <div class="flex items-center gap-1 text-responsive-xs text-success">
+                            <i data-lucide="trending-up" class="size-4"></i>
+                            <span>+0.2</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xl sm:text-2xl font-bold text-gray-900 mb-1">4.8</div>
+                        <div class="text-responsive-xs text-gray-600 mb-1">Đánh giá trung bình</div>
+                        <div class="text-xs text-gray-500">Điểm đánh giá từ khách hàng</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Quick Actions -->
+            <div class="card card-content mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Thao tác nhanh</h3>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+                    <a class="flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl hover:bg-gray-50 transition-colors group"
+                        href="/dashboard/products">
+                        <div
+                            class="size-10 sm:size-12 rounded-xl text-green-600 bg-green-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i data-lucide="package2" class="size-5 sm:size-6"></i>
+                        </div>
+                        <span class="text-responsive-xs font-medium text-gray-700 text-center">Danh sách sản phẩm</span>
+                    </a>
+                    <a class="flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl hover:bg-gray-50 transition-colors group"
+                        href="/dashboard/orders">
+                        <div
+                            class="size-10 sm:size-12 rounded-xl text-blue-600 bg-blue-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i data-lucide="package" class="size-5 sm:size-6"></i>
+                        </div>
+                        <span class="text-responsive-xs font-medium text-gray-700 text-center">Quản lý đơn hàng</span>
+                    </a>
+                    <a class="flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl hover:bg-gray-50 transition-colors group"
+                        href="/dashboard/analytics">
+                        <div
+                            class="size-10 sm:size-12 rounded-xl text-purple-600 bg-purple-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i data-lucide="chart-column" class="size-5 sm:size-6"></i>
+                        </div>
+                        <span class="text-responsive-xs font-medium text-gray-700 text-center">Thống kê</span>
+                    </a>
+                    <a class="flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl hover:bg-gray-50 transition-colors group"
+                        href="/dashboard/messages">
+                        <div
+                            class="size-10 sm:size-12 rounded-xl text-orange-600 bg-orange-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i data-lucide="message-circle" class="size-5 sm:size-6"></i>
+                        </div>
+                        <span class="text-responsive-xs font-medium text-gray-700 text-center">Tin nhắn</span>
+                    </a>
+                    <a class="flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl hover:bg-gray-50 transition-colors group"
+                        href="/profile">
+                        <div
+                            class="size-10 sm:size-12 rounded-xl text-gray-600 bg-gray-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i data-lucide="settings" class="size-5 sm:size-6"></i>
+                        </div>
+                        <span class="text-responsive-xs font-medium text-gray-700 text-center">Cài đặt</span>
+                    </a>
+                    <a class="flex flex-col items-center gap-2 p-3 sm:p-4 rounded-xl hover:bg-gray-50 transition-colors group"
+                        href="/dashboard/wallet">
+                        <div
+                            class="size-10 sm:size-12 rounded-xl text-yellow-600 bg-yellow-50 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <i data-lucide="credit-card" class="size-5 sm:size-6"></i>
+                        </div>
+                        <span class="text-responsive-xs font-medium text-gray-700 text-center">Ví tiền</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!-- Tabs Content -->
+        <div class="card">
+            <!-- Tabs Navigation -->
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-4 sm:space-x-8 px-4 sm:px-6 overflow-x-auto">
+                    <button @click="activeTab = 'overview'"
+                        :class="activeTab === 'overview' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                        class="flex items-center gap-2 py-3 sm:py-4 px-1 border-b-2 font-medium text-responsive-xs transition-colors whitespace-nowrap">
+                        <i data-lucide="activity" class="size-4"></i>
+                        <span>Tổng quan</span>
+                    </button>
+                    <button @click="activeTab = 'purchased'"
+                        :class="activeTab === 'purchased' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                        class="flex items-center gap-2 py-3 sm:py-4 px-1 border-b-2 font-medium text-responsive-xs transition-colors whitespace-nowrap">
+                        <i data-lucide="shopping-bag" class="size-4"></i>
+                        <span>Đơn hàng đã mua</span>
+                        <span class="badge badge-secondary">4</span>
+                    </button>
+                    <button @click="activeTab = 'sold'"
+                        :class="activeTab === 'sold' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                        class="flex items-center gap-2 py-3 sm:py-4 px-1 border-b-2 font-medium text-responsive-xs transition-colors whitespace-nowrap">
+                        <i data-lucide="package" class="size-4"></i>
+                        <span>Đơn hàng bán ra</span>
+                        <span class="badge badge-secondary">3</span>
+                    </button>
+                    <button @click="activeTab = 'products'"
+                        :class="activeTab === 'products' ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                        class="flex items-center gap-2 py-3 sm:py-4 px-1 border-b-2 font-medium text-responsive-xs transition-colors whitespace-nowrap">
+                        <i data-lucide="package" class="size-4"></i>
+                        <span>Sản phẩm của tôi</span>
+                        <span class="badge badge-secondary">4</span>
+                    </button>
+                </nav>
+            </div>
+            <!-- Tab Content -->
+            <div class="card-content">
+                <!-- Overview Tab -->
+                <div x-show="activeTab === 'overview'" class="space-y-8">
+                    <!-- Recent Activities -->
+                    <div>
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900">Hoạt động gần đây</h3>
+                            <a class="text-green-600 hover:text-green-700 font-medium text-sm" href="/activities">Xem
+                                tất cả</a>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-xl">
+                                <div
+                                    class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center">
+                                    <i data-lucide="shopping-bag" class="size-5"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">Mua thành công Account Facebook Ads</p>
+                                    <p class="text-sm text-gray-600">Đơn hàng #PO001 - 450,000đ</p>
+                                </div>
+                                <div class="text-xs text-gray-500">2 giờ trước</div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-green-50 rounded-xl">
+                                <div
+                                    class="w-10 h-10 bg-green-50 text-green-600 rounded-full flex items-center justify-center">
+                                    <i data-lucide="package" class="size-5"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">Bán thành công Account TikTok Ads</p>
+                                    <p class="text-sm text-gray-600">Đơn hàng #SO001 - 800,000đ</p>
+                                </div>
+                                <div class="text-xs text-gray-500">4 giờ trước</div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-purple-50 rounded-xl">
+                                <div
+                                    class="w-10 h-10 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center">
+                                    <i data-lucide="square-pen" class="size-5"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">Cập nhật sản phẩm Gmail PVA</p>
+                                    <p class="text-sm text-gray-600">Thay đổi giá và mô tả</p>
+                                </div>
+                                <div class="text-xs text-gray-500">1 ngày trước</div>
+                            </div>
+                            <div class="flex items-center gap-4 p-4 bg-yellow-50 rounded-xl">
+                                <div
+                                    class="w-10 h-10 bg-yellow-50 text-yellow-600 rounded-full flex items-center justify-center">
+                                    <i data-lucide="star" class="size-5"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-900">Nhận đánh giá 5 sao</p>
+                                    <p class="text-sm text-gray-600">Từ khách hàng Nguyễn Văn B</p>
+                                </div>
+                                <div class="text-xs text-gray-500">2 ngày trước</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Performance Cards -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Hiệu suất bán hàng -->
+                        <div
+                            class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-6 border border-green-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-lg font-semibold text-gray-900">Hiệu suất bán hàng</h4>
+                                <i data-lucide="award" class="size-6 text-green-600"></i>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Tỷ lệ chuyển đổi</span>
+                                    <span class="font-semibold text-gray-900">3.2%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Đánh giá trung bình</span>
+                                    <span class="font-semibold text-gray-900">4.8/5</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Thời gian phản hồi</span>
+                                    <span class="font-semibold text-gray-900">&lt; 2 giờ</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Mục tiêu tháng này -->
+                        <div class="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-6 border border-blue-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-lg font-semibold text-gray-900">Mục tiêu tháng này</h4>
+                                <i data-lucide="target" class="size-6 text-blue-600"></i>
+                            </div>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-600">Doanh thu</span>
+                                        <span class="font-semibold text-gray-900">12.5M / 15M</span>
+                                    </div>
+                                    <div class="w-full bg-blue-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 83%;"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-gray-600">Đơn hàng</span>
+                                        <span class="font-semibold text-gray-900">156 / 200</span>
+                                    </div>
+                                    <div class="w-full bg-blue-200 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 78%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Account Status -->
+                    <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 border border-green-100">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-16 h-16 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="shield" class="size-8"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-1">Trạng thái tài khoản</h3>
+                                    <p class="text-gray-600">Tài khoản đã xác thực.</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <a class="btn btn-secondary btn-md flex items-center gap-2" href="/profile">
+                                    <i data-lucide="settings" class="size-4"></i>
+                                    <span>Cài đặt tài khoản</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Purchased Orders Tab -->
+                <div x-show="activeTab === 'purchased'" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Đơn hàng đã mua (4)</h3>
+                        <div class="flex items-center gap-3">
+                            <div class="relative">
+                                <i data-lucide="search"
+                                    class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4"></i>
+                                <input type="text" placeholder="Tìm kiếm đơn hàng..."
+                                    class="input pl-10 pr-4 py-2 text-responsive-sm" value="">
+                            </div>
+                            <select class="input px-3 py-2 text-responsive-sm">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="completed">Hoàn thành</option>
+                                <option value="processing">Đang xử lý</option>
+                                <option value="pending">Chờ xác nhận</option>
+                                <option value="cancelled">Đã hủy</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- content -->
+                    <div class="space-y-3 sm:space-y-4">
+                        <!-- Order 1 - Completed -->
+                        <div class="card-blue-50">
+                            <!-- người bán, badge -->
+                            <div class="flex items-center justify-between gap-2 mb-2">
+                                <div class="flex items-center gap-2 ">
+                                    <i data-lucide="store" class="item-icon"></i>
+                                    <span class="item-link">MMO Expert</span>
+                                </div>
+                                <span class="badge badge-success inline-flex items-center gap-1">
+                                    <i data-lucide="circle-check-big" class="size-4 "></i>
+                                    Hoàn thành
+                                </span>
+                            </div>
+                            <!-- sản phẩm 1 -->
+                            <div class="flex items-start gap-3 sm:gap-4 mb-2">
+                                <img alt="Account Facebook Ads BM Limit 250$" class="item-thumbnail "
+                                    src="assets/images/gmail.png">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <div class="flex-1">
+                                            <h4 class="item-title mb-1">
+                                                <a href="#">Account Facebook Ads BM Limit 250$</a>
+                                            </h4>
+                                            <!-- danh mục -->
+                                            <div class="mb-2 flex items-center justify-between">
+                                                <span class="item-category"><a href="#">Facebook Accounts</a></span>
+                                                <span class="item-quantity">x1</span>
+                                            </div>
+
+                                            <!-- thông tin sản phẩm -->
+                                            <div
+                                                class="flex flex-col sm:flex-row gap-2 sm:gap-4 text-responsive-sm text-gray-600 mb-2">
+                                                <div class="flex items-center gap-1">
+                                                    <i data-lucide="package" class="size-4"></i>
+                                                    <span>Mã đơn: <strong>SO001</strong></span>
+                                                </div>
+
+                                                <div class="flex items-center gap-1">
+                                                    <i data-lucide="calendar" class="size-4"></i>
+                                                    <span>Ngày mua:<strong>14/1/2024</strong></span>
+                                                </div>
+                                            </div>
+                                            <!-- giá-->
+                                            <div class="flex items-center justify-end text-responsive-sm gap-2 mb-2">
+                                                <!-- giá gốc -->
+                                                <span class="item-price-original">500,000đ</span>
+                                                <!-- giá sale -->
+                                                <span class="item-price">450,000đ</span>
+                                            </div>
+                                            <!-- đánh giá -->
+                                            <div class=" bg-yellow ">
+                                                <div class="flex items-center gap-1 mb-1">
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="star"
+                                                            class="item-rating size-3 sm:size-4 fill-current"></i>
+                                                        <i data-lucide="star"
+                                                            class="item-rating size-3 sm:size-4 fill-current"></i>
+                                                        <i data-lucide="star"
+                                                            class="item-rating size-3 sm:size-4 fill-current"></i>
+                                                        <i data-lucide="star"
+                                                            class="item-rating size-3 sm:size-4 fill-current"></i>
+                                                        <i data-lucide="star"
+                                                            class="item-rating size-3 sm:size-4 fill-current"></i>
+                                                    </div>
+                                                    <span class="text-responsive-sm font-semibold text-gray-900">Đánh
+                                                        giá của
+                                                        bạn</span>
+                                                </div>
+                                                <p class="text-responsive-sm text-gray-700">Sản phẩm chất lượng cao,
+                                                    seller
+                                                    hỗ trợ nhiệt
+                                                    tình!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- sản phẩm 2 -->
+                            <div class="flex items-start gap-3 sm:gap-4 mb-2">
+                                <img alt="Account Facebook Ads BM Limit 250$" class="item-thumbnail "
+                                    src="assets/images/gmail.png">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <div class="flex-1">
+                                            <h4 class="item-title mb-1">
+                                                <a href="#">Gmail PVA 2024 - Tạo tay 100%</a>
+                                            </h4>
+                                            <!-- danh mục -->
+                                            <div class="mb-2 flex items-center justify-between">
+                                                <span class="item-category"><a href="#">Email Marketing</a></span>
+                                                <span class="item-quantity">x2</span>
+                                            </div>
+
+                                            <!-- thông tin sản phẩm -->
+                                            <div
+                                                class="flex flex-col sm:flex-row gap-2 sm:gap-4 text-responsive-sm text-gray-600 mb-2">
+                                                <div class="flex items-center gap-1">
+                                                    <i data-lucide="package" class="size-4"></i>
+                                                    <span>Mã đơn: <strong>PO002</strong></span>
+                                                </div>
+
+                                                <div class="flex items-center gap-1">
+                                                    <i data-lucide="calendar" class="size-4"></i>
+                                                    <span>Ngày mua:<strong>2024-01-14</strong></span>
+                                                </div>
+                                            </div>
+                                            <!-- giá-->
+                                            <div class="flex items-center justify-end text-responsive-sm gap-2 mb-2">
+                                                <!-- giá gốc -->
+                                                <span class="item-price-original">30,000đ</span>
+                                                <!-- giá sale -->
+                                                <span class="item-price">25,000đ</span>
+                                            </div>
+                                            <!-- đánh giá -->
+                                            <div class=" bg-yellow ">
+                                                <div class="flex items-center gap-1 mb-1">
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="star"
+                                                            class="item-rating size-3 sm:size-4 fill-current"></i>
+                                                        <i data-lucide="star"
+                                                            class="item-rating size-3 sm:size-4 fill-current"></i>
+                                                        <i data-lucide="star"
+                                                            class="item-rating size-3 sm:size-4 fill-current"></i>
+                                                        <i data-lucide="star"
+                                                            class="item-rating size-3 sm:size-4 fill-current"></i>
+
+                                                    </div>
+                                                    <span class="text-responsive-sm font-semibold text-gray-900">Đánh
+                                                        giá của
+                                                        bạn</span>
+                                                </div>
+                                                <p class="text-responsive-sm text-gray-700">Sản phẩm chất lượng cao,
+                                                    seller
+                                                    hỗ trợ nhiệt
+                                                    tình!
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- content bên dưới -->
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-center  justify-end gap-3 sm:gap-4 pt-2 mt-2 border-t border-gray-200 ">
+                                <div class="flex flex-col items-end gap-2 sm:gap-3">
+                                    <!-- tổng tiền -->
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-responsive-sm text-gray-600">Tổng tiền 3 sản
+                                            phẩm:</span>
+                                        <span class="item-price ">1.350,000đ</span>
+                                    </div>
+                                    <!-- button mua lại -->
+                                    <div class="flex flex-row items-end gap-2 sm:gap-3">
+                                        <!-- nút xem chi tiết đơn mua -->
+                                        <a href="detail-orders.html?id=BO002&type=purchase"
+                                            class="btn btn-outline btn-sm sm:btn-md flex items-center gap-2">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                            <span>Xem chi tiết đơn mua</span>
+                                        </a>
+                                        <!-- button mua lại -->
+                                        <button class="btn btn-secondary btn-sm sm:btn-md flex items-center gap-2">
+                                            <i data-lucide="refresh-cw" class="size-4"></i>
+                                            <span>Mua lại</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Order 2 - Processing -->
+                        <div class="card-blue-50">
+                            <!-- người bán, badge -->
+                            <div class="flex items-center justify-between gap-2 mb-2 sm:mb-3">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="store" class="item-icon"></i>
+                                    <span class="item-link">Gmail Store</span>
+                                </div>
+                                <span class="badge badge-warning inline-flex items-center gap-1">
+                                    <i data-lucide="clock" class="size-4"></i>
+                                    <span>Đang xử lý</span>
+                                </span>
+                            </div>
+                            <!-- sản phẩm 1 -->
+                            <div class="flex items-start gap-3 sm:gap-4">
+                                <img alt="Gmail PVA 2024 - Tạo tay 100%" class="item-thumbnail "
+                                    src="assets/images/gmail.png">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <div class="flex-1">
+                                            <h4 class="item-title mb-1">
+                                                <a href="#">Gmail PVA 2024 - Tạo tay 100%</a>
+                                            </h4>
+                                            <!-- danh mục -->
+                                            <div class="mb-2 flex items-center justify-between">
+                                                <span class="item-category"><a href="#">Email Marketing</a></span>
+                                                <span class="item-quantity">x1</span>
+                                            </div>
+                                            <!-- thông tin sản phẩm -->
+                                            <div
+                                                class="flex flex-col sm:flex-row gap-2 sm:gap-4 text-responsive-sm text-gray-600 mb-2">
+                                                <div class="flex items-center gap-1">
+                                                    <i data-lucide="package" class="size-4"></i>
+                                                    <span>Mã đơn: <strong>PO002</strong></span>
+                                                </div>
+
+                                                <div class="flex items-center gap-1">
+                                                    <i data-lucide="calendar" class="size-4"></i>
+                                                    <span>Ngày mua:<strong>2024-01-14</strong></span>
+                                                </div>
+                                            </div>
+                                            <!-- giá, số lượng -->
+                                            <div class="flex items-center justify-end text-responsive-sm gap-2 mb-2">
+                                                <!-- giá gốc -->
+                                                <span class="item-price-original">30,000đ</span>
+                                                <!-- giá sale -->
+                                                <span class="item-price">25,000đ</span>
+                                            </div>
+                                            <!-- thông báo dự kiến giao -->
+                                            <div class=" bg-blue">
+                                                <div
+                                                    class="flex items-center gap-1 mb-1 text-responsive-sm text-blue-600">
+                                                    <i data-lucide="clock" class="size-4"></i>
+                                                    <span>Dự kiến giao: 2024-01-16</span>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- content bên dưới -->
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-center justify-end gap-3 sm:gap-4 pt-2 mt-2 border-t border-gray-200">
+                                <div class="flex flex-col items-end gap-2 sm:gap-3">
+                                    <!-- tổng tiền -->
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-responsive-sm text-gray-500">Tổng tiền 1 sản phẩm:</span>
+                                        <span class="item-price">25,000đ</span>
+                                    </div>
+                                    <!-- button mua lại -->
+                                    <div class="flex flex-row items-end gap-2 sm:gap-3">
+                                        <!-- nút xem chi tiết đơn mua -->
+                                        <button class="btn btn-outline btn-sm sm:btn-md flex items-center gap-2">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                            <span>Xem chi tiết đơn mua</span>
+                                        </button>
+                                        <!-- button mua lại -->
+                                        <button class="btn btn-secondary btn-sm sm:btn-md flex items-center gap-2">
+                                            <i data-lucide="refresh-cw" class="size-4"></i>
+                                            <span>Mua lại</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Order 3 - Cancelled -->
+                        <div class="card-blue-50">
+                            <!-- người bán, badge -->
+                            <div class="flex items-center justify-between gap-2 mb-2 sm:mb-3">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="store" class="item-icon"></i>
+                                    <span class="item-link">Proxy King</span>
+                                </div>
+                                <span class="badge badge-danger inline-flex items-center gap-1">
+                                    <i data-lucide="circle-x" class="size-4"></i>
+                                    <span>Đã hủy</span>
+                                </span>
+                            </div>
+                            <!-- sản phẩm 1 -->
+                            <div class="flex items-start gap-3 sm:gap-4">
+                                <img alt="Proxy King - Proxy IP VN" class="item-thumbnail "
+                                    src="assets/images/gmail.png">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <div class="flex-1">
+                                            <h4 class="item-title mb-1">
+                                                <a href="#">Proxy King - Proxy IP VN</a>
+                                            </h4>
+                                            <!-- danh mục -->
+                                            <div class="mb-2 flex items-center justify-between">
+                                                <span class="item-category"><a href="#">Proxy IP</a></span>
+                                                <span class="item-quantity">x1</span>
+                                            </div>
+                                            <!-- thông tin sản phẩm -->
+                                            <div
+                                                class="flex flex-col sm:flex-row gap-2 sm:gap-4 text-responsive-sm text-gray-600 mb-2">
+                                                <div class="flex items-center gap-1">
+                                                    <i data-lucide="package" class="size-4"></i>
+                                                    <span>Mã đơn: <strong>SO003</strong></span>
+                                                </div>
+
+                                                <div class="flex items-center gap-1">
+                                                    <i data-lucide="calendar" class="size-4"></i>
+                                                    <span>Ngày mua:<strong>2024-01-14</strong></span>
+                                                </div>
+                                            </div>
+                                            <!-- giá, số lượng -->
+                                            <div class="flex items-center justify-end text-responsive-sm gap-2 mb-2">
+                                                <!-- giá gốc -->
+                                                <span class="item-price-original">30,000đ</span>
+                                                <!-- giá sale -->
+                                                <span class="item-price">25,000đ</span>
+                                            </div>
+                                            <!-- thông báo lý do hủy -->
+                                            <div class=" bg-red">
+                                                <div
+                                                    class="flex items-center gap-1 mb-1 text-responsive-sm text-red-600">
+                                                    <i data-lucide="circle-x" class="size-4"></i>
+                                                    <span>Lý do hủy: Hết hàng</span>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- content bên dưới -->
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-center justify-end gap-3 sm:gap-4 pt-2 mt-2 border-t border-gray-200">
+                                <div class="flex flex-col items-end gap-2 sm:gap-3">
+                                    <!-- tổng tiền -->
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-responsive-sm text-gray-500">Tổng tiền 1 sản phẩm:</span>
+                                        <span class="item-price">300,000đ</span>
+                                    </div>
+                                    <!-- button mua lại -->
+                                    <div class="flex flex-row items-end gap-2 sm:gap-3">
+                                        <!-- nút xem chi tiết đơn mua -->
+                                        <a href="detail-orders.html?id=BO003&type=purchase"
+                                            class="btn btn-outline btn-sm sm:btn-md flex items-center gap-2">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                            <span>Xem chi tiết đơn hủy</span>
+                                        </a>
+                                        <!-- button mua lại -->
+                                        <button class="btn btn-secondary btn-sm sm:btn-md flex items-center gap-2">
+                                            <i data-lucide="refresh-cw" class="size-4"></i>
+                                            <span>Mua lại</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Sold Orders Tab -->
+                <div x-show="activeTab === 'sold'" class="space-y-4 sm:space-y-6">
+                    <!-- Search and Filter Section -->
+                    <div class="flex flex-row gap-2 sm:gap-4">
+                        <div class="flex-1 input-icon min-w-0">
+                            <input type="text" placeholder="Tìm kiếm đơn hàng, sản phẩm, người mua, mã đơn..."
+                                class="input w-full text-responsive-sm" value="">
+                            <i data-lucide="search" class="icon size-4 sm:size-5"></i>
+                        </div>
+                        <select class="input text-responsive-sm flex-shrink-0 w-[140px] sm:w-auto sm:min-w-[180px]">
+                            <option value="all">Tất cả trạng thái</option>
+                            <option value="pending">Chờ xử lý</option>
+                            <option value="processing">Đang xử lý</option>
+                            <option value="shipping">Đang giao</option>
+                            <option value="completed">Hoàn thành</option>
+                            <option value="cancelled">Đã hủy</option>
+                            <option value="refunded">Hoàn tiền</option>
+                        </select>
+                        <button
+                            class="btn btn-outline btn-md flex-shrink-0 flex items-center justify-center gap-1 sm:gap-2 px-3 sm:px-4">
+                            <i data-lucide="filter" class="size-4 sm:size-5"></i>
+                            <span class="hidden sm:inline">Bộ lọc</span>
+                        </button>
+                    </div>
+
+                    <!-- Orders List -->
+                    <div class="card">
+                        <div class="divide-y divide-gray-200">
+                            <!-- Order 1 - Pending (Chờ xử lý) -->
+                            <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-start gap-3 sm:gap-4">
+                                    <img alt="Account Facebook Ads BM Limit 250$"
+                                        class="size-16 sm:size-20 lg:size-24 rounded-xl object-cover border border-gray-200 flex-shrink-0"
+                                        src="assets/images/gmail.png">
+                                    <div class="flex-1 min-w-0">
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                                            <div class="flex-1">
+                                                <h3 class="text-responsive-sm font-medium text-gray-900 mb-1">Account
+                                                    Facebook Ads BM Limit 250$</h3>
+                                                <!-- danh mục -->
+                                                <div class="mb-2 flex items-center justify-between">
+                                                    <span class="item-category"><a href="#">Facebook Accounts</a></span>
+                                                    <span class="item-quantity">x1</span>
+                                                </div>
+                                                <!-- thông tin sản phẩm -->
+                                                <div
+                                                    class="flex flex-wrap items-center gap-2 sm:gap-4 text-responsive-xs text-gray-500 mb-2">
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="package" class="size-3"></i>
+                                                        <span>Mã đơn: SO001</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="calendar" class="size-3"></i>
+                                                        <span>14/1/2024</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="phone" class="size-3"></i>
+                                                        <span>0912345678</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="email" class="size-3"></i>
+                                                        <span>example@gmail.com</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-left sm:text-right">
+                                                <div class="text-responsive-md font-bold text-green-600 mb-1">450.000 ₫
+                                                </div>
+                                                <div class="text-responsive-xs text-gray-600 mb-2">Hoa hồng: 45.000 ₫
+                                                </div>
+                                                <span class="badge badge-warning inline-flex items-center gap-1">
+                                                    <i data-lucide="clock" class="size-3"></i>
+                                                    <span>Chờ xử lý</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex flex-col sm:flex-row justify-end gap-3 sm:gap-4 mt-4 pt-4 border-t border-gray-200">
+                                            <div class="flex flex-wrap justify-end items-center gap-2 sm:gap-3">
+                                                <a href="detail-orders.html?id=SO001&type=sale"
+                                                    class="link-secondary flex  gap-1 text-responsive-xs">
+                                                    <i data-lucide="eye" class="size-4"></i>
+                                                    <span>Chi tiết</span>
+                                                </a>
+                                                <button
+                                                    class="link-secondary flex justify-end items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="message-square" class="size-4"></i>
+                                                    <span>Nhắn tin</span>
+                                                </button>
+                                                <button
+                                                    class="link-secondary flex justify-end items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="printer" class="size-4"></i>
+                                                    <span>In hóa đơn</span>
+                                                </button>
+                                            </div>
+                                            <div class="flex justify-end items-center gap-2">
+                                                <button class="btn btn-primary btn-sm">Xác nhận</button>
+                                                <button class="btn btn-delete btn-sm">Hủy đơn</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order 2 - Processing (Đang xử lý) -->
+                            <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-start gap-3 sm:gap-4">
+                                    <img alt="Gmail PVA 2024 - Tạo tay 100%"
+                                        class="size-16 sm:size-20 lg:size-24 rounded-xl object-cover border border-gray-200 flex-shrink-0"
+                                        src="assets/images/gmail.png">
+                                    <div class="flex-1 min-w-0">
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                                            <div class="flex-1">
+                                                <h3 class="text-responsive-sm font-medium text-gray-900 mb-1">Gmail PVA
+                                                    2024 - Tạo tay 100%</h3>
+                                                <p class="text-responsive-xs text-gray-600 mb-2">Người mua: <span
+                                                        class="font-medium">Lê Văn C</span></p>
+                                                <div
+                                                    class="flex flex-wrap items-center gap-2 sm:gap-4 text-responsive-xs text-gray-500 mb-2">
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="package" class="size-3"></i>
+                                                        <span>Mã đơn: SO002</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="calendar" class="size-3"></i>
+                                                        <span>13/1/2024</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="phone" class="size-3"></i>
+                                                        <span>0923456789</span>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="flex items-center gap-2 text-responsive-xs text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg mt-2">
+                                                    <i data-lucide="clock" class="size-3"></i>
+                                                    <span>Dự kiến giao: 16/1/2024</span>
+                                                </div>
+                                            </div>
+                                            <div class="text-left sm:text-right">
+                                                <div class="text-responsive-md font-bold text-green-600 mb-1">25.000 ₫
+                                                </div>
+                                                <div class="text-responsive-xs text-gray-600 mb-2">Hoa hồng: 2.500 ₫
+                                                </div>
+                                                <span class="badge badge-info inline-flex items-center gap-1">
+                                                    <i data-lucide="loader-2" class="size-3 animate-spin"></i>
+                                                    <span>Đang xử lý</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mt-4 pt-4 border-t border-gray-100">
+                                            <div class="flex flex-wrap justify-end items-center gap-2 sm:gap-3">
+                                                <a href="detail-orders.html?id=SO002&type=sale"
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="eye" class="size-4"></i>
+                                                    <span>Chi tiết</span>
+                                                </a>
+                                                <button
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="message-square" class="size-4"></i>
+                                                    <span>Nhắn tin</span>
+                                                </button>
+                                                <button
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="printer" class="size-4"></i>
+                                                    <span>In hóa đơn</span>
+                                                </button>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <button class="btn btn-primary btn-sm">Cập nhật trạng thái</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order 3 - Shipping (Đang giao) -->
+                            <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-start gap-3 sm:gap-4">
+                                    <img alt="Account TikTok Ads - Limit 500$"
+                                        class="size-16 sm:size-20 lg:size-24 rounded-xl object-cover border border-gray-200 flex-shrink-0"
+                                        src="assets/images/gmail.png">
+                                    <div class="flex-1 min-w-0">
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                                            <div class="flex-1">
+                                                <h3 class="text-responsive-sm font-medium text-gray-900 mb-1">Account
+                                                    TikTok Ads - Limit 500$</h3>
+                                                <p class="text-responsive-xs text-gray-600 mb-2">Người mua: <span
+                                                        class="font-medium">Phạm Thị D</span></p>
+                                                <div
+                                                    class="flex flex-wrap items-center gap-2 sm:gap-4 text-responsive-xs text-gray-500 mb-2">
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="package" class="size-3"></i>
+                                                        <span>Mã đơn: SO003</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="calendar" class="size-3"></i>
+                                                        <span>12/1/2024</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="truck" class="size-3"></i>
+                                                        <span>Đang vận chuyển</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-left sm:text-right">
+                                                <div class="text-responsive-md font-bold text-green-600 mb-1">600.000 ₫
+                                                </div>
+                                                <div class="text-responsive-xs text-gray-600 mb-2">Hoa hồng: 60.000 ₫
+                                                </div>
+                                                <span class="badge badge-primary inline-flex items-center gap-1">
+                                                    <i data-lucide="truck" class="size-3"></i>
+                                                    <span>Đang giao</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mt-4 pt-4 border-t border-gray-100">
+                                            <div class="flex flex-wrap justify-end items-center gap-2 sm:gap-3">
+                                                <a href="detail-orders.html?id=SO003&type=sale"
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="eye" class="size-4"></i>
+                                                    <span>Chi tiết</span>
+                                                </a>
+                                                <button
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="message-square" class="size-4"></i>
+                                                    <span>Nhắn tin</span>
+                                                </button>
+                                                <button
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="printer" class="size-4"></i>
+                                                    <span>In hóa đơn</span>
+                                                </button>
+                                            </div>
+                                            <div class="flex justify-end items-center gap-2">
+                                                <button class="btn btn-success btn-sm">Hoàn thành</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order 4 - Completed (Hoàn thành) -->
+                            <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-start gap-3 sm:gap-4">
+                                    <img alt="YouTube Channel Monetized"
+                                        class="size-16 sm:size-20 lg:size-24 rounded-xl object-cover border border-gray-200 flex-shrink-0"
+                                        src="assets/images/gmail.png">
+                                    <div class="flex-1 min-w-0">
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                                            <div class="flex-1">
+                                                <h3 class="text-responsive-sm font-medium text-gray-900 mb-1">YouTube
+                                                    Channel Monetized</h3>
+                                                <p class="text-responsive-xs text-gray-600 mb-2">Người mua: <span
+                                                        class="font-medium">Hoàng Văn E</span></p>
+                                                <div
+                                                    class="flex flex-wrap items-center gap-2 sm:gap-4 text-responsive-xs text-gray-500 mb-2">
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="package" class="size-3"></i>
+                                                        <span>Mã đơn: SO004</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="calendar" class="size-3"></i>
+                                                        <span>11/1/2024</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="check-circle" class="size-3"></i>
+                                                        <span>Đã giao thành công</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="text-left sm:text-right">
+                                                <div class="text-responsive-md font-bold text-green-600 mb-1">1.200.000
+                                                    ₫</div>
+                                                <div class="text-responsive-xs text-gray-600 mb-2">Hoa hồng: 120.000 ₫
+                                                </div>
+                                                <span class="badge badge-success inline-flex items-center gap-1">
+                                                    <i data-lucide="circle-check-big" class="size-3"></i>
+                                                    <span>Hoàn thành</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mt-4 pt-4 border-t border-gray-100">
+                                            <div class="flex flex-wrap justify-end items-center gap-2 sm:gap-3">
+                                                <a href="detail-orders.html?id=SO004&type=sale"
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="eye" class="size-4"></i>
+                                                    <span>Chi tiết</span>
+                                                </a>
+                                                <button
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="message-square" class="size-4"></i>
+                                                    <span>Nhắn tin</span>
+                                                </button>
+                                                <button
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="printer" class="size-4"></i>
+                                                    <span>In hóa đơn</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order 5 - Cancelled (Đã hủy) -->
+                            <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
+                                <div class="flex items-start gap-3 sm:gap-4">
+                                    <img alt="Proxy US Residential - 30 ngày"
+                                        class="size-16 sm:size-20 lg:size-24 rounded-xl object-cover border border-gray-200 flex-shrink-0"
+                                        src="assets/images/gmail.png">
+                                    <div class="flex-1 min-w-0">
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+                                            <div class="flex-1">
+                                                <h3 class="text-responsive-sm font-medium text-gray-900 mb-1">Proxy US
+                                                    Residential - 30 ngày</h3>
+                                                <p class="text-responsive-xs text-gray-600 mb-2">Người mua: <span
+                                                        class="font-medium">Trần Thị F</span></p>
+                                                <div
+                                                    class="flex flex-wrap items-center gap-2 sm:gap-4 text-responsive-xs text-gray-500 mb-2">
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="package" class="size-3"></i>
+                                                        <span>Mã đơn: SO005</span>
+                                                    </div>
+                                                    <div class="flex items-center gap-1">
+                                                        <i data-lucide="calendar" class="size-3"></i>
+                                                        <span>10/1/2024</span>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="flex items-center gap-2 text-responsive-xs text-red-600 bg-red-50 px-3 py-1.5 rounded-lg mt-2">
+                                                    <i data-lucide="alert-circle" class="size-3"></i>
+                                                    <span>Lý do hủy: Hết hàng</span>
+                                                </div>
+                                            </div>
+                                            <div class="text-left sm:text-right">
+                                                <div
+                                                    class="text-responsive-md font-bold text-gray-400 mb-1 line-through">
+                                                    300.000 ₫</div>
+                                                <div class="text-responsive-xs text-gray-600 mb-2">Hoa hồng: 0 ₫</div>
+                                                <span class="badge badge-secondary inline-flex items-center gap-1">
+                                                    <i data-lucide="circle-x" class="size-3"></i>
+                                                    <span>Đã hủy</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mt-4 pt-4 border-t border-gray-100">
+                                            <div class="flex flex-wrap justify-end items-center gap-2 sm:gap-3">
+                                                <a href="detail-orders.html?id=SO005&type=sale"
+                                                    class="link-secondary flex items-center gap-1 text-responsive-xs">
+                                                    <i data-lucide="eye" class="size-4"></i>
+                                                    <span>Chi tiết</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- My Products Tab -->
+                <div x-show="activeTab === 'products'" class="space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Sản phẩm của tôi (4)</h3>
+                        <div class="flex items-center gap-3">
+                            <div class="relative">
+                                <i data-lucide="search"
+                                    class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4"></i>
+                                <input type="text" placeholder="Tìm kiếm sản phẩm..."
+                                    class="input pl-10 pr-4 py-2 text-responsive-sm" value="">
+                            </div>
+                            <select class="input px-3 py-2 text-responsive-sm">
+                                <option value="all">Tất cả trạng thái</option>
+                                <option value="active">Đang bán</option>
+                                <option value="paused">Tạm dừng</option>
+                                <option value="draft">Bản nháp</option>
+                            </select>
+                            <a class="btn btn-primary btn-sm flex items-center justify-center gap-1"
+                                href="/dashboard/products/new">
+                                <i data-lucide="plus" class="size-4"></i>
+                                <span>Thêm sản phẩm</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Product 1 - Active -->
+                        <div class="bg-gray-50 rounded-xl p-4 sm:p-6 hover:bg-gray-100 transition-colors">
+                            <div class="flex gap-4">
+                                <img alt="Account TikTok Ads - Limit 500$" class="item-thumbnail"
+                                    src="assets/images/gmail.png">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between gap-2 mb-2">
+                                        <h4 class="item-title">Account TikTok Ads - Limit 500$
+                                        </h4>
+                                        <div class="flex items-center gap-2">
+                                            <span class="badge badge-success flex-shrink-0">
+                                                Đang bán
+                                            </span>
+                                            <!-- <span class="text-responsive-xs text-gray-500">x1</span> -->
+                                        </div>
+                                    </div>
+                                    <p class="item-description mb-2 line-clamp-2">Account TikTok Ads chất lượng cao
+                                        với limit 500$
+                                    </p>
+                                    <div class="grid grid-cols-2 gap-4 text-sm mb-2">
+                                        <div class="space-y-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="dollar-sign" class="size-4 text-green-600"></i>
+                                                <span class="item-price">800,000đ<span
+                                                        class="item-price-original">900,000đ</span></span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="package" class="size-4 text-blue-600"></i>
+                                                <span class="text-gray-600">Đã bán: 15</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="eye" class="size-4 text-purple-600"></i>
+                                                <span class="text-gray-600">1250 lượt xem</span>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="heart" class="size-4 text-red-600"></i>
+                                                <span class="text-gray-600">45 yêu thích</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="star" class="size-4 text-yellow-500"></i>
+                                                <span class="text-gray-600">4.8 (12)</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="target" class="size-4 text-indigo-600"></i>
+                                                <span class="text-gray-600">3.2% CV</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col sm:flex-row gap-4 justify-between">
+                                        <div class="flex flex-wrap gap-1 justify-start ">
+                                            <span class="badge badge-success">#tiktok</span>
+                                            <span class="badge badge-success">#ads</span>
+                                        </div>
+                                        <div class="flex justify-end items-center gap-1">
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="eye" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="square-pen" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="copy" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="chart-column" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="ellipsis" class="size-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product 2 - Active -->
+                        <div class="bg-gray-50 rounded-xl p-4 sm:p-6 hover:bg-gray-100 transition-colors">
+                            <div class="flex gap-4">
+                                <img alt="VPS Windows RDP - 1 tháng"
+                                    class="size-16 sm:size-20 lg:size-24 rounded-xl object-cover border border-gray-200 flex-shrink-0"
+                                    src="assets/images/gmail.png">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between gap-2 mb-2">
+                                        <h4 class="font-semibold text-gray-900 truncate">VPS Windows RDP - 1 tháng</h4>
+                                        <span class="badge badge-success flex-shrink-0">
+                                            Đang bán
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3 line-clamp-2">VPS Windows Server 2019, RAM 4GB,
+                                        SSD 50GB
+                                    </p>
+                                    <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                                        <div class="space-y-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="dollar-sign" class="size-4 text-green-600"></i>
+                                                <span class="font-semibold text-gray-900">120,000đ<span
+                                                        class="text-xs text-gray-500 line-through ml-1">150,000đ</span></span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="package" class="size-4 text-blue-600"></i>
+                                                <span class="text-gray-600">Đã bán: 8</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="eye" class="size-4 text-purple-600"></i>
+                                                <span class="text-gray-600">890 lượt xem</span>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="heart" class="size-4 text-red-600"></i>
+                                                <span class="text-gray-600">23 yêu thích</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="star" class="size-4 text-yellow-500"></i>
+                                                <span class="text-gray-600">4.6 (6)</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="target" class="size-4 text-indigo-600"></i>
+                                                <span class="text-gray-600">2.1% CV</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex flex-wrap gap-1">
+                                            <span
+                                                class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full">#vps</span>
+                                            <span
+                                                class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full">#windows</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="eye" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="square-pen" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="copy" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="chart-column" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="ellipsis" class="size-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product 3 - Paused -->
+                        <div class="bg-gray-50 rounded-xl p-4 sm:p-6 hover:bg-gray-100 transition-colors">
+                            <div class="flex gap-4">
+                                <img alt="Gmail PVA Aged - 6 tháng tuổi"
+                                    class="size-16 sm:size-20 lg:size-24 rounded-xl object-cover border border-gray-200 flex-shrink-0"
+                                    src="assets/images/gmail.png">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between gap-2 mb-2">
+                                        <h4 class="font-semibold text-gray-900 truncate">Gmail PVA Aged - 6 tháng tuổi
+                                        </h4>
+                                        <span class="badge badge-secondary flex-shrink-0">
+                                            Tạm dừng
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3 line-clamp-2">Gmail PVA 6 tháng tuổi, tạo thủ
+                                        công
+                                        100%
+                                    </p>
+                                    <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                                        <div class="space-y-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="dollar-sign" class="size-4 text-green-600"></i>
+                                                <span class="font-semibold text-gray-900">35,000đ<span
+                                                        class="text-xs text-gray-500 line-through ml-1">40,000đ</span></span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="package" class="size-4 text-blue-600"></i>
+                                                <span class="text-gray-600">Đã bán: 32</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="eye" class="size-4 text-purple-600"></i>
+                                                <span class="text-gray-600">2100 lượt xem</span>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="heart" class="size-4 text-red-600"></i>
+                                                <span class="text-gray-600">78 yêu thích</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="star" class="size-4 text-yellow-500"></i>
+                                                <span class="text-gray-600">4.9 (28)</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="target" class="size-4 text-indigo-600"></i>
+                                                <span class="text-gray-600">4.7% CV</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex flex-wrap gap-1">
+                                            <span
+                                                class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full">#gmail</span>
+                                            <span
+                                                class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full">#email</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="eye" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="square-pen" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="copy" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="chart-column" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="ellipsis" class="size-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product 4 - Active -->
+                        <div class="bg-gray-50 rounded-xl p-4 sm:p-6 hover:bg-gray-100 transition-colors">
+                            <div class="flex gap-4">
+                                <img alt="Shopee Affiliate Account"
+                                    class="size-16 sm:size-20 lg:size-24 rounded-xl object-cover border border-gray-200 flex-shrink-0"
+                                    src="assets/images/gmail.png">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between gap-2 mb-2">
+                                        <h4 class="font-semibold text-gray-900 truncate">Shopee Affiliate Account</h4>
+                                        <span class="badge badge-success flex-shrink-0">
+                                            Đang bán
+                                        </span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3 line-clamp-2">Tài khoản Shopee Affiliate đã
+                                        approve
+                                    </p>
+                                    <div class="grid grid-cols-2 gap-4 text-sm mb-4">
+                                        <div class="space-y-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="dollar-sign" class="size-4 text-green-600"></i>
+                                                <span class="font-semibold text-gray-900">120,000đ</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="package" class="size-4 text-blue-600"></i>
+                                                <span class="text-gray-600">Đã bán: 24</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="eye" class="size-4 text-purple-600"></i>
+                                                <span class="text-gray-600">1560 lượt xem</span>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="heart" class="size-4 text-red-600"></i>
+                                                <span class="text-gray-600">56 yêu thích</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="star" class="size-4 text-yellow-500"></i>
+                                                <span class="text-gray-600">4.5 (18)</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="target" class="size-4 text-indigo-600"></i>
+                                                <span class="text-gray-600">2.8% CV</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex flex-wrap gap-1">
+                                            <span
+                                                class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full">#shopee</span>
+                                            <span
+                                                class="px-2 py-1 bg-gray-200 text-gray-700 text-xs rounded-full">#affiliate</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="eye" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="square-pen" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="copy" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="chart-column" class="size-4"></i>
+                                            </button>
+                                            <button class="btn btn-outline btn-sm p-2">
+                                                <i data-lucide="ellipsis" class="size-4"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-center mt-6">
+                        <a class="btn btn-outline btn-md flex items-center justify-center gap-2"
+                            href="/dashboard/products">
+                            <span>Xem tất cả sản phẩm</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <!-- include:./blocks/footer.html -->
+</body>
+
+</html>
+
+</html>

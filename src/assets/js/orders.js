@@ -50,14 +50,9 @@ function ordersManager() {
 
         // Thống kê số lượng đơn hàng theo từng trạng thái
         // Dùng để hiển thị số lượng trên các nút filter
-        stats: {
-            total: 45,
-            pending: 8,
-            processing: 12,
-            processed: 15,
-            completed: 7,
-            dispute: 2,
-            cancelled: 1
+        // Sẽ được tính toán từ data trong HTML
+        get stats() {
+            return this.calculateStats();
         },
 
         // ============================================
@@ -71,19 +66,16 @@ function ordersManager() {
         /**
          * Hàm init() được Alpine.js tự động gọi khi component được khởi tạo
          * Sử dụng để:
-         * - Load dữ liệu ban đầu
          * - Khởi tạo các thư viện bên ngoài (Lucide icons)
          * - Setup watchers
          */
-        async init() {
+        init() {
             console.log('Orders Manager Initialized');
             
-            // Load danh sách đơn hàng từ API
-            await this.loadOrders();
-            
-            // Watch for filter changes and reload
-            this.$watch('orderType', () => this.handleFilterChange());
-            this.$watch('statusFilter', () => this.handleFilterChange());
+            // Watch for filter changes
+            this.$watch('orderType', () => {
+                this.statusFilter = 'all';
+            });
             
             // Khởi tạo Lucide icons sau khi Alpine.js render xong
             // $nextTick đảm bảo DOM đã được cập nhật
@@ -95,13 +87,64 @@ function ordersManager() {
         },
         
         /**
-         * Xử lý khi filter thay đổi - reset và load lại
+         * Kiểm tra xem một order element có khớp với filter hiện tại không
+         * @param {HTMLElement} element - Element chứa order data
+         * @returns {boolean}
          */
-        handleFilterChange() {
-            this.currentPage = 1;
-            this.displayedOrders = [];
-            this.hasMore = true;
-            this.loadOrders();
+        matchesOrder(element) {
+            // Check order type
+            const orderType = element.dataset.orderType || 'purchase';
+            if (orderType !== this.orderType) return false;
+            
+            // Check status filter
+            const status = element.dataset.status || '';
+            if (this.statusFilter !== 'all' && status !== this.statusFilter) return false;
+            
+            // Check search query
+            if (this.searchQuery.trim()) {
+                const query = this.searchQuery.toLowerCase();
+                const orderId = element.dataset.orderId || '';
+                const product = element.dataset.product || '';
+                const seller = element.dataset.seller || '';
+                
+                return orderId.toLowerCase().includes(query) ||
+                       product.toLowerCase().includes(query) ||
+                       seller.toLowerCase().includes(query);
+            }
+            
+            return true;
+        },
+        
+        /**
+         * Tính toán stats từ các order elements trong HTML
+         * @returns {Object} Stats object
+         */
+        calculateStats() {
+            const orders = Array.from(document.querySelectorAll('[data-order]'));
+            const stats = {
+                total: 0,
+                pending: 0,
+                processing: 0,
+                processed: 0,
+                completed: 0,
+                dispute: 0,
+                cancelled: 0
+            };
+            
+            orders.forEach(order => {
+                const orderType = order.dataset.orderType || 'purchase';
+                if (orderType === this.orderType) {
+                    stats.total++;
+                    const status = order.dataset.status || '';
+                    if (status === 'pending') stats.pending++;
+                    else if (status === 'processed') stats.processed++;
+                    else if (status === 'completed') stats.completed++;
+                    else if (status === 'dispute') stats.dispute++;
+                    else if (status === 'cancelled') stats.cancelled++;
+                }
+            });
+            
+            return stats;
         },
 
         // ============================================
@@ -342,14 +385,17 @@ function ordersManager() {
         /**
          * Tìm kiếm đơn hàng
          * Được gọi khi user submit form tìm kiếm
+         * Filter được xử lý tự động bởi x-show trong HTML
          */
         searchOrders() {
             console.log('Searching orders with query:', this.searchQuery);
-            // Reset và load lại với search query
-            this.currentPage = 1;
-            this.displayedOrders = [];
-            this.hasMore = true;
-            this.loadOrders();
+            // Filter được xử lý tự động bởi Alpine.js x-show
+            // Chỉ cần trigger re-render icons
+            this.$nextTick(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            });
         },
 
         /**
@@ -429,12 +475,12 @@ function ordersManager() {
         
         /**
          * Xem chi tiết đơn hàng
-         * Navigate sang trang chi tiết hoặc mở modal
+         * Navigate sang trang chi tiết với orderId và orderType
          */
         viewOrderDetail(orderId) {
             console.log('Viewing order detail:', orderId);
-            // TODO: Navigate to order detail page or open modal
-            window.location.href = `/order-detail.html?id=${orderId}`;
+            // Redirect đến trang chi tiết đơn hàng với orderId và orderType
+            window.location.href = `detail-orders.html?id=${orderId}&type=${this.orderType}`;
         },
 
         /**

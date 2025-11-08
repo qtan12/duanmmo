@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMO Store - Chi tiết đơn hàng</title>
+    <meta name="description"
+        content="Cửa hàng bán tài khoản premium, key license, VPN và các sản phẩm số chất lượng cao với giá tốt nhất.">
+    <script type="text/javascript">
+        const API_URL = "https://panel.dongnai.net/api/v2/";
+    </script>
+    <!-- Add Inline Hidden Class for Fix CLS -->
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- all css -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+    <!-- 1. CAC THU VIEN CAN SU DUNG -->
+    <!-- Notification Library -->
+    <script src="assets/js/libs/notification.js" defer></script>
+    <!-- Initialize FastNotice -->
+    <script>
+        // Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+        document.addEventListener('DOMContentLoaded', function () {
+            window.fastNotice = new FastNotice({
+                position: 'top-center',
+                duration: 3000,
+                maxNotifications: 3
+            });
+        });
+    </script>
+    <!-- Lucide Icons - Custom Build -->
+    <script src="assets/js/lucide-custom.min.js" defer></script>
+    <!-- jModal manager -->
+    <script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+    <!-- Load BlazeSlider Library -->
+    <script src="assets/js/libs/blaze-slider.js" defer></script>
+    <!-- Libs Tabs JS Thuần -->
+    <script src="assets/js/libs/tabs.js" defer></script>
+    <!-- Image Fallback Utility -->
+    <script src="assets/js/libs/image-fallback.js" defer></script>
+
+    <!-- 2. CAC CODE JS TU VIET. -->
+    <!-- Cart Manager Libs JS -->
+    <script src="assets/js/cart-manager.js" defer></script>
+    <!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+    <script src="assets/js/header.js" defer></script>
+    <!-- Order Detail Component JS -->
+    <script src="assets/js/detail-orders.js" defer></script>
+
+    <!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+    <script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+</head>
+
+<body class="min-h-screen bg-gray-100">
+    <!-- header -->
+    <!-- include:./blocks/header.html -->
+
+    <!-- Main Content Area -->
+    <main class="sm:container mx-auto py-4 sm:py-8" x-data="orderDetailManager()">
+        <!-- Header Section -->
+        <div class="mb-6 px-4 sm:px-0">
+            <div class="flex items-center gap-3 mb-3 sm:mb-4">
+                <a href="orders.html"
+                    class="link-secondary flex items-center gap-2 text-responsive-sm hover:gap-3 transition-all">
+                    <i data-lucide="arrow-left" class="size-4"></i>
+                    <span>Quay lại danh sách đơn hàng</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Order Details - 2 Columns Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+            <!-- Left Column - Order Details (2/3 width on large screens) -->
+            <div class="lg:col-span-2">
+                <!-- ============================================ -->
+                <!-- CARD BORDER CHUNG CHO TẤT CẢ NỘI DUNG LEFT COLUMN -->
+                <!-- ============================================ -->
+                <div class="card-border p-4 sm:p-6">
+                    <!-- Header Section -->
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 mb-6 border-b-2 border-gray-200">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="item-icon-bg">
+                                    <i data-lucide="receipt" class="size-5"></i>
+                                </div>
+                                <h1 class="card-title-sm">
+                                    Thông tin đơn hàng
+                                    <span class="item-sku">#BO001</span>
+                                </h1>
+                            </div>
+                            <p class="item-description" x-show="orderType === 'purchase'">
+                                Thông tin chi tiết đơn hàng bạn đã mua
+                            </p>
+                            <p class="item-description" x-show="orderType === 'sale'">
+                                Thông tin chi tiết đơn hàng bạn đã bán
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <!-- Purchase Order Status -->
+                            <span x-show="orderType === 'purchase'" data-order-status="completed"
+                                class="badge badge-success inline-flex items-center gap-1.5 px-3 py-1.5">
+                                <i data-lucide="circle-check-big" class="size-4"></i>
+                                <span class="text-responsive-xs font-medium">Đã hoàn thành</span>
+                            </span>
+                            <!-- Sale Order Status -->
+                            <span x-show="orderType === 'sale'" data-order-status="pending"
+                                class="badge badge-warning inline-flex items-center gap-1.5 px-3 py-1.5">
+                                <i data-lucide="clock" class="size-4"></i>
+                                <span class="text-responsive-xs font-medium">Chờ xử lý</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN THÔNG TIN SẢN PHẨM -->
+                    <!-- Hiển thị danh sách sản phẩm trong đơn hàng -->
+                    <!-- Bao gồm: hình ảnh, tên, SKU, số lượng, giá, tổng tiền -->
+                    <!-- ============================================ -->
+                    <div class="pb-6 mb-6 border-b border-gray-200">
+                        <div class="flex items-center gap-2 mb-4 sm:mb-6">
+                            <div class="item-icon-bg">
+                                <i data-lucide="package" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Thông tin sản phẩm</h2>
+                        </div>
+                        <div class="space-y-4">
+                            <!-- Purchase Order Products -->
+                            <div x-show="orderType === 'purchase'">
+                                <!-- Product 1 -->
+                                <div class="flex items-start gap-3 sm:gap-4 pb-4 border-b border-gray-200">
+                                    <img alt="Account Facebook Ads BM Limit 250$" src="assets/images/gmail.png"
+                                        class="item-thumbnail">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="item-title mb-1">Account Facebook Ads BM Limit 250$</h3>
+                                        <p class="text-responsive-xs text-gray-500 mb-2 font-mono">SKU: FB-ADS-250</p>
+                                        <div
+                                            class="flex flex-wrap items-center gap-2 sm:gap-3 text-responsive-xs text-gray-600 mb-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="package" class="item-icon"></i>
+                                                <span class="item-quantity">x1</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="info" class="item-icon"></i>
+                                                <span>Weight: SKC, Boxes: 4 Boxes</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-2">
+                                                <span class="item-price-original" data-price="500000">500.000 ₫</span>
+                                                <span class="item-price" data-price="450000">450.000 ₫</span>
+                                            </div>
+                                            <div class="text-gray-600 text-responsive-xs font-medium">
+                                                <span>Tổng: 450.000 ₫</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Product 2 -->
+                                <div
+                                    class="flex items-start gap-3 sm:gap-4 pb-4 border-b border-gray-200 last:border-none last:pb-0">
+                                    <img alt="Gmail PVA 2024 - Tạo tay 100%" src="assets/images/gmail.png"
+                                        class="item-thumbnail">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="item-title mb-1">Gmail PVA 2024 - Tạo tay 100%</h3>
+                                        <p class="item-sku">SKU: GMAIL-PVA-2024</p>
+                                        <div class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="package" class="item-icon"></i>
+                                                <span class="item-quantity">x2</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-2">
+                                                <span class="item-price-original" data-price="30000">30.000 ₫</span>
+                                                <span class="item-price" data-price="25000">25.000 ₫</span>
+                                            </div>
+                                            <div class="text-gray-600 text-responsive-xs font-medium">
+                                                <span>Tổng: 50.000 ₫</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Sale Order Products -->
+                            <div x-show="orderType === 'sale'">
+                                <!-- Product 1 -->
+                                <div
+                                    class="flex items-start gap-3 sm:gap-4 pb-4 border-b border-gray-200 last:border-none last:pb-0">
+                                    <img alt="Netflix Premium 1 Tháng" src="/assets/images/gmail.png"
+                                        class="item-thumbnail">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="item-title mb-1">Netflix Premium 1 Tháng</h3>
+                                        <p class="text-responsive-xs text-gray-500 mb-2 font-mono">SKU: NETFLIX-PREM-1M
+                                        </p>
+                                        <div
+                                            class="flex flex-wrap items-center gap-2 sm:gap-3 text-responsive-xs text-gray-600 mb-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="package" class="item-icon"></i>
+                                                <span class="item-quantity">x1</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-2">
+                                                <span class="item-price" data-price="120000">120.000 ₫</span>
+                                            </div>
+                                            <div class="text-gray-600 text-responsive-xs font-medium">
+                                                <span>Tổng: 120.000 ₫</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN TÓM TẮT THANH TOÁN - ĐƠN MUA -->
+                    <!-- Hiển thị thông tin thanh toán cho người mua -->
+                    <!-- ============================================ -->
+                    <div class="pb-6 mb-6 border-b border-gray-200 bg-green-50/30 -mx-4 sm:-mx-6 px-4 sm:px-6 py-4 rounded-lg"
+                        x-show="orderType === 'purchase'">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="item-icon-bg">
+                                <i data-lucide="wallet" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Tóm tắt thanh toán</h2>
+                        </div>
+                        <div class="space-y-2">
+                            <div
+                                class="flex justify-between items-center py-2 text-responsive-sm border-b border-gray-100">
+                                <span class="text-gray-600">Số lượng sản phẩm:</span>
+                                <span class="font-semibold text-gray-900">3</span>
+                            </div>
+                            <div
+                                class="flex justify-between items-center py-2 text-responsive-sm border-b border-gray-100">
+                                <span class="text-gray-600">Tổng tiền:</span>
+                                <span class="font-semibold text-gray-900" data-price="500000">500.000 ₫</span>
+                            </div>
+                            <div
+                                class="flex justify-between items-center py-2 text-responsive-sm border-b border-gray-100">
+                                <span class="text-gray-600">Giảm giá:</span>
+                                <span class="font-semibold text-red-600" data-price="50000">-50.000 ₫</span>
+                            </div>
+                            <div class="border-t-2 border-gray-300 pt-3 mt-3 bg-gray-50 -mx-4 px-4 py-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-responsive-md font-bold text-gray-900">Tổng cộng:</span>
+                                    <span class="text-responsive-lg font-bold text-green-600"
+                                        data-price="450000">450.000
+                                        ₫</span>
+                                </div>
+                                <div class="flex justify-between items-center text-responsive-xs text-gray-500">
+                                    <span>Đã thanh toán:</span>
+                                    <span class="font-medium" data-price="450000">450.000 ₫</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-gray-200 mt-3">
+                                <div class="flex-1">
+                                    <span class="text-gray-600 text-responsive-xs block mb-1.5">Phương thức thanh
+                                        toán:</span>
+
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="wallet" class="size-4 text-gray-600"></i>
+                                    <span class="font-semibold text-gray-900 text-responsive-sm">Ví</span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN TÓM TẮT DOANH THU - ĐƠN BÁN -->
+                    <!-- Hiển thị thông tin doanh thu cho người bán -->
+                    <!-- Bao gồm: tổng giá trị, giảm giá, hoa hồng, doanh thu thực nhận -->
+                    <!-- ============================================ -->
+                    <div class="pb-6 mb-6 border-b border-gray-200" x-show="orderType === 'sale'">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="item-icon-bg">
+                                <i data-lucide="trending-up" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Tóm tắt doanh thu</h2>
+                        </div>
+                        <div class="space-y-2.5">
+                            <div
+                                class="flex justify-between items-center py-2 text-responsive-sm border-b border-gray-100">
+                                <span class="text-gray-600">Số lượng sản phẩm:</span>
+                                <span class="font-semibold text-gray-900">1</span>
+                            </div>
+                            <div
+                                class="flex justify-between items-center py-2 text-responsive-sm border-b border-gray-100">
+                                <span class="text-gray-600">Tổng giá trị đơn hàng:</span>
+                                <span class="font-semibold text-gray-900" data-price="120000">120.000 ₫</span>
+                            </div>
+                            <div
+                                class="flex justify-between items-center py-2 text-responsive-sm border-b border-gray-100">
+                                <span class="text-gray-600">Hoa hồng nền tảng:</span>
+                                <span class="font-semibold text-orange-600" data-price="12000">-12.000 ₫</span>
+                            </div>
+                            <div class="border-t-2 border-gray-300 pt-3 mt-3 bg-gray-50 -mx-4 px-4 py-3 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-responsive-md font-bold text-gray-900">Doanh thu của bạn:</span>
+                                    <span class="item-price" data-price="108000">108.000
+                                        ₫</span>
+                                </div>
+                                <div class="flex justify-between items-center text-responsive-sm text-gray-600">
+                                    <span>Đã nhận:</span>
+                                    <span class="item-price" data-price="120000">120.000 ₫</span>
+                                </div>
+                            </div>
+                            <div
+                                class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-gray-200 mt-3">
+                                <div class="flex-1">
+                                    <span class="text-gray-600 text-responsive-xs block mb-1.5">Phương thức thanh
+                                        toán:</span>
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="wallet" class="size-4 text-gray-600"></i>
+                                        <span class="font-semibold text-gray-900 text-responsive-sm">Ví ZaloPay</span>
+                                    </div>
+                                </div>
+                                <span class="badge badge-success inline-flex items-center gap-1.5 px-3 py-1.5">
+                                    <i data-lucide="circle-check-big" class="size-3.5"></i>
+                                    <span class="text-responsive-xs font-medium">Đã thanh toán</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN HÓA ĐƠN -->
+                    <!-- Các nút thao tác với hóa đơn -->
+                    <!-- Bao gồm: In hóa đơn, Tải hóa đơn -->
+                    <!-- ============================================ -->
+                    <div class="pb-6 mb-6 border-b border-gray-200">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="item-icon-bg">
+                                <i data-lucide="file-text" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Hóa đơn</h2>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button @click="printInvoice()"
+                                class="btn btn-outline btn-md flex-1 sm:flex-initial flex items-center justify-center gap-2">
+                                <i data-lucide="printer" class="size-4"></i>
+                                <span class="text-responsive-sm">In hóa đơn</span>
+                            </button>
+                            <button @click="downloadInvoice()"
+                                class="btn btn-outline btn-md flex-1 sm:flex-initial flex items-center justify-center gap-2">
+                                <i data-lucide="download" class="size-4"></i>
+                                <span class="text-responsive-sm">Tải hóa đơn</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN GHI CHÚ -->
+                    <!-- Hiển thị ghi chú từ khách hàng và ghi chú riêng -->
+                    <!-- Ghi chú khách hàng: readonly, chỉ xem -->
+                    <!-- Ghi chú riêng: có thể chỉnh sửa và lưu -->
+                    <!-- ============================================ -->
+                    <div class="pb-6 mb-6 border-b border-gray-200">
+                        <div class="space-y-5">
+                            <!-- Customer Note -->
+                            <div class="bg-blue rounded-lg p-4 border border-blue-200">
+                                <label class="block text-responsive-sm font-semibold text-gray-900 mb-2">
+                                    <i data-lucide="message-square"
+                                        class="size-4 inline-block mr-1.5 text-blue-600"></i>
+                                    Ghi chú từ khách hàng
+                                </label>
+                                <p class="text-responsive-xs text-gray-500 mb-3">Ghi chú này được thêm bởi khách hàng
+                                    tại
+                                    trang thanh toán, bạn không nên thay đổi</p>
+                                <textarea class="textarea w-full text-responsive-sm bg-white" rows="3"
+                                    readonly>Vui lòng gửi thông tin đăng nhập qua email.</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN LỊCH SỬ -->
+                    <!-- Hiển thị lịch sử các sự kiện của đơn hàng -->
+                    <!-- Bao gồm: các hành động, thời gian thực hiện -->
+                    <!-- ============================================ -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="item-icon-bg">
+                                <i data-lucide="clock" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Lịch sử</h2>
+                        </div>
+                        <div class="space-y-3 sm:space-y-4">
+                            <!-- Purchase Order History -->
+                            <div x-show="orderType === 'purchase'">
+                                <!-- Event 1 -->
+                                <div
+                                    class="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200">
+                                    <div class="flex-shrink-0 mt-0.5">
+                                        <div
+                                            class="size-8 sm:size-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
+                                            <i data-lucide="package" class="size-4 sm:size-5 text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-responsive-sm font-medium text-gray-900 mb-1">Đã tạo đơn vận
+                                            chuyển
+                                            cho đơn hàng</p>
+                                        <p class="text-responsive-xs text-gray-500 font-mono">2025-11-05 09:29:24</p>
+                                    </div>
+                                </div>
+                                <!-- Event 2 -->
+                                <div
+                                    class="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200">
+                                    <div class="flex-shrink-0 mt-0.5">
+                                        <div
+                                            class="size-8 sm:size-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
+                                            <i data-lucide="circle-check-big"
+                                                class="size-4 sm:size-5 text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-responsive-sm font-medium text-gray-900 mb-1">Thanh toán 450.000
+                                            ₫ đã
+                                            được xác nhận bởi Hệ thống</p>
+                                        <p class="text-responsive-xs text-gray-500 font-mono">2025-11-05 09:29:24</p>
+                                    </div>
+                                </div>
+                                <!-- Event 3 -->
+                                <div
+                                    class="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors last:border-none last:pb-0">
+                                    <div class="flex-shrink-0 mt-0.5">
+                                        <div
+                                            class="size-8 sm:size-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
+                                            <i data-lucide="circle-check-big"
+                                                class="size-4 sm:size-5 text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-responsive-sm font-medium text-gray-900 mb-1">Đơn hàng đã được
+                                            xác
+                                            minh bởi Hệ thống</p>
+                                        <p class="text-responsive-xs text-gray-500 font-mono">2025-11-05 09:29:24</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Sale Order History -->
+                            <div x-show="orderType === 'sale'">
+                                <!-- Event 1 -->
+                                <div
+                                    class="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors border-b border-gray-200">
+                                    <div class="flex-shrink-0 mt-0.5">
+                                        <div
+                                            class="size-8 sm:size-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
+                                            <i data-lucide="package" class="size-4 sm:size-5 text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-responsive-sm font-medium text-gray-900 mb-1">Đã tạo đơn vận
+                                            chuyển
+                                            cho đơn hàng</p>
+                                        <p class="text-responsive-xs text-gray-500 font-mono">2025-11-05 09:29:24</p>
+                                    </div>
+                                </div>
+                                <!-- Event 2 -->
+                                <div
+                                    class="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors last:border-none last:pb-0">
+                                    <div class="flex-shrink-0 mt-0.5">
+                                        <div
+                                            class="size-8 sm:size-10 rounded-lg bg-white border border-gray-200 flex items-center justify-center">
+                                            <i data-lucide="circle-check-big"
+                                                class="size-4 sm:size-5 text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-responsive-sm font-medium text-gray-900 mb-1">Thanh toán 120.000
+                                            ₫ đã
+                                            được xác nhận bởi Hệ thống</p>
+                                        <p class="text-responsive-xs text-gray-500 font-mono">2025-11-05 09:29:24</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Customer/Shipping Info (1/3 width on large screens) -->
+            <div>
+                <!-- ============================================ -->
+                <!-- CARD BORDER CHUNG CHO TẤT CẢ NỘI DUNG RIGHT COLUMN -->
+                <!-- ============================================ -->
+                <div class="card-border p-4 sm:p-6">
+                    <!-- ============================================ -->
+                    <!-- PHẦN THÔNG TIN NGƯỜI BÁN - ĐƠN MUA -->
+                    <!-- Hiển thị thông tin người bán cho người mua -->
+                    <!-- Bao gồm: tên cửa hàng, email, số điện thoại, link xem cửa hàng -->
+                    <!-- ============================================ -->
+                    <div class="mb-6 border-b border-gray-200" x-show="orderType === 'purchase'">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="item-icon-bg">
+                                <i data-lucide="store" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Người bán</h2>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-3 sm:gap-4 p-3 bg-gray-50 rounded-lg">
+                                <img src="assets/images/gmail.png" alt="avatar" class="item-thumbnail">
+                                <div class="flex-1 min-w-0">
+                                    <p class="item-title">MMO Expert</p>
+                                    <p class="item-description">5 đơn hàng</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 text-responsive-sm transition-colors">
+                                <i data-lucide="mail" class="size-4"></i>
+                                <span> <a class="link-secondary"
+                                        href="mailto:nguyenvana@example.com">nguyenvana@example.com</a></span>
+                            </div>
+                            <div class="flex items-center gap-2 text-responsive-sm transition-colors">
+                                <i data-lucide="phone" class="size-4"></i>
+                                <span> <a class="link-secondary" href="tel:+84912345678">+84912345678</a></span>
+                            </div>
+                            <div class="pt-3 border-t border-gray-200">
+                                <a href="#" class="link-secondary flex items-center gap-2">
+                                    <i data-lucide="store" class="size-4"></i>
+                                    <span>Xem cửa hàng</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN THÔNG TIN NGƯỜI MUA - ĐƠN BÁN -->
+                    <!-- Hiển thị thông tin người mua cho người bán -->
+                    <!-- Bao gồm: tên khách hàng, email, số điện thoại, tổng số đơn hàng -->
+                    <!-- ============================================ -->
+                    <div class="mb-6 border-b border-gray-200" x-show="orderType === 'sale'">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="item-icon-bg">
+                                <i data-lucide="user" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Thông tin người mua</h2>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex gap-3 sm:gap-4 p-3 bg-gray-50 rounded-lg flex-col">
+                                <img src="assets/images/gmail.png" alt="avatar" class="item-thumbnail">
+                                <div class="flex-1 min-w-0">
+                                    <p class="item-description">1 đơn hàng</p>
+                                    <p class="item-title">Nguyễn Văn A</p>
+                                    <div class="flex items-center gap-2 text-responsive-sm transition-colors">
+                                        <i data-lucide="mail" class="size-4"></i>
+                                        <span> <a class="link-secondary"
+                                                href="mailto:nguyenvana@example.com">nguyenvana@example.com</a></span>
+                                    </div>
+                                    <div class="flex items-center gap-2 text-responsive-sm transition-colors">
+                                        <i data-lucide="phone" class="size-4"></i>
+                                        <span> <a class="link-secondary" href="tel:+84912345678">+84912345678</a></span>
+                                    </div>
+                                </div>
+
+
+                                <div class="pt-3 border-t border-gray-200">
+                                    <a href="#" class="link-secondary flex items-center gap-2">
+                                        <i data-lucide="user-check" class="size-4"></i>
+                                        <span>Đã có tài khoản</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN THÔNG TIN GIAO NHẬN - ĐƠN MUA -->
+                    <!-- Hiển thị thông tin email nhận sản phẩm số cho người mua -->
+                    <!-- Sản phẩm số được giao qua email, không cần địa chỉ vật lý -->
+                    <!-- Bao gồm: email nhận hàng, trạng thái gửi email -->
+                    <!-- ============================================ -->
+                    <div class="pb-6 mb-6 border-b border-gray-200" x-show="orderType === 'purchase'">
+                        <div class="flex items-center gap-2 mb-2 justify-between ">
+                            <div class="flex items-center gap-2">
+                                <div class="item-icon-bg">
+                                    <i data-lucide="mail" class="size-4 sm:size-5"></i>
+                                </div>
+                                <h2 class="card-title-sm">Thông tin giao nhận</h2>
+                            </div>
+                            <button
+                                class="link-secondary flex items-center gap-1.5 text-responsive-xs hover:gap-2 transition-all">
+                                <i data-lucide="edit" class="size-3.5 sm:size-4"></i>
+                                <span>Sửa</span>
+                            </button>
+                        </div>
+                        <div class="space-y-3 sm:space-y-4">
+                            <!-- Email nhận hàng -->
+                            <div class="pt-3 border-t border-gray-200 space-y-2">
+                                <div class="flex items-center gap-2 text-responsive-sm transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" data-lucide="mail" class="lucide lucide-mail size-4">
+                                        <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path>
+                                        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                                    </svg>
+                                    <span> <a class="link-secondary"
+                                            href="mailto:nguyenvana@example.com">nguyenvana@example.com</a></span>
+                                </div>
+                                <div class="flex items-center gap-2 text-responsive-sm transition-colors">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" data-lucide="phone" class="lucide lucide-phone size-4">
+                                        <path
+                                            d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384">
+                                        </path>
+                                    </svg>
+                                    <span> <a class="link-secondary" href="tel:+84912345678">+84912345678</a></span>
+                                </div>
+                            </div>
+
+                            <!-- Trạng thái gửi email -->
+                            <div class="p-3 sm:p-4 rounded-lg bg-blue-50 border border-blue-200">
+                                <div class="flex items-start gap-2.5 sm:gap-3">
+                                    <i data-lucide="send"
+                                        class="size-4 sm:size-5 text-blue-600 flex-shrink-0 mt-0.5"></i>
+                                    <div class="flex-1 min-w-0">
+                                        <span
+                                            class="text-gray-700 block text-responsive-xs sm:text-responsive-sm mb-2 sm:mb-3 font-semibold">Trạng
+                                            thái gửi email:</span>
+                                        <div class="flex flex-wrap items-center gap-2 mb-2 sm:mb-3">
+                                            <span class="badge badge-success inline-flex items-center gap-1.5">
+                                                <i data-lucide="check-circle" class="size-3 sm:size-3.5"></i>
+                                                <span class="text-responsive-xs">Đã gửi email</span>
+                                            </span>
+                                        </div>
+                                        <p class="text-responsive-xs text-gray-600">
+                                            <span class="font-mono">2025-11-05 09:30:15</span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gửi lại email -->
+                            <div class="pt-2 sm:pt-3 border-t border-gray-200">
+                                <a href="#"
+                                    class="link-secondary inline-flex items-center gap-2 text-responsive-xs sm:text-responsive-sm hover:gap-2.5 transition-all">
+                                    <i data-lucide="mail" class="size-3.5 sm:size-4"></i>
+                                    <span>Gửi lại email</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN QUẢN LÝ ĐƠN HÀNG - ĐƠN BÁN -->
+                    <!-- Hiển thị thông tin quản lý đơn hàng cho người bán -->
+                    <!-- Bao gồm: ngày đặt hàng, thời gian xử lý, mã vận đơn, lý do hủy, số tiền hoàn -->
+                    <!-- ============================================ -->
+                    <div class="pb-6 mb-6 border-b border-gray-200" x-show="orderType === 'sale'">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="item-icon-bg">
+                                <i data-lucide="settings" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Quản lý đơn hàng</h2>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600 text-responsive-sm">Ngày đặt hàng:</span>
+                                <span class="font-semibold text-gray-900 text-responsive-sm">2025-11-05 09:15:00</span>
+                            </div>
+                            <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                                <span class="text-gray-600 text-responsive-sm">Thời gian xử lý:</span>
+                                <span class="font-semibold text-gray-900 text-responsive-sm">2 ngày</span>
+                            </div>
+                            <div class="flex items-center justify-between py-2 border-b border-gray-100"
+                                x-show="orderStatus === 'shipping'">
+                                <span class="text-gray-600 text-responsive-sm">Mã vận đơn:</span>
+                                <span class="font-mono font-semibold text-gray-900 text-responsive-sm"
+                                    x-text="trackingNumber || 'Chưa có'"></span>
+                            </div>
+                            <div class="flex items-center justify-between py-2" x-show="orderStatus === 'cancelled'">
+                                <span class="text-gray-600 text-responsive-sm">Lý do hủy:</span>
+                                <span class="font-semibold text-red-600 text-responsive-sm"
+                                    x-text="cancellationReason || 'Không có'"></span>
+                            </div>
+                            <div class="flex items-center justify-between py-2" x-show="orderStatus === 'refunded'">
+                                <span class="text-gray-600 text-responsive-sm">Số tiền hoàn:</span>
+                                <span class="font-semibold text-orange-600 text-responsive-sm"
+                                    x-text="formatPrice(refundAmount || 0)"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN CỬA HÀNG - ĐƠN MUA -->
+                    <!-- Hiển thị thông tin cửa hàng cho người mua -->
+                    <!-- ============================================ -->
+
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN THÔNG TIN HOA HỒNG - ĐƠN BÁN -->
+                    <!-- Hiển thị thông tin hoa hồng nền tảng cho người bán -->
+                    <!-- Bao gồm: tỷ lệ hoa hồng, số tiền hoa hồng, doanh thu thực nhận -->
+                    <!-- ============================================ -->
+                    <div class="pb-6 mb-6 border-b border-gray-200" x-show="orderType === 'sale'">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="item-icon-bg">
+                                <i data-lucide="percent" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Thông tin hoa hồng</h2>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="bg-gray ">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600 text-responsive-sm">Tỷ lệ hoa hồng:</span>
+                                    <span class="item-price">10%</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600 text-responsive-sm">Số tiền hoa hồng:</span>
+                                    <span class="item-price" data-price="12000">12.000
+                                        ₫</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-600 text-responsive-sm font-semibold">Doanh thu thực
+                                        nhận:</span>
+                                    <span class="item-price" data-price="108000">108.000
+                                        ₫</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- ============================================ -->
+                    <!-- PHẦN THAO TÁC - ĐƠN MUA -->
+                    <!-- Các nút thao tác dành cho người mua -->
+                    <!-- Bao gồm: Mua lại, Đánh giá, Hủy đơn hàng, Nhắn tin người bán -->
+                    <!-- ============================================ -->
+                    <div class="pb-6 mb-6 border-b border-gray-200" x-show="orderType === 'purchase'">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="item-icon-bg">
+                                <i data-lucide="zap" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Thao tác</h2>
+                        </div>
+                        <div class="flex flex-col gap-2.5">
+                            <button x-show="orderStatus === 'completed' || orderStatus === 'cancelled'"
+                                class="btn btn-secondary btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="refresh-cw" class="size-4"></i>
+                                <span class="text-responsive-sm">Mua lại</span>
+                            </button>
+                            <button x-show="orderStatus === 'completed'"
+                                class="btn btn-outline btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="star" class="size-4"></i>
+                                <span class="text-responsive-sm">Đánh giá</span>
+                            </button>
+                            <button x-show="orderStatus === 'processing' || orderStatus === 'pending'"
+                                class="btn btn-outline btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="x-circle" class="size-4"></i>
+                                <span class="text-responsive-sm">Hủy đơn hàng</span>
+                            </button>
+                            <button class="btn btn-outline btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="message-square" class="size-4"></i>
+                                <span class="text-responsive-sm">Nhắn tin người bán</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ============================================ -->
+                    <!-- PHẦN THAO TÁC - ĐƠN BÁN -->
+                    <!-- Các nút thao tác dành cho người bán -->
+                    <!-- Bao gồm: Xác nhận đơn hàng, Cập nhật trạng thái giao hàng, Hoàn thành, Hủy đơn, Xử lý khiếu nại, In hóa đơn, Nhắn tin người mua -->
+                    <!-- ============================================ -->
+                    <div x-show="orderType === 'sale'">
+                        <div class="flex items-center gap-2 mb-4">
+                            <div class="item-icon-bg">
+                                <i data-lucide="zap" class="size-5"></i>
+                            </div>
+                            <h2 class="card-title-sm">Thao tác</h2>
+                        </div>
+                        <div class="flex flex-col gap-2.5">
+                            <button x-show="orderStatus === 'pending'"
+                                class="btn btn-primary btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="check-circle" class="size-4"></i>
+                                <span class="text-responsive-sm">Xác nhận đơn hàng</span>
+                            </button>
+                            <button x-show="orderStatus === 'processing'"
+                                class="btn btn-success btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="truck" class="size-4"></i>
+                                <span class="text-responsive-sm">Cập nhật trạng thái giao hàng</span>
+                            </button>
+                            <button x-show="orderStatus === 'processing'"
+                                class="btn btn-primary btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="circle-check-big" class="size-4"></i>
+                                <span class="text-responsive-sm">Hoàn thành đơn hàng</span>
+                            </button>
+                            <button x-show="orderStatus === 'pending' || orderStatus === 'processing'"
+                                class="btn btn-danger btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="x-circle" class="size-4"></i>
+                                <span class="text-responsive-sm">Hủy đơn hàng</span>
+                            </button>
+                            <button x-show="orderStatus === 'dispute'"
+                                class="btn btn-warning btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="alert-circle" class="size-4"></i>
+                                <span class="text-responsive-sm">Xử lý khiếu nại</span>
+                            </button>
+                            <button x-show="orderStatus === 'completed'"
+                                class="btn btn-outline btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="printer" class="size-4"></i>
+                                <span class="text-responsive-sm">In hóa đơn</span>
+                            </button>
+                            <button class="btn btn-outline btn-md w-full flex items-center justify-center gap-2">
+                                <i data-lucide="message-square" class="size-4"></i>
+                                <span class="text-responsive-sm">Nhắn tin người mua</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <!-- include:./blocks/footer.html -->
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMO Store - Cài đặt</title>
+    <meta name="description"
+        content="Cửa hàng bán tài khoản premium, key license, VPN và các sản phẩm số chất lượng cao với giá tốt nhất.">
+    <script type="text/javascript">
+        const API_URL = "https://panel.dongnai.net/api/v2/";
+    </script>
+    <!-- Add Inline Hidden Class for Fix CLS -->
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- all css -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+
+
+    <!-- 1. CAC THU VIEN CAN SU DUNG -->
+    <!-- Notification Library -->
+    <script src="assets/js/libs/notification.js" defer></script>
+    <!-- Initialize FastNotice -->
+    <script>
+        // Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+        document.addEventListener('DOMContentLoaded', function () {
+            window.fastNotice = new FastNotice({
+                position: 'top-center',    // Vị trí mặc định
+                duration: 3000,              // Thời gian hiển thị (ms)
+                maxNotifications: 3          // Số notification tối đa
+            });
+        });
+    </script>
+    <!-- Lucide Icons - Custom Build -->
+    <script src="assets/js/lucide-custom.min.js" defer></script>
+    <!-- jModal manager -->
+    <script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+    <!-- Load BlazeSlider Library -->
+    <script src="assets/js/libs/blaze-slider.js" defer></script>
+    <!-- Libs Tabs JS Thuần -->
+    <script src="assets/js/libs/tabs.js" defer></script>
+    <!-- Image Fallback Utility -->
+    <script src="assets/js/libs/image-fallback.js" defer></script>
+
+
+    <!-- 2. CAC CODE JS TU VIET. -->
+    <!-- Cart Manager Libs JS -->
+    <script src="assets/js/cart-manager.js" defer></script>
+    <!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+    <script src="assets/js/header.js" defer></script>
+    <!-- Settings Component JS -->
+    <script src="assets/js/settings.js" defer></script>
+
+    <!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+    <script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+
+
+</head>
+
+<body class="min-h-screen bg-gray-100">
+    <!-- header -->
+    <!-- include:./blocks/header.html -->
+
+    <!-- Main Content Area -->
+    <main class="sm:container mx-auto py-4 sm:py-8" x-data="settingsManager()">
+        <div class="mb-8">
+            <!-- Header Section -->
+            <div class="p-4 mb-6">
+                <h1 class="card-title mb-1 sm:mb-2">Cài đặt</h1>
+                <p class="card-description">Quản lý cài đặt tài khoản và tùy chọn hiển thị</p>
+            </div>
+        </div>
+
+        <!-- Settings Content -->
+        <div class="max-w-3xl mx-auto space-y-6">
+            <!-- General Settings Section -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Cài đặt chung</h3>
+
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-gray-900">Ngôn ngữ</p>
+                            <p class="text-sm text-gray-500">Chọn ngôn ngữ hiển thị</p>
+                        </div>
+                        <select x-model="settings.language" class="input bg-gray-50 text-responsive-sm">
+                            <option value="vi" selected>Tiếng Việt</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-gray-900">Múi giờ</p>
+                            <p class="text-sm text-gray-500">Chọn múi giờ của bạn</p>
+                        </div>
+                        <select x-model="settings.timezone" class="input bg-gray-50 text-responsive-sm">
+                            <option value="Asia/Ho_Chi_Minh" selected>Asia/Ho_Chi_Minh (GMT+7)</option>
+                            <option value="UTC">UTC (GMT+0)</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-gray-900">Đơn vị tiền tệ</p>
+                            <p class="text-sm text-gray-500">Hiển thị giá sản phẩm</p>
+                        </div>
+                        <select x-model="settings.currency" class="input bg-gray-50 text-responsive-sm">
+                            <option value="VND" selected>VND (₫)</option>
+                            <option value="USD">USD ($)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <button @click="saveSettings()" :disabled="isSavingSettings" class="btn btn-primary btn-md">
+                        <span x-show="!isSavingSettings" class="flex items-center gap-2">
+                            <i data-lucide="save" class="size-4"></i>
+                            Lưu cài đặt
+                        </span>
+                        <span x-show="isSavingSettings" class="flex items-center gap-2">
+                            <i data-lucide="loader-circle" class="size-4 animate-spin"></i>
+                            Đang lưu...
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notification Preferences Section -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Tùy chọn thông báo</h3>
+
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">Email thông báo</p>
+                            <p class="text-sm text-gray-500">Nhận thông báo qua email</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" x-model="notifications.email" class="sr-only peer">
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">Thông báo đơn hàng</p>
+                            <p class="text-sm text-gray-500">Cập nhật về đơn hàng của bạn</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" x-model="notifications.orders" class="sr-only peer" checked>
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">Thông báo khuyến mãi</p>
+                            <p class="text-sm text-gray-500">Nhận thông tin về ưu đãi và khuyến mãi</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" x-model="notifications.promotions" class="sr-only peer">
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">Thông báo bảo mật</p>
+                            <p class="text-sm text-gray-500">Cảnh báo về hoạt động đăng nhập</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" x-model="notifications.security" class="sr-only peer" checked>
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Privacy Settings Section -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Quyền riêng tư</h3>
+
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">Hiển thị hồ sơ công khai</p>
+                            <p class="text-sm text-gray-500">Cho phép người khác xem hồ sơ của bạn</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" x-model="privacy.publicProfile" class="sr-only peer">
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">Hiển thị email</p>
+                            <p class="text-sm text-gray-500">Cho phép người khác xem email của bạn</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" x-model="privacy.showEmail" class="sr-only peer">
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="font-medium text-gray-900">Cho phép tìm kiếm theo email</p>
+                            <p class="text-sm text-gray-500">Người khác có thể tìm bạn bằng email</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" x-model="privacy.searchByEmail" class="sr-only peer" checked>
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-emerald-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appearance Settings Section -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Giao diện</h3>
+
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-gray-900">Chế độ hiển thị</p>
+                            <p class="text-sm text-gray-500">Chọn giao diện sáng hoặc tối</p>
+                        </div>
+                        <select x-model="appearance.theme" class="input bg-gray-50 text-responsive-sm">
+                            <option value="light" selected>Sáng</option>
+                            <option value="dark">Tối</option>
+                            <option value="auto">Tự động</option>
+                        </select>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-gray-900">Mật độ hiển thị</p>
+                            <p class="text-sm text-gray-500">Điều chỉnh khoảng cách giữa các phần tử</p>
+                        </div>
+                        <select x-model="appearance.density" class="input bg-gray-50 text-responsive-sm">
+                            <option value="comfortable" selected>Thoải mái</option>
+                            <option value="compact">Gọn gàng</option>
+                            <option value="spacious">Rộng rãi</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Management Section -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Quản lý dữ liệu</h3>
+
+                <div class="space-y-3">
+                    <button @click="exportData()"
+                        class="w-full flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="download" class="size-5 text-gray-600"></i>
+                            <div class="text-left">
+                                <p class="font-medium text-gray-900">Xuất dữ liệu</p>
+                                <p class="text-sm text-gray-500">Tải xuống tất cả dữ liệu của bạn</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="size-5 text-gray-400"></i>
+                    </button>
+
+                    <button @click="requestDataDeletion()"
+                        class="w-full flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="file-x" class="size-5 text-gray-600"></i>
+                            <div class="text-left">
+                                <p class="font-medium text-gray-900">Yêu cầu xóa dữ liệu</p>
+                                <p class="text-sm text-gray-500">Gửi yêu cầu xóa dữ liệu cá nhân</p>
+                            </div>
+                        </div>
+                        <i data-lucide="chevron-right" class="size-5 text-gray-400"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Connected Apps Section -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Ứng dụng đã kết nối</h3>
+                    <button @click="connectApp()" class="btn btn-sm btn-primary">
+                        <i data-lucide="plus" class="size-4"></i>
+                        Kết nối
+                    </button>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="github" class="size-5 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">GitHub</p>
+                                <p class="text-xs text-gray-500">Đã kết nối lúc: 10 tháng 1, 2024</p>
+                            </div>
+                        </div>
+                        <button @click="disconnectApp('github')" class="btn btn-sm btn-delete">
+                            <i data-lucide="x" class="size-4"></i>
+                            Ngắt kết nối
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="size-10 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="google" class="size-5 text-red-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-900">Google</p>
+                                <p class="text-xs text-gray-500">Đã kết nối lúc: 5 tháng 1, 2024</p>
+                            </div>
+                        </div>
+                        <button @click="disconnectApp('google')" class="btn btn-sm btn-delete">
+                            <i data-lucide="x" class="size-4"></i>
+                            Ngắt kết nối
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danger Zone Section -->
+            <div class="bg-white rounded-lg shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-red-600 mb-4">Vùng nguy hiểm</h3>
+
+                <div class="space-y-4">
+                    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p class="font-medium text-red-900 mb-2">Xóa tài khoản</p>
+                        <p class="text-sm text-red-700 mb-4">Hành động này không thể hoàn tác. Tất cả dữ liệu của bạn sẽ
+                            bị xóa vĩnh viễn.</p>
+                        <button @click="confirmDeleteAccount()" class="btn btn-delete btn-sm">
+                            <i data-lucide="trash-2" class="size-4"></i>
+                            Xóa tài khoản
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <!-- include:./blocks/footer.html -->
+</body>
+
+</html>

@@ -71,10 +71,10 @@
 
     <!-- Main Content Area -->
     <main class="sm:container mx-auto py-4 sm:py-8" x-data="ordersManager()">
-        <div class="mb-8">
+        <div class="mb-4">
             <!-- Header Section -->
-            <div class=" p-4 mb-6">
-                <h1 class="card-title mb-1 sm:mb-2">Quản lý đơn hàng</h1>
+            <div class="mb-6 px-4 sm:px-0">
+                <h1 class="card-title">Quản lý đơn hàng</h1>
                 <p class="card-description">Theo dõi và quản lý tất cả đơn hàng của bạn</p>
             </div>
 
@@ -95,11 +95,10 @@
                 </div>
 
                 <form class="flex-1 sm:max-w-md" @submit.prevent="searchOrders()">
-                    <div class="relative">
-                        <i data-lucide="search"
-                            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"></i>
+                    <div class="input-icon">
                         <input x-model="searchQuery" placeholder="Tìm theo mã đơn, sản phẩm..."
-                            class="w-full input pl-10 bg-gray-50 text-responsive-sm" type="text">
+                            class="input w-full text-responsive-sm" type="text">
+                        <i data-lucide="search" class="icon size-4 sm:size-5"></i>
                     </div>
                 </form>
 
@@ -109,10 +108,9 @@
                     <span class="hidden sm:inline">Lọc</span>
                 </button> -->
             </div>
-
-            <!-- Status Filter Tabs -->
+            <!-- Order status filter -->
             <div class="tabs">
-                <div class="tabs-menus overflow-x-auto scrollbar-hide">
+                <div class="tabs-menus">
                     <button @click="statusFilter = 'all'"
                         :class="statusFilter === 'all' ? 'active bg-green-500 text-white' : 'text-gray-600'"
                         class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="all">
@@ -120,29 +118,12 @@
                         <span class="truncate">Tổng đơn</span>
                         <span class="badge badge-secondary" x-text="stats.total">45</span>
                     </button>
-
                     <button @click="statusFilter = 'pending'"
                         :class="statusFilter === 'pending' ? 'active bg-yellow-500 text-white' : 'text-yellow-600'"
                         class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="pending">
                         <i data-lucide="clock" class="size-4 flex-shrink-0"></i>
                         <span class="truncate">Chờ xử lý</span>
                         <span class="badge badge-secondary" x-text="stats.pending">8</span>
-                    </button>
-
-                    <button @click="statusFilter = 'processing'"
-                        :class="statusFilter === 'processing' ? 'active bg-blue-500 text-white' : 'text-blue-600'"
-                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="processing">
-                        <i data-lucide="truck" class="size-4 flex-shrink-0"></i>
-                        <span class="truncate">Đang xử lý</span>
-                        <span class="badge badge-secondary" x-text="stats.processing">12</span>
-                    </button>
-
-                    <button @click="statusFilter = 'processed'"
-                        :class="statusFilter === 'processed' ? 'active bg-purple-500 text-white' : 'text-purple-600'"
-                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="processed">
-                        <i data-lucide="circle-check-big" class="size-4 flex-shrink-0"></i>
-                        <span class="truncate">Đã xử lý</span>
-                        <span class="badge badge-secondary" x-text="stats.processed">15</span>
                     </button>
 
                     <button @click="statusFilter = 'completed'"
@@ -152,7 +133,6 @@
                         <span class="truncate">Đã hoàn thành</span>
                         <span class="badge badge-secondary" x-text="stats.completed">7</span>
                     </button>
-
                     <button @click="statusFilter = 'dispute'"
                         :class="statusFilter === 'dispute' ? 'active bg-orange-500 text-white' : 'text-orange-600'"
                         class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="dispute">
@@ -160,7 +140,6 @@
                         <span class="truncate">Đơn khiếu nại</span>
                         <span class="badge badge-secondary" x-text="stats.dispute">2</span>
                     </button>
-
                     <button @click="statusFilter = 'cancelled'"
                         :class="statusFilter === 'cancelled' ? 'active bg-red-500 text-white' : 'text-red-600'"
                         class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="cancelled">
@@ -171,118 +150,892 @@
                 </div>
             </div>
         </div>
-
-        <!-- Orders List Section -->
-        <div class="bg-white rounded-lg shadow-sm">
-            <!-- Loading State -->
-            <div x-show="isLoading" class="text-center py-12 px-4">
-                <div class="loading loading-lg mx-auto mb-4"></div>
-                <p class="text-responsive-sm text-gray-600">Đang tải danh sách đơn hàng...</p>
+        <!-- Order list -->
+        <div class="card-border">
+            <!-- Bảng đơn mua - Purchase Orders Table -->
+            <div class="hidden md:block" x-show="orderType === 'purchase'">
+                <table class="min-w-full text-sm">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Mã đơn</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Sản phẩm</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs hidden lg:table-cell">
+                                Người bán</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Giá</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs hidden sm:table-cell">
+                                Ngày đặt</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Trạng thái</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="purchase"
+                            data-status="completed" data-order-id="BO001" data-product="Tài khoản Facebook Business"
+                            data-seller="TechStore VN" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">BO001</td>
+                            <td class="px-4 py-3 text-responsive-xs">Tài khoản Facebook Business</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">TechStore VN</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">250.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">14/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-success inline-flex items-center gap-1">
+                                    <i data-lucide="circle-check-big" class="size-3"></i>
+                                    <span>Đã hoàn thành</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('BO001')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                    <button @click="reviewOrder('BO001')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Đánh giá">
+                                        <i data-lucide="star" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="purchase"
+                            data-status="processing" data-order-id="BO002" data-product="Gmail PVA 2024"
+                            data-seller="EmailPro" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">BO002</td>
+                            <td class="px-4 py-3 text-responsive-xs">Gmail PVA 2024</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">EmailPro</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">150.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">13/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-info inline-flex items-center gap-1">
+                                    <i data-lucide="loader-2" class="size-3 animate-spin"></i>
+                                    <span>Đang xử lý</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('BO002')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="purchase"
+                            data-status="pending" data-order-id="BO003" data-product="Instagram Account Aged"
+                            data-seller="SocialMedia Hub" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">BO003</td>
+                            <td class="px-4 py-3 text-responsive-xs">Instagram Account Aged</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">SocialMedia Hub</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">300.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">12/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-warning inline-flex items-center gap-1">
+                                    <i data-lucide="clock" class="size-3"></i>
+                                    <span>Chờ xử lý</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('BO003')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="purchase"
+                            data-status="dispute" data-order-id="BO004" data-product="YouTube Channel Monetized"
+                            data-seller="ContentCreator Pro" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">BO004</td>
+                            <td class="px-4 py-3 text-responsive-xs">YouTube Channel Monetized</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">ContentCreator Pro</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">1.200.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">11/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-danger inline-flex items-center gap-1">
+                                    <i data-lucide="triangle-alert" class="size-3"></i>
+                                    <span>Khiếu nại</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('BO004')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="purchase"
+                            data-status="cancelled" data-order-id="BO005" data-product="TikTok Account 10K Followers"
+                            data-seller="ViralBoost" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">BO005</td>
+                            <td class="px-4 py-3 text-responsive-xs">TikTok Account 10K Followers</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">ViralBoost</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">800.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">10/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-secondary inline-flex items-center gap-1">
+                                    <i data-lucide="circle-x" class="size-3"></i>
+                                    <span>Đã hủy</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('BO005')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <!-- Empty State -->
-            <div x-show="!isLoading && displayedOrders.length === 0" class="card py-12 px-4 text-center">
-                <i data-lucide="package" class="size-16 text-gray-300 mx-auto mb-4"></i>
-                <h3 class="card-title  mb-2">Không có đơn hàng</h3>
-                <p class="card-description mb-4">Không có đơn hàng nào ở trạng thái này.</p>
-                <a href="/products.html" class="btn btn-primary btn-md">
-                    <i data-lucide="shopping-cart" class="size-4"></i>
-                    Bắt đầu mua sắm
-                </a>
+            <!-- Bảng đơn bán - Sale Orders Table -->
+            <div class="hidden md:block" x-show="orderType === 'sale'">
+                <table class="min-w-full text-sm">
+                    <thead>
+                        <tr class="bg-gray-100">
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Mã đơn</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Sản phẩm</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs hidden lg:table-cell">
+                                Người mua</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Giá</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs hidden sm:table-cell">
+                                Ngày đặt</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Trạng thái</th>
+                            <th class="px-4 py-3 text-left font-semibold text-responsive-xs">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="sale"
+                            data-status="completed" data-order-id="SO001" data-product="Netflix Premium 1 Tháng"
+                            data-seller="Nguyễn Văn A" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">SO001</td>
+                            <td class="px-4 py-3 text-responsive-xs">Netflix Premium 1 Tháng</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">Nguyễn Văn A</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">120.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">15/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-success inline-flex items-center gap-1">
+                                    <i data-lucide="circle-check-big" class="size-3"></i>
+                                    <span>Đã hoàn thành</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('SO001')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="In hóa đơn">
+                                        <i data-lucide="printer" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="sale"
+                            data-status="processing" data-order-id="SO002" data-product="Spotify Premium 3 Tháng"
+                            data-seller="Trần Thị B" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">SO002</td>
+                            <td class="px-4 py-3 text-responsive-xs">Spotify Premium 3 Tháng</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">Trần Thị B</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">180.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">14/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-info inline-flex items-center gap-1">
+                                    <i data-lucide="loader-2" class="size-3 animate-spin"></i>
+                                    <span>Đang xử lý</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('SO002')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Xác nhận">
+                                        <i data-lucide="check-circle" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="sale"
+                            data-status="pending" data-order-id="SO003" data-product="NordVPN Premium 1 Năm"
+                            data-seller="Lê Văn C" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">SO003</td>
+                            <td class="px-4 py-3 text-responsive-xs">NordVPN Premium 1 Năm</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">Lê Văn C</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">350.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">13/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-warning inline-flex items-center gap-1">
+                                    <i data-lucide="clock" class="size-3"></i>
+                                    <span>Chờ xử lý</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('SO003')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Xác nhận">
+                                        <i data-lucide="check-circle" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Hủy đơn">
+                                        <i data-lucide="x-circle" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="sale"
+                            data-status="processed" data-order-id="SO004" data-product="Adobe Creative Cloud"
+                            data-seller="Phạm Thị D" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">SO004</td>
+                            <td class="px-4 py-3 text-responsive-xs">Adobe Creative Cloud</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">Phạm Thị D</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">450.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">12/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-primary inline-flex items-center gap-1">
+                                    <i data-lucide="circle-check-big" class="size-3"></i>
+                                    <span>Đã xử lý</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('SO004')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="In hóa đơn">
+                                        <i data-lucide="printer" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b last:border-none hover:bg-gray-50" data-order data-order-type="sale"
+                            data-status="dispute" data-order-id="SO005" data-product="Microsoft Office 365"
+                            data-seller="Hoàng Văn E" x-show="matchesOrder($el)">
+                            <td class="px-4 py-3 font-medium text-gray-900 text-responsive-xs">SO005</td>
+                            <td class="px-4 py-3 text-responsive-xs">Microsoft Office 365</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden lg:table-cell">Hoàng Văn E</td>
+                            <td class="px-4 py-3 text-green-600 font-bold text-responsive-xs">280.000&nbsp;₫</td>
+                            <td class="px-4 py-3 text-responsive-xs hidden sm:table-cell">11/1/2024</td>
+                            <td class="px-4 py-3">
+                                <span class="badge badge-danger inline-flex items-center gap-1">
+                                    <i data-lucide="triangle-alert" class="size-3"></i>
+                                    <span>Khiếu nại</span>
+                                </span>
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex items-center gap-2">
+                                    <button @click="viewOrderDetail('SO005')"
+                                        class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Chi tiết">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Xử lý khiếu nại">
+                                        <i data-lucide="alert-circle" class="size-4"></i>
+                                    </button>
+                                    <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                        title="Nhắn tin">
+                                        <i data-lucide="message-square" class="size-4"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+            <!-- Mobile View - Đơn mua -->
+            <div class="block md:hidden" x-show="orderType === 'purchase'">
+                <div class="divide-y divide-gray-200">
+                    <!-- Order 1 -->
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="purchase"
+                        data-status="completed" data-order-id="BO001" data-product="Tài khoản Facebook Business"
+                        data-seller="TechStore VN" x-show="matchesOrder($el)">
+                        <!-- người bán, badge -->
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <div class="flex items-center gap-2 ">
+                                <i data-lucide="store" class="item-icon"></i>
+                                <span class="item-link">MMO Expert</span>
+                            </div>
+                            <span class="badge badge-success inline-flex items-center gap-1">
+                                <i data-lucide="circle-check-big" class="size-4 "></i>
+                                Hoàn thành
+                            </span>
+                        </div>
+                        <!-- sản phẩm 1 -->
+                        <div class="flex items-start gap-3 sm:gap-4 mb-2">
+                            <img alt="Account Facebook Ads BM Limit 250$" class="item-thumbnail "
+                                src="assets/images/gmail.png">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between mb-1">
+                                    <div class="flex-1">
+                                        <h4 class="item-title mb-1">
+                                            <a href="#">Account Facebook Ads BM Limit 250$</a>
+                                        </h4>
+                                        <!-- danh mục -->
+                                        <div class="mb-2 flex items-center justify-between">
+                                            <span class="item-category"><a href="#">Facebook Accounts</a></span>
+                                            <span class="item-quantity">x1</span>
+                                        </div>
 
-            <!-- Orders List -->
-            <div x-show="!isLoading && displayedOrders.length > 0" class="divide-y divide-gray-200">
-                <template x-for="order in displayedOrders" :key="order.id">
-                    <div class="p-4 sm:p-6 hover:bg-gray-50 transition-colors">
-                        <!-- Order Header -->
-                        <div class="flex flex-row sm:items-center justify-between gap-3 mb-3">
-                            <div class="flex items-center gap-3">
-                                <div class="flex-shrink-0">
-                                    <div class="size-12 bg-blue-100 rounded-lg flex-center">
-                                        <i data-lucide="package" class="size-6 text-blue-600"></i>
+                                        <!-- thông tin sản phẩm -->
+                                        <div
+                                            class="flex flex-col sm:flex-row gap-2 sm:gap-4 text-responsive-sm text-gray-600 mb-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="package" class="size-4"></i>
+                                                <span>Mã đơn: <strong>SO001</strong></span>
+                                            </div>
+
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="calendar" class="size-4"></i>
+                                                <span>Ngày mua:<strong>14/1/2024</strong></span>
+                                            </div>
+                                        </div>
+                                        <!-- giá-->
+                                        <div class="flex items-center justify-end text-responsive-sm gap-2 mb-2">
+                                            <!-- giá gốc -->
+                                            <span class="item-price-original">500,000đ</span>
+                                            <!-- giá sale -->
+                                            <span class="item-price">450,000đ</span>
+                                        </div>
+
                                     </div>
                                 </div>
-                                <div>
-                                    <div class="flex items-center gap-2 mb-1">
-                                        <span class="text-responsive-xs text-gray-500">Mã đơn:</span>
-                                        <span class="font-semibold text-gray-900" x-text="order.code"></span>
-                                    </div>
-                                    <div class="flex items-center gap-2 text-responsive-xs text-gray-500">
-                                        <i data-lucide="clock" class="size-4"></i>
-                                        <span x-text="order.date"></span>
+                            </div>
+                        </div>
+                        <!-- sản phẩm 2 -->
+                        <div class="flex items-start gap-3 sm:gap-4 mb-2">
+                            <img alt="Account Facebook Ads BM Limit 250$" class="item-thumbnail "
+                                src="assets/images/gmail.png">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between mb-1">
+                                    <div class="flex-1">
+                                        <h4 class="item-title mb-1">
+                                            <a href="#">Gmail PVA 2024 - Tạo tay 100%</a>
+                                        </h4>
+                                        <!-- danh mục -->
+                                        <div class="mb-2 flex items-center justify-between">
+                                            <span class="item-category"><a href="#">Email Marketing</a></span>
+                                            <span class="item-quantity">x2</span>
+                                        </div>
+
+                                        <!-- thông tin sản phẩm -->
+                                        <div
+                                            class="flex flex-col sm:flex-row gap-2 sm:gap-4 text-responsive-sm text-gray-600 mb-2">
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="package" class="size-4"></i>
+                                                <span>Mã đơn: <strong>PO002</strong></span>
+                                            </div>
+
+                                            <div class="flex items-center gap-1">
+                                                <i data-lucide="calendar" class="size-4"></i>
+                                                <span>Ngày mua:<strong>2024-01-14</strong></span>
+                                            </div>
+                                        </div>
+                                        <!-- giá-->
+                                        <div class="flex items-center justify-end text-responsive-sm gap-2 mb-2">
+                                            <!-- giá gốc -->
+                                            <span class="item-price-original">30,000đ</span>
+                                            <!-- giá sale -->
+                                            <span class="item-price">25,000đ</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <span :class="getStatusClass(order.status)" class="badge badge-primary"
-                                    x-text="getStatusText(order.status)"></span>
-                            </div>
                         </div>
-
-                        <!-- Product Info -->
-                        <div class="mb-3 pl-0 sm:pl-15">
-                            <h4 class="text-responsive-sm font-medium text-gray-900 mb-1 one-line"
-                                x-text="order.productName"></h4>
-                            <div class="flex items-center gap-2">
-                                <span class="text-responsive-xs text-gray-500">Giá trị đơn hàng:</span>
-                                <span class="item-price" x-text="formatPrice(order.total)"></span>
+                        <!-- content bên dưới -->
+                        <div
+                            class="flex flex-col sm:flex-row sm:items-center  justify-end gap-3 sm:gap-4 pt-2 mt-2 border-t border-gray-200 ">
+                            <div class="flex flex-col items-end gap-2 sm:gap-3">
+                                <!-- tổng tiền -->
+                                <div class="flex items-center gap-2">
+                                    <span class="text-responsive-sm text-gray-600">Tổng tiền 3 sản
+                                        phẩm:</span>
+                                    <span class="item-price ">1.350,000đ</span>
+                                </div>
+                                <!-- button mua lại -->
+                                <div class="flex flex-row items-end gap-2 sm:gap-3">
+                                    <!-- nút xem chi tiết đơn mua -->
+                                    <button class="btn btn-outline btn-sm sm:btn-md flex items-center gap-2">
+                                        <i data-lucide="eye" class="size-4"></i>
+                                        <span>Xem chi tiết đơn mua</span>
+                                    </button>
+                                    <!-- button mua lại -->
+                                    <button class="btn btn-secondary btn-sm sm:btn-md flex items-center gap-2">
+                                        <i data-lucide="refresh-cw" class="size-4"></i>
+                                        <span>Mua lại</span>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Order Actions -->
-                        <div class="flex flex-wrap items-center gap-2 pl-0 sm:pl-15">
-                            <button @click="viewOrderDetail(order.id)" class="btn btn-sm btn-outline">
-                                <i data-lucide="eye" class="size-4"></i>
-                                Xem chi tiết
-                            </button>
-
-                            <button x-show="order.status === 'pending'" @click="cancelOrder(order.id)"
-                                class="btn btn-sm btn-delete">
-                                <i data-lucide="x-circle" class="size-4"></i>
-                                Hủy đơn
-                            </button>
-
-                            <button x-show="order.status === 'completed'" @click="reorder(order.id)"
-                                class="btn btn-sm btn-primary">
-                                <i data-lucide="refresh-cw" class="size-4"></i>
-                                Mua lại
-                            </button>
-
-                            <button x-show="order.status === 'completed'" @click="reviewOrder(order.id)"
-                                class="btn btn-sm btn-outline">
-                                <i data-lucide="star" class="size-4"></i>
-                                Đánh giá
-                            </button>
                         </div>
                     </div>
-                </template>
+                    <!-- Order 2 -->
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="purchase"
+                        data-status="processing" data-order-id="BO002" data-product="Gmail PVA 2024"
+                        data-seller="EmailPro" x-show="matchesOrder($el)">
+                        <div class="flex items-start gap-4">
+                            <img alt="Gmail PVA 2024" class="img-responsive"
+                                src="/placeholder.svg?height=60&amp;width=60">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-responsive-sm text-gray-900 truncate">Gmail
+                                            PVA 2024</h3>
+                                        <p class="text-responsive-xs text-gray-500 mt-1">Mã đơn: <span
+                                                class="font-medium">BO002</span></p>
+                                    </div>
+                                    <span class="badge badge-info inline-flex items-center gap-1 flex-shrink-0">
+                                        <i data-lucide="loader-2" class="size-3 animate-spin"></i>
+                                        <span class="hidden sm:inline">Đang xử lý</span>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <p class="text-responsive-xs text-gray-600">Người bán: <span
+                                            class="font-medium">EmailPro</span></p>
+                                    <p class="text-responsive-xs text-gray-600">Ngày đặt: <span
+                                            class="font-medium">13/1/2024</span></p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                    <span class="text-green-600 font-bold text-responsive-sm">150.000&nbsp;₫</span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="viewOrderDetail('BO002')"
+                                            class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Chi tiết">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Nhắn tin">
+                                            <i data-lucide="message-square" class="size-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Order 3 -->
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="purchase"
+                        data-status="pending" data-order-id="BO003" data-product="Instagram Account Aged"
+                        data-seller="SocialMedia Hub" x-show="matchesOrder($el)">
+                        <div class="flex items-start gap-4">
+                            <img alt="Instagram Account Aged" class="img-responsive"
+                                src="/placeholder.svg?height=60&amp;width=60">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-responsive-sm text-gray-900 truncate">
+                                            Instagram Account Aged</h3>
+                                        <p class="text-responsive-xs text-gray-500 mt-1">Mã đơn: <span
+                                                class="font-medium">BO003</span></p>
+                                    </div>
+                                    <span class="badge badge-warning inline-flex items-center gap-1 flex-shrink-0">
+                                        <i data-lucide="clock" class="size-3"></i>
+                                        <span class="hidden sm:inline">Chờ xử lý</span>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <p class="text-responsive-xs text-gray-600">Người bán: <span
+                                            class="font-medium">SocialMedia Hub</span></p>
+                                    <p class="text-responsive-xs text-gray-600">Ngày đặt: <span
+                                            class="font-medium">12/1/2024</span></p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                    <span class="text-green-600 font-bold text-responsive-sm">300.000&nbsp;₫</span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="viewOrderDetail('BO003')"
+                                            class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Chi tiết">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Nhắn tin">
+                                            <i data-lucide="message-square" class="size-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Order 4 -->
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="purchase"
+                        data-status="dispute" data-order-id="BO004" data-product="YouTube Channel Monetized"
+                        data-seller="ContentCreator Pro" x-show="matchesOrder($el)">
+                        <div class="flex items-start gap-4">
+                            <img alt="YouTube Channel Monetized" class="img-responsive"
+                                src="/placeholder.svg?height=60&amp;width=60">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-responsive-sm text-gray-900 truncate">YouTube
+                                            Channel Monetized</h3>
+                                        <p class="text-responsive-xs text-gray-500 mt-1">Mã đơn: <span
+                                                class="font-medium">BO004</span></p>
+                                    </div>
+                                    <span class="badge badge-danger inline-flex items-center gap-1 flex-shrink-0">
+                                        <i data-lucide="triangle-alert" class="size-3"></i>
+                                        <span class="hidden sm:inline">Khiếu nại</span>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <p class="text-responsive-xs text-gray-600">Người bán: <span
+                                            class="font-medium">ContentCreator Pro</span></p>
+                                    <p class="text-responsive-xs text-gray-600">Ngày đặt: <span
+                                            class="font-medium">11/1/2024</span></p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                    <span class="text-green-600 font-bold text-responsive-sm">1.200.000&nbsp;₫</span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="viewOrderDetail('BO004')"
+                                            class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Chi tiết">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Nhắn tin">
+                                            <i data-lucide="message-square" class="size-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Order 5 -->
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="purchase"
+                        data-status="cancelled" data-order-id="BO005" data-product="TikTok Account 10K Followers"
+                        data-seller="ViralBoost" x-show="matchesOrder($el)">
+                        <div class="flex items-start gap-4">
+                            <img alt="TikTok Account 10K Followers" class="img-responsive"
+                                src="/placeholder.svg?height=60&amp;width=60">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-responsive-sm text-gray-900 truncate">TikTok
+                                            Account 10K Followers</h3>
+                                        <p class="text-responsive-xs text-gray-500 mt-1">Mã đơn: <span
+                                                class="font-medium">BO005</span></p>
+                                    </div>
+                                    <span class="badge badge-secondary inline-flex items-center gap-1 flex-shrink-0">
+                                        <i data-lucide="circle-x" class="size-3"></i>
+                                        <span class="hidden sm:inline">Đã hủy</span>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <p class="text-responsive-xs text-gray-600">Người bán: <span
+                                            class="font-medium">ViralBoost</span></p>
+                                    <p class="text-responsive-xs text-gray-600">Ngày đặt: <span
+                                            class="font-medium">10/1/2024</span></p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                    <span class="text-green-600 font-bold text-responsive-sm">800.000&nbsp;₫</span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="viewOrderDetail('BO005')"
+                                            class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Chi tiết">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Nhắn tin">
+                                            <i data-lucide="message-square" class="size-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <!-- Load More Section -->
-            <div x-show="!isLoading && displayedOrders.length > 0" class="p-4 sm:p-6 border-t border-gray-200">
-                <div class="flex flex-col items-center gap-4">
-                    <div class="text-responsive-sm text-gray-600">
-                        Hiển thị <span class="font-medium" x-text="displayedOrders.length"></span> / <span
-                            class="font-medium" x-text="totalOrders"></span> đơn hàng
+            <!-- Mobile View - Đơn bán -->
+            <div class="block md:hidden" x-show="orderType === 'sale'">
+                <div class="divide-y divide-gray-200">
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="sale"
+                        data-status="completed" data-order-id="SO001" data-product="Netflix Premium 1 Tháng"
+                        data-seller="Nguyễn Văn A" x-show="matchesOrder($el)">
+                        <div class="flex items-start gap-4">
+                            <img alt="Netflix Premium 1 Tháng" class="img-responsive"
+                                src="/placeholder.svg?height=60&amp;width=60">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-responsive-sm text-gray-900 truncate">Netflix
+                                            Premium 1 Tháng</h3>
+                                        <p class="text-responsive-xs text-gray-500 mt-1">Mã đơn: <span
+                                                class="font-medium">SO001</span></p>
+                                    </div>
+                                    <span class="badge badge-success inline-flex items-center gap-1 flex-shrink-0">
+                                        <i data-lucide="circle-check-big" class="size-3"></i>
+                                        <span class="hidden sm:inline">Đã hoàn thành</span>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <p class="text-responsive-xs text-gray-600">Người mua: <span
+                                            class="font-medium">Nguyễn Văn A</span></p>
+                                    <p class="text-responsive-xs text-gray-600">Ngày đặt: <span
+                                            class="font-medium">15/1/2024</span></p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                    <span class="text-green-600 font-bold text-responsive-sm">120.000&nbsp;₫</span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="viewOrderDetail('SO001')"
+                                            class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Chi tiết">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="In hóa đơn">
+                                            <i data-lucide="printer" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Nhắn tin">
+                                            <i data-lucide="message-square" class="size-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Load More Button -->
-                    <button x-show="hasMore" @click="loadMoreOrders()" :disabled="isLoadingMore"
-                        class="btn btn-primary btn-md px-8" :class="{ 'opacity-70 cursor-not-allowed': isLoadingMore }">
-                        <span x-show="!isLoadingMore" class="flex items-center gap-2">
-                            <i data-lucide="chevron-down" class="size-4"></i>
-                            Xem thêm đơn hàng
-                        </span>
-                        <span x-show="isLoadingMore" class="flex items-center gap-2">
-                            <i data-lucide="loader-circle" class="size-5 animate-spin"></i>
-                            Đang tải...
-                        </span>
-                    </button>
-
-                    <!-- All loaded message -->
-                    <div x-show="!hasMore && displayedOrders.length > 0" class="text-center">
-                        <p class="text-gray-500 text-sm">Đã hiển thị tất cả đơn hàng</p>
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="sale"
+                        data-status="processing" data-order-id="SO002" data-product="Spotify Premium 3 Tháng"
+                        data-seller="Trần Thị B" x-show="matchesOrder($el)">
+                        <div class="flex items-start gap-4">
+                            <img alt="Spotify Premium 3 Tháng" class="img-responsive"
+                                src="/placeholder.svg?height=60&amp;width=60">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-responsive-sm text-gray-900 truncate">Spotify
+                                            Premium 3 Tháng</h3>
+                                        <p class="text-responsive-xs text-gray-500 mt-1">Mã đơn: <span
+                                                class="font-medium">SO002</span></p>
+                                    </div>
+                                    <span class="badge badge-info inline-flex items-center gap-1 flex-shrink-0">
+                                        <i data-lucide="loader-2" class="size-3 animate-spin"></i>
+                                        <span class="hidden sm:inline">Đang xử lý</span>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <p class="text-responsive-xs text-gray-600">Người mua: <span
+                                            class="font-medium">Trần Thị B</span></p>
+                                    <p class="text-responsive-xs text-gray-600">Ngày đặt: <span
+                                            class="font-medium">14/1/2024</span></p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                    <span class="text-green-600 font-bold text-responsive-sm">180.000&nbsp;₫</span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="viewOrderDetail('SO002')"
+                                            class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Chi tiết">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Xác nhận">
+                                            <i data-lucide="check-circle" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Nhắn tin">
+                                            <i data-lucide="message-square" class="size-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="sale"
+                        data-status="pending" data-order-id="SO003" data-product="NordVPN Premium 1 Năm"
+                        data-seller="Lê Văn C" x-show="matchesOrder($el)">
+                        <div class="flex items-start gap-4">
+                            <img alt="NordVPN Premium 1 Năm" class="img-responsive"
+                                src="/placeholder.svg?height=60&amp;width=60">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-responsive-sm text-gray-900 truncate">NordVPN
+                                            Premium 1 Năm</h3>
+                                        <p class="text-responsive-xs text-gray-500 mt-1">Mã đơn: <span
+                                                class="font-medium">SO003</span></p>
+                                    </div>
+                                    <span class="badge badge-warning inline-flex items-center gap-1 flex-shrink-0">
+                                        <i data-lucide="clock" class="size-3"></i>
+                                        <span class="hidden sm:inline">Chờ xử lý</span>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <p class="text-responsive-xs text-gray-600">Người mua: <span class="font-medium">Lê
+                                            Văn C</span></p>
+                                    <p class="text-responsive-xs text-gray-600">Ngày đặt: <span
+                                            class="font-medium">13/1/2024</span></p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                    <span class="text-green-600 font-bold text-responsive-sm">350.000&nbsp;₫</span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="viewOrderDetail('SO003')"
+                                            class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Chi tiết">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Xác nhận">
+                                            <i data-lucide="check-circle" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Hủy đơn">
+                                            <i data-lucide="x-circle" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Nhắn tin">
+                                            <i data-lucide="message-square" class="size-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="sale"
+                        data-status="processed" data-order-id="SO004" data-product="Adobe Creative Cloud"
+                        data-seller="Phạm Thị D" x-show="matchesOrder($el)">
+                        <div class="flex items-start gap-4">
+                            <img alt="Adobe Creative Cloud" class="img-responsive"
+                                src="/placeholder.svg?height=60&amp;width=60">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-responsive-sm text-gray-900 truncate">Adobe
+                                            Creative Cloud</h3>
+                                        <p class="text-responsive-xs text-gray-500 mt-1">Mã đơn: <span
+                                                class="font-medium">SO004</span></p>
+                                    </div>
+                                    <span class="badge badge-primary inline-flex items-center gap-1 flex-shrink-0">
+                                        <i data-lucide="circle-check-big" class="size-3"></i>
+                                        <span class="hidden sm:inline">Đã xử lý</span>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <p class="text-responsive-xs text-gray-600">Người mua: <span
+                                            class="font-medium">Phạm Thị D</span></p>
+                                    <p class="text-responsive-xs text-gray-600">Ngày đặt: <span
+                                            class="font-medium">12/1/2024</span></p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                    <span class="text-green-600 font-bold text-responsive-sm">450.000&nbsp;₫</span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="viewOrderDetail('SO004')"
+                                            class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Chi tiết">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="In hóa đơn">
+                                            <i data-lucide="printer" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Nhắn tin">
+                                            <i data-lucide="message-square" class="size-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-4 hover:bg-gray-50 transition-colors" data-order data-order-type="sale"
+                        data-status="dispute" data-order-id="SO005" data-product="Microsoft Office 365"
+                        data-seller="Hoàng Văn E" x-show="matchesOrder($el)">
+                        <div class="flex items-start gap-4">
+                            <img alt="Microsoft Office 365" class="img-responsive"
+                                src="/placeholder.svg?height=60&amp;width=60">
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between gap-2 mb-2">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-responsive-sm text-gray-900 truncate">Microsoft
+                                            Office 365</h3>
+                                        <p class="text-responsive-xs text-gray-500 mt-1">Mã đơn: <span
+                                                class="font-medium">SO005</span></p>
+                                    </div>
+                                    <span class="badge badge-danger inline-flex items-center gap-1 flex-shrink-0">
+                                        <i data-lucide="triangle-alert" class="size-3"></i>
+                                        <span class="hidden sm:inline">Khiếu nại</span>
+                                    </span>
+                                </div>
+                                <div class="space-y-1 mb-3">
+                                    <p class="text-responsive-xs text-gray-600">Người mua: <span
+                                            class="font-medium">Hoàng Văn E</span></p>
+                                    <p class="text-responsive-xs text-gray-600">Ngày đặt: <span
+                                            class="font-medium">11/1/2024</span></p>
+                                </div>
+                                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                    <span class="text-green-600 font-bold text-responsive-sm">280.000&nbsp;₫</span>
+                                    <div class="flex items-center gap-2">
+                                        <button @click="viewOrderDetail('SO005')"
+                                            class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Chi tiết">
+                                            <i data-lucide="eye" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Xử lý khiếu nại">
+                                            <i data-lucide="alert-circle" class="size-4"></i>
+                                        </button>
+                                        <button class="link-secondary flex items-center gap-1 text-responsive-xs"
+                                            title="Nhắn tin">
+                                            <i data-lucide="message-square" class="size-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

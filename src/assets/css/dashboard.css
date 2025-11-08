@@ -1,0 +1,41 @@
+@layer components {
+    .card-blue-50 {
+        @apply bg-gray-50 hover:bg-blue-50 rounded-lg p-4 shadow-sm;
+    }
+    .card-green-50 {
+        @apply bg-gray-50 hover:bg-green-50 rounded-lg p-4 shadow-sm;
+    }
+    .card-purple-50 {
+        @apply bg-gray-50 hover:bg-purple-50 rounded-lg p-4 shadow-sm;
+    }
+    .card-yellow-50 {
+        @apply bg-gray-50 hover:bg-yellow-50 rounded-lg p-4 shadow-sm;
+    }
+
+    .bg-blue {
+        @apply bg-blue-100 rounded-lg p-2;
+    }
+
+    .bg-green{
+        @apply bg-green-50 rounded-lg p-2;
+    }
+
+    .bg-purple {
+        @apply bg-purple-50 rounded-lg p-2;
+    }
+
+    .bg-yellow {
+        @apply bg-yellow-50 rounded-lg p-2;
+    }
+
+    .bg-red {
+        @apply bg-red-50 rounded-lg p-2;
+    }
+    .bg-gray {
+        @apply bg-gray-100 rounded-lg p-2;
+    }
+
+    .img-responsive {
+        @apply size-16 sm:size-20 lg:size-24 rounded-xl object-cover flex-shrink-0;
+    }
+}

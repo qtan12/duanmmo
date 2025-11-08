@@ -221,10 +221,15 @@
         @apply rounded-lg  bg-white shadow-sm ;
     }
 
-   
+    .card-border {
+        @apply rounded-lg border border-gray-200 bg-white ;
+    }
 
     .card-title {
         @apply text-lg sm:text-2xl font-semibold leading-tight tracking-tight;
+    }
+    .card-title-sm {
+        @apply text-lg sm:text-xl font-semibold leading-tight tracking-tight;
     }
 
     .card-description {
@@ -676,14 +681,29 @@
     .item-title{
         @apply text-title font-bold text-responsive-sm one-line mb-2;
     }
+    .item-description {
+        @apply text-responsive-sm text-gray-600 mb-2;
+    }
+    .item-sku {
+        @apply text-responsive-xs text-gray-600 font-mono;
+    }
+    .item-icon-bg {
+        @apply p-2 bg-gray-100  text-gray-700 rounded-lg
+    }
     .item-thumbnail {
-        @apply mr-3 h-14 w-14 overflow-hidden rounded-lg;
+        @apply mr-3 h-16 w-16 overflow-hidden rounded-lg ;
     }
     .item-category {
         @apply text-xs font-bold text-title sm:text-sm;
     }
+    .item-quantity {
+        @apply text-responsive-xs text-gray-600;
+    }
     .item-price {
-        @apply text-base font-bold text-emerald-600 md:text-lg;
+        @apply text-sm font-bold text-emerald-600 md:text-lg;
+    }
+    .item-price-original {
+        @apply text-responsive-sm text-gray-500 line-through ml-1;
     }
     .item-icon {
         @apply h-4 w-4 text-primary;

@@ -1,0 +1,174 @@
+<!-- Products Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <!-- Empty State -->
+    <div x-show="filteredProducts.length === 0" class="col-span-full flex justify-center items-center py-12">
+        <div class="text-center">
+            <i data-lucide="package-x" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+            <p class="text-gray-500 text-lg">Không tìm thấy sản phẩm nào</p>
+        </div>
+    </div>
+
+    <!-- Product 1: Premium Proxy Service -->
+    <div class="card p-4 product-item" data-id="1" data-category="vpn" data-price="350000" data-rating="4.9"
+        data-sold="250" data-name="Premium Proxy Service" data-seller="ProxyMaster"
+        x-show="isProductVisible('vpn', 350000, 4.9, 'Premium Proxy Service', 'ProxyMaster')" style="display: none;">
+        <a href="/detail?id=1">
+            <h3 class="item-title">Premium Proxy Service</h3>
+        </a>
+        <div class="flex">
+            <div class="item-thumbnail">
+                <img src="assets/images/gmail.png" alt="Proxy Premium" class="w-full h-full object-cover rounded-lg">
+            </div>
+            <div class="flex-1 min-w-0 space-y-1">
+                <div class="flex items-center justify-between gap-2">w
+                    <a href="/products-categories.html" class="item-category">VPN & Proxy</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="star" class="item-rating"></i>
+                        <span class="text-responsive-xs text-gray-500">4.9</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">ProxyMaster</a>
+                    </div>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
+                        <span>250</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center justify-between mt-1">
+            <span class="item-price">350.000₫</span>
+            <button @click="addProductToCart({
+				id: 1,
+				name: 'Premium Proxy Service',
+				category: 'vpn',
+				price: 350000,
+				rating: 4.9,
+				sold: 250,
+				seller: 'ProxyMaster',
+				image: '/assets/images/gmail.png'
+			})" class="btn btn-primary btn-sm">
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
+                Mua
+            </button>
+        </div>
+    </div>
+
+    <!-- Product 2: Residential Proxy -->
+    <div class="card p-4 product-item" data-id="2" data-category="vpn" data-price="450000" data-rating="4.8"
+        data-sold="180" data-name="Residential Proxy" data-seller="ProxyPro"
+        x-show="isProductVisible('vpn', 450000, 4.8, 'Residential Proxy', 'ProxyPro')" style="display: none;">
+        <a href="/detail?id=2">
+            <h3 class="item-title">Residential Proxy</h3>
+        </a>
+        <div class="flex">
+            <div class="item-thumbnail">
+                <img src="assets/images/gmail.png" alt="Residential Proxy"
+                    class="w-full h-full object-cover rounded-lg">
+            </div>
+            <div class="flex-1 min-w-0 space-y-1">
+                <div class="flex items-center justify-between gap-2">
+                    <a href="/products-categories.html" class="item-category">VPN & Proxy</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="star" class="item-rating"></i>
+                        <span class="text-responsive-xs text-gray-500">4.8</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">ProxyPro</a>
+                    </div>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
+                        <span>180</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center justify-between mt-1">
+            <span class="item-price">450.000₫</span>
+            <button @click="addProductToCart({
+				id: 2,
+				name: 'Residential Proxy',
+				category: 'vpn',
+				price: 450000,
+				rating: 4.8,
+				sold: 180,
+				seller: 'ProxyPro',
+				image: '/assets/images/gmail.png'
+			})" class="btn btn-primary btn-sm">
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
+                Mua
+            </button>
+        </div>
+    </div>
+
+    <!-- Product 3: Datacenter Proxy -->
+    <div class="card p-4 product-item" data-id="3" data-category="vpn" data-price="280000" data-rating="4.7"
+        data-sold="320" data-name="Datacenter Proxy" data-seller="ProxyKing"
+        x-show="isProductVisible('vpn', 280000, 4.7, 'Datacenter Proxy', 'ProxyKing')" style="display: none;">
+        <a href="/detail?id=3">
+            <h3 class="item-title">Datacenter Proxy</h3>
+        </a>
+        <div class="flex">
+            <div class="item-thumbnail">
+                <img src="assets/images/gmail.png" alt="Datacenter Proxy" class="w-full h-full object-cover rounded-lg">
+            </div>
+            <div class="flex-1 min-w-0 space-y-1">
+                <div class="flex items-center justify-between gap-2">
+                    <a href="/products-categories.html" class="item-category">VPN & Proxy</a>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="star" class="item-rating"></i>
+                        <span class="text-responsive-xs text-gray-500">4.7</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-2">
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="user" class="item-icon"></i>
+                        <a href="/store.html" class="item-link">ProxyKing</a>
+                    </div>
+                    <div class="flex gap-1 text-responsive-xs text-gray-500">
+                        <i data-lucide="shopping-cart" class="item-icon"></i>
+                        <span>320</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center justify-between mt-1">
+            <span class="item-price">280.000₫</span>
+            <button @click="addProductToCart({
+				id: 3,
+				name: 'Datacenter Proxy',
+				category: 'vpn',
+				price: 280000,
+				rating: 4.7,
+				sold: 320,
+				seller: 'ProxyKing',
+				image: '/assets/images/gmail.png'
+			})" class="btn btn-primary btn-sm">
+                <i data-lucide="shopping-cart" class="size-4 mr-1"></i>
+                Mua
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination -->
+<div class="mt-6 flex justify-center">
+    <nav class="pagination">
+        <a href="#" class="pagination-item disabled text-responsive-sm">&laquo;</a>
+        <a href="#" class="pagination-item active text-responsive-sm">1</a>
+        <a href="#" class="pagination-item text-responsive-sm">2</a>
+        <a href="#" class="pagination-item text-responsive-sm">3</a>
+        <span class="pagination-item text-responsive-sm">...</span>
+        <a href="#" class="pagination-item text-responsive-sm">25</a>
+        <a href="#" class="pagination-item text-responsive-sm">&raquo;</a>
+    </nav>
+</div>

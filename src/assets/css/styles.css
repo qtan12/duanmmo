@@ -16,3 +16,5 @@
 @import "./detail.css";
 /* Các thành phần cho Products dùng chung all trang */
 @import "./products.css";
+/* Các thành phần cho Dashboard dùng chung all trang */
+@import "./dashboard.css";

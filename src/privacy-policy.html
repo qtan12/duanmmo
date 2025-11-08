@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMO Store - Chính sách bảo mật</title>
+    <meta name="description"
+        content="Chính sách bảo mật thông tin của MMO Store - Cửa hàng bán tài khoản premium, key license, VPN và các sản phẩm số chất lượng cao.">
+    <script type="text/javascript">
+        const API_URL = "https://panel.dongnai.net/api/v2/";
+    </script>
+    <!-- Add Inline Hidden Class for Fix CLS -->
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- all css -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+    <!-- 1. CAC THU VIEN CAN SU DUNG -->
+    <!-- Notification Library -->
+    <script src="assets/js/libs/notification.js" defer></script>
+    <!-- Initialize FastNotice -->
+    <script>
+        // Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+        document.addEventListener('DOMContentLoaded', function () {
+            window.fastNotice = new FastNotice({
+                position: 'top-center',    // Vị trí mặc định
+                duration: 3000,              // Thời gian hiển thị (ms)
+                maxNotifications: 3          // Số notification tối đa
+            });
+        });
+    </script>
+    <!-- Lucide Icons - Custom Build -->
+    <script src="assets/js/lucide-custom.min.js" defer></script>
+    <!-- jModal manager -->
+    <script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+    <!-- Load BlazeSlider Library -->
+    <script src="assets/js/libs/blaze-slider.js" defer></script>
+    <!-- Libs Tabs JS Thuần -->
+    <script src="assets/js/libs/tabs.js" defer></script>
+    <!-- Image Fallback Utility -->
+    <script src="assets/js/libs/image-fallback.js" defer></script>
+
+    <!-- 2. CAC CODE JS TU VIET. -->
+    <!-- Cart Manager Libs JS -->
+    <script src="assets/js/cart-manager.js" defer></script>
+    <!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+    <script src="assets/js/header.js" defer></script>
+
+    <!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+    <script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+
+</head>
+
+<body class="min-h-screen bg-gray-100">
+    <!-- header -->
+    <!-- include:./blocks/header.html -->
+
+    <!-- Main Content Area -->
+    <main class="min-h-screen">
+        <div class="container mx-auto py-8 px-4">
+
+
+            <!-- Content Section -->
+            <div class="card card-content-no-header max-w-4xl mx-auto">
+                <!-- Header Section -->
+                <div class="mb-8">
+                    <h1 class="card-title mb-2">Chính sách bảo mật</h1>
+                    <p class="card-description">Cập nhật lần cuối: <time datetime="2024-01-01">1 tháng 1, 2024</time>
+                    </p>
+                </div>
+                <div class="prose prose-sm sm:prose-base max-w-none">
+                    <!-- Introduction -->
+                    <section class="mb-8">
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            MMO Store ("chúng tôi", "của chúng tôi" hoặc "website") cam kết bảo vệ quyền riêng tư của
+                            bạn. Chính sách bảo mật này giải thích cách chúng tôi thu thập, sử dụng, lưu trữ và bảo vệ
+                            thông tin cá nhân của bạn khi bạn sử dụng website của chúng tôi.
+                        </p>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Bằng việc sử dụng website, bạn đồng ý với việc thu thập và sử dụng thông tin theo chính sách
+                            này. Nếu bạn không đồng ý với chính sách này, vui lòng không sử dụng dịch vụ của chúng tôi.
+                        </p>
+                    </section>
+
+                    <!-- Section 1 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">1. Thông tin chúng tôi thu thập</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                <strong>1.1. Thông tin bạn cung cấp trực tiếp:</strong>
+                            </p>
+                            <ul class="list-disc list-inside ml-4 space-y-2">
+                                <li>Thông tin đăng ký tài khoản: tên, email, số điện thoại, mật khẩu</li>
+                                <li>Thông tin thanh toán: số thẻ, thông tin tài khoản ngân hàng (được xử lý bởi bên thứ
+                                    ba an toàn)</li>
+                                <li>Thông tin đặt hàng: địa chỉ giao hàng, thông tin liên hệ</li>
+                                <li>Thông tin liên hệ khi bạn gửi yêu cầu hỗ trợ hoặc phản hồi</li>
+                            </ul>
+
+                            <p class="leading-relaxed mt-4">
+                                <strong>1.2. Thông tin tự động thu thập:</strong>
+                            </p>
+                            <ul class="list-disc list-inside ml-4 space-y-2">
+                                <li>Thông tin thiết bị: loại thiết bị, hệ điều hành, trình duyệt</li>
+                                <li>Thông tin truy cập: địa chỉ IP, thời gian truy cập, trang web bạn đến từ đó</li>
+                                <li>Cookies và công nghệ theo dõi tương tự</li>
+                                <li>Dữ liệu sử dụng: các trang bạn xem, thời gian bạn dành trên website, các liên kết
+                                    bạn nhấp</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- Section 2 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">2. Cách chúng tôi sử dụng thông tin</h2>
+                        <p class="text-gray-700 mb-3 leading-relaxed">Chúng tôi sử dụng thông tin thu thập được để:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>Cung cấp, duy trì và cải thiện dịch vụ của chúng tôi</li>
+                            <li>Xử lý đơn hàng và giao dịch của bạn</li>
+                            <li>Gửi thông báo về đơn hàng, sản phẩm và dịch vụ</li>
+                            <li>Gửi email marketing và khuyến mãi (bạn có thể từ chối bất cứ lúc nào)</li>
+                            <li>Phản hồi các yêu cầu và câu hỏi của bạn</li>
+                            <li>Phát hiện, ngăn chặn và giải quyết các vấn đề kỹ thuật hoặc gian lận</li>
+                            <li>Phân tích cách người dùng sử dụng website để cải thiện trải nghiệm</li>
+                            <li>Tuân thủ các nghĩa vụ pháp lý và bảo vệ quyền lợi của chúng tôi</li>
+                        </ul>
+                    </section>
+
+                    <!-- Section 3 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">3. Chia sẻ thông tin</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                Chúng tôi không bán, cho thuê hoặc chia sẻ thông tin cá nhân của bạn với bên thứ ba,
+                                ngoại trừ các trường hợp sau:
+                            </p>
+
+                            <p class="leading-relaxed">
+                                <strong>3.1. Nhà cung cấp dịch vụ:</strong> Chúng tôi có thể chia sẻ thông tin với các
+                                nhà cung cấp dịch vụ bên thứ ba giúp chúng tôi vận hành website và cung cấp dịch vụ, bao
+                                gồm:
+                            </p>
+                            <ul class="list-disc list-inside ml-4 space-y-2">
+                                <li>Nhà cung cấp dịch vụ thanh toán</li>
+                                <li>Nhà cung cấp dịch vụ lưu trữ và hosting</li>
+                                <li>Nhà cung cấp dịch vụ email và marketing</li>
+                                <li>Nhà cung cấp dịch vụ phân tích dữ liệu</li>
+                            </ul>
+
+                            <p class="leading-relaxed mt-4">
+                                <strong>3.2. Yêu cầu pháp lý:</strong> Chúng tôi có thể tiết lộ thông tin nếu được yêu
+                                cầu bởi pháp luật hoặc để bảo vệ quyền, tài sản hoặc an toàn của chúng tôi, người dùng
+                                hoặc người khác.
+                            </p>
+
+                            <p class="leading-relaxed">
+                                <strong>3.3. Chuyển giao kinh doanh:</strong> Trong trường hợp sáp nhập, mua lại hoặc
+                                bán tài sản, thông tin của bạn có thể được chuyển giao như một phần của giao dịch.
+                            </p>
+
+                            <p class="leading-relaxed">
+                                <strong>3.4. Với sự đồng ý của bạn:</strong> Chúng tôi có thể chia sẻ thông tin với bên
+                                thứ ba nếu bạn đã đồng ý rõ ràng.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 4 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">4. Cookies và công nghệ theo dõi</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                Chúng tôi sử dụng cookies và các công nghệ theo dõi tương tự để:
+                            </p>
+                            <ul class="list-disc list-inside ml-4 space-y-2">
+                                <li>Ghi nhớ thông tin đăng nhập và tùy chọn của bạn</li>
+                                <li>Phân tích lưu lượng truy cập và cách sử dụng website</li>
+                                <li>Cải thiện trải nghiệm người dùng</li>
+                                <li>Cung cấp nội dung và quảng cáo phù hợp</li>
+                            </ul>
+                            <p class="leading-relaxed mt-4">
+                                Bạn có thể kiểm soát cookies thông qua cài đặt trình duyệt của mình. Tuy nhiên, việc tắt
+                                cookies có thể ảnh hưởng đến chức năng của website.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 5 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">5. Bảo mật thông tin</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                Chúng tôi áp dụng các biện pháp bảo mật kỹ thuật và tổ chức phù hợp để bảo vệ thông tin
+                                cá nhân của bạn khỏi truy cập trái phép, mất mát, phá hủy hoặc thay đổi, bao gồm:
+                            </p>
+                            <ul class="list-disc list-inside ml-4 space-y-2">
+                                <li>Mã hóa dữ liệu nhạy cảm trong quá trình truyền (SSL/TLS)</li>
+                                <li>Lưu trữ an toàn với mã hóa và kiểm soát truy cập</li>
+                                <li>Giám sát và kiểm tra bảo mật thường xuyên</li>
+                                <li>Đào tạo nhân viên về bảo mật dữ liệu</li>
+                            </ul>
+                            <p class="leading-relaxed mt-4">
+                                Tuy nhiên, không có phương thức truyền tải hoặc lưu trữ điện tử nào là 100% an toàn. Do
+                                đó, chúng tôi không thể đảm bảo tuyệt đối về tính bảo mật của thông tin.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 6 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">6. Quyền của bạn</h2>
+                        <p class="text-gray-700 mb-3 leading-relaxed">Bạn có các quyền sau đối với thông tin cá nhân
+                            của mình:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li><strong>Quyền truy cập:</strong> Bạn có quyền yêu cầu truy cập thông tin cá nhân mà
+                                chúng tôi lưu trữ về bạn.</li>
+                            <li><strong>Quyền chỉnh sửa:</strong> Bạn có quyền yêu cầu sửa đổi thông tin không chính
+                                xác hoặc không đầy đủ.</li>
+                            <li><strong>Quyền xóa:</strong> Bạn có quyền yêu cầu xóa thông tin cá nhân của mình, trừ
+                                khi chúng tôi có nghĩa vụ pháp lý phải lưu trữ.</li>
+                            <li><strong>Quyền từ chối:</strong> Bạn có quyền từ chối nhận email marketing hoặc quảng cáo
+                                bất cứ lúc nào.</li>
+                            <li><strong>Quyền rút lại đồng ý:</strong> Bạn có quyền rút lại sự đồng ý đã cung cấp cho
+                                việc xử lý dữ liệu.</li>
+                            <li><strong>Quyền khiếu nại:</strong> Bạn có quyền khiếu nại với cơ quan bảo vệ dữ liệu nếu
+                                bạn cho rằng quyền của mình bị vi phạm.</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed">
+                            Để thực hiện các quyền này, vui lòng liên hệ với chúng tôi qua thông tin liên hệ được cung
+                            cấp ở cuối chính sách này.
+                        </p>
+                    </section>
+
+                    <!-- Section 7 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">7. Lưu trữ dữ liệu</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                Chúng tôi lưu trữ thông tin cá nhân của bạn trong thời gian cần thiết để thực hiện các
+                                mục đích được nêu trong chính sách này, trừ khi pháp luật yêu cầu hoặc cho phép lưu trữ
+                                lâu hơn.
+                            </p>
+                            <p class="leading-relaxed">
+                                Khi thông tin không còn cần thiết, chúng tôi sẽ xóa hoặc ẩn danh hóa thông tin đó một
+                                cách an toàn.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 8 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">8. Thông tin của trẻ em</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Website của chúng tôi không dành cho trẻ em dưới 18 tuổi. Chúng tôi không cố ý thu thập
+                            thông tin cá nhân từ trẻ em. Nếu bạn là phụ huynh hoặc người giám hộ và phát hiện con bạn đã
+                            cung cấp thông tin cho chúng tôi, vui lòng liên hệ với chúng tôi để chúng tôi có thể xóa
+                            thông tin đó.
+                        </p>
+                    </section>
+
+                    <!-- Section 9 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">9. Liên kết đến website khác</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Website của chúng tôi có thể chứa liên kết đến các website khác không thuộc quyền kiểm soát
+                            của chúng tôi. Chúng tôi không chịu trách nhiệm về các chính sách bảo mật hoặc nội dung của
+                            các website đó. Chúng tôi khuyến khích bạn đọc chính sách bảo mật của bất kỳ website nào
+                            bạn truy cập.
+                        </p>
+                    </section>
+
+                    <!-- Section 10 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">10. Thay đổi chính sách bảo mật</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Chúng tôi có quyền cập nhật chính sách bảo mật này bất cứ lúc nào. Chúng tôi sẽ thông báo
+                            về bất kỳ thay đổi nào bằng cách đăng chính sách mới trên trang này và cập nhật ngày "Cập
+                            nhật lần cuối" ở đầu trang. Chúng tôi khuyến khích bạn xem lại chính sách này định kỳ để
+                            nắm được cách chúng tôi bảo vệ thông tin của bạn.
+                        </p>
+                    </section>
+
+                    <!-- Section 11 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">11. Liên hệ với chúng tôi</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Nếu bạn có bất kỳ câu hỏi, yêu cầu hoặc khiếu nại nào về chính sách bảo mật này hoặc cách
+                            chúng tôi xử lý thông tin cá nhân của bạn, vui lòng liên hệ với chúng tôi qua:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li><strong>Email:</strong> privacy@mmostore.com</li>
+                            <li><strong>Điện thoại:</strong> 1900-xxxx</li>
+                            <li><strong>Địa chỉ:</strong> [Địa chỉ công ty]</li>
+                            <li><strong>Giờ làm việc:</strong> Thứ 2 - Thứ 6: 9:00 - 18:00</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed">
+                            Chúng tôi sẽ phản hồi yêu cầu của bạn trong vòng 30 ngày làm việc.
+                        </p>
+                    </section>
+
+                    <!-- Footer Note -->
+                    <div class="mt-8 p-4 bg-emerald-50 rounded-lg border border-emerald-200">
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            <strong>Cam kết của chúng tôi:</strong> Bảo vệ quyền riêng tư của bạn là ưu tiên hàng đầu
+                            của chúng tôi. Chúng tôi cam kết xử lý thông tin cá nhân của bạn một cách minh bạch, công
+                            bằng và an toàn.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <!-- include:./blocks/footer.html -->
+</body>
+
+</html>

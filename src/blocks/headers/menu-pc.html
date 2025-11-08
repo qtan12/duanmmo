@@ -459,44 +459,55 @@
         </div>
         <!-- Dashboard Link -->
         <a href="dashboard.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-          <i data-lucide="layout-dashboard" class="w-4 h-4 mr-3 text-gray-500"></i>
+          <i data-lucide="layout-dashboard" class="size-4 mr-3 text-gray-500"></i>
           Dashboard
         </a>
         <!-- Profile Link -->
-        <a href="profile.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-          <i data-lucide="user" class="w-4 h-4 mr-3 text-gray-500"></i>
+        <a href="/profile" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+          <i data-lucide="user" class="size-4 mr-3 text-gray-500"></i>
           Cá nhân
+        </a>
+        <!-- Security Link -->
+        <a href="/security.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+          <i data-lucide="lock" class="size-4 mr-3 text-gray-500"></i>
+          Bảo mật
         </a>
         <!-- My Orders Link -->
         <a href="orders.html"
           class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
           <div class="flex items-center">
-            <i data-lucide="package" class="w-4 h-4 mr-3 text-gray-500"></i>
+            <i data-lucide="package" class="size-4 mr-3 text-gray-500"></i>
             Đơn hàng
           </div>
           <span class="text-xs font-semibold text-blue-600">1</span>
+        </a>
+        <!-- Quản lý nội dung -->
+        <a href="/content-management.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+          <i data-lucide="file-text" class="size-4 mr-3 text-gray-500"></i>
+          Quản lý nội dung
         </a>
         <!-- Wallet Link -->
         <a href="wallet.html"
           class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
           <div class="flex items-center">
-            <i data-lucide="wallet" class="w-4 h-4 mr-3 text-gray-500"></i>
+            <i data-lucide="wallet" class="size-4 mr-3 text-gray-500"></i>
             Ví
           </div>
           <span class="text-xs font-semibold text-green-600" x-text="formatPrice(1350000)">1.350.000 ₫</span>
         </a>
+
         <!-- Separator -->
         <div class="border-t border-gray-100 my-2"></div>
 
         <!-- Settings Link -->
-        <a href="settings.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
-          <i data-lucide="settings" class="w-4 h-4 mr-3 text-gray-500"></i>
+        <a href="/settings.html" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+          <i data-lucide="settings" class="size-4 mr-3 text-gray-500"></i>
           Cài đặt
         </a>
 
         <!-- Logout Button -->
         <button @click="logout()" class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
-          <i data-lucide="log-out" class="w-4 h-4 mr-3"></i>
+          <i data-lucide="log-out" class="size-4 mr-3"></i>
           Đăng xuất
         </button>
       </div>

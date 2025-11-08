@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMO Store - Điều khoản sử dụng</title>
+    <meta name="description"
+        content="Điều khoản sử dụng dịch vụ của MMO Store - Cửa hàng bán tài khoản premium, key license, VPN và các sản phẩm số chất lượng cao.">
+    <script type="text/javascript">
+        const API_URL = "https://panel.dongnai.net/api/v2/";
+    </script>
+    <!-- Add Inline Hidden Class for Fix CLS -->
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- all css -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+    <!-- 1. CAC THU VIEN CAN SU DUNG -->
+    <!-- Notification Library -->
+    <script src="assets/js/libs/notification.js" defer></script>
+    <!-- Initialize FastNotice -->
+    <script>
+        // Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+        document.addEventListener('DOMContentLoaded', function () {
+            window.fastNotice = new FastNotice({
+                position: 'top-center',    // Vị trí mặc định
+                duration: 3000,              // Thời gian hiển thị (ms)
+                maxNotifications: 3          // Số notification tối đa
+            });
+        });
+    </script>
+    <!-- Lucide Icons - Custom Build -->
+    <script src="assets/js/lucide-custom.min.js" defer></script>
+    <!-- jModal manager -->
+    <script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+    <!-- Load BlazeSlider Library -->
+    <script src="assets/js/libs/blaze-slider.js" defer></script>
+    <!-- Libs Tabs JS Thuần -->
+    <script src="assets/js/libs/tabs.js" defer></script>
+    <!-- Image Fallback Utility -->
+    <script src="assets/js/libs/image-fallback.js" defer></script>
+
+    <!-- 2. CAC CODE JS TU VIET. -->
+    <!-- Cart Manager Libs JS -->
+    <script src="assets/js/cart-manager.js" defer></script>
+    <!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+    <script src="assets/js/header.js" defer></script>
+
+    <!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+    <script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+
+</head>
+
+<body class="min-h-screen bg-gray-100">
+    <!-- header -->
+    <!-- include:./blocks/header.html -->
+
+    <!-- Main Content Area -->
+    <main class="min-h-screen">
+        <div class="container mx-auto py-8 px-4">
+
+
+            <!-- Content Section -->
+            <div class="card card-content-no-header max-w-4xl mx-auto">
+                <!-- Header Section -->
+                <div class="mb-8">
+                    <h1 class="card-title mb-2">Điều khoản sử dụng</h1>
+                    <p class="card-description">Cập nhật lần cuối: <time datetime="2024-01-01">1 tháng 1, 2024</time>
+                    </p>
+                </div>
+                <div class="prose prose-sm sm:prose-base max-w-none">
+                    <!-- Section 1 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">1. Chấp nhận điều khoản</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Bằng việc truy cập và sử dụng website MMO Store, bạn đồng ý tuân thủ và bị ràng buộc bởi các
+                            điều khoản và điều kiện sử dụng được nêu trong tài liệu này. Nếu bạn không đồng ý với bất
+                            kỳ phần nào của các điều khoản này, vui lòng không sử dụng dịch vụ của chúng tôi.
+                        </p>
+                    </section>
+
+                    <!-- Section 2 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">2. Định nghĩa</h2>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li><strong>"Chúng tôi", "MMO Store", "Website"</strong> - Chỉ công ty/đơn vị vận hành
+                                website này.</li>
+                            <li><strong>"Bạn", "Người dùng", "Khách hàng"</strong> - Chỉ cá nhân hoặc tổ chức truy cập
+                                và sử dụng dịch vụ.</li>
+                            <li><strong>"Dịch vụ"</strong> - Bao gồm tất cả các dịch vụ được cung cấp trên website,
+                                bao gồm nhưng không giới hạn: bán tài khoản premium, key license, VPN và các sản phẩm số
+                                khác.</li>
+                            <li><strong>"Sản phẩm"</strong> - Các tài khoản, key, license, VPN và các sản phẩm số được
+                                bán trên website.</li>
+                        </ul>
+                    </section>
+
+                    <!-- Section 3 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">3. Điều kiện sử dụng tài khoản</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                <strong>3.1. Đăng ký tài khoản:</strong> Để sử dụng một số tính năng của website, bạn
+                                cần đăng ký tài khoản. Bạn cam kết cung cấp thông tin chính xác, đầy đủ và cập nhật khi
+                                đăng ký.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>3.2. Bảo mật tài khoản:</strong> Bạn chịu trách nhiệm bảo mật thông tin đăng
+                                nhập của mình. Bạn không được chia sẻ mật khẩu với bất kỳ ai và phải thông báo ngay cho
+                                chúng tôi nếu phát hiện việc sử dụng trái phép tài khoản.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>3.3. Tuổi tác:</strong> Bạn phải đủ 18 tuổi hoặc có sự đồng ý của người giám hộ
+                                để sử dụng dịch vụ của chúng tôi.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 4 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">4. Mua hàng và thanh toán</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                <strong>4.1. Đặt hàng:</strong> Khi bạn đặt hàng, bạn đang thực hiện một đề nghị mua
+                                sản phẩm theo các điều khoản được nêu trên website tại thời điểm đặt hàng.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>4.2. Xác nhận đơn hàng:</strong> Chúng tôi sẽ gửi email xác nhận khi nhận được
+                                đơn hàng của bạn. Đơn hàng chỉ được coi là đã được chấp nhận khi chúng tôi gửi email xác
+                                nhận.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>4.3. Thanh toán:</strong> Bạn có thể thanh toán bằng các phương thức được chấp
+                                nhận trên website. Tất cả các giao dịch đều được xử lý an toàn.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>4.4. Giá cả:</strong> Chúng tôi có quyền thay đổi giá sản phẩm bất cứ lúc nào
+                                mà không cần thông báo trước. Giá hiển thị trên website tại thời điểm đặt hàng là giá
+                                áp dụng cho đơn hàng của bạn.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 5 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">5. Giao hàng và sử dụng sản phẩm</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                <strong>5.1. Giao hàng:</strong> Đối với các sản phẩm số, thông tin tài khoản/key sẽ
+                                được gửi đến email của bạn trong thời gian quy định sau khi thanh toán thành công.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>5.2. Sử dụng sản phẩm:</strong> Bạn cam kết sử dụng sản phẩm đúng mục đích và
+                                tuân thủ các điều khoản sử dụng của nhà cung cấp gốc. Việc chia sẻ, bán lại hoặc sử dụng
+                                trái phép sản phẩm có thể dẫn đến việc khóa tài khoản.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>5.3. Bảo hành:</strong> Chúng tôi cam kết cung cấp sản phẩm chất lượng. Trong
+                                trường hợp sản phẩm có vấn đề, vui lòng liên hệ với chúng tôi trong vòng 7 ngày kể từ
+                                ngày nhận sản phẩm.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 6 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">6. Hoàn tiền và đổi trả</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                <strong>6.1. Chính sách hoàn tiền:</strong> Do tính chất của sản phẩm số, chúng tôi
+                                không áp dụng chính sách hoàn tiền sau khi đã giao hàng, trừ trường hợp sản phẩm không
+                                hoạt động do lỗi từ phía chúng tôi.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>6.2. Đổi trả:</strong> Trong trường hợp sản phẩm bị lỗi hoặc không đúng như mô
+                                tả, chúng tôi sẽ hỗ trợ đổi sản phẩm tương đương hoặc hoàn tiền.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 7 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">7. Quyền sở hữu trí tuệ</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Tất cả nội dung trên website, bao gồm nhưng không giới hạn: văn bản, hình ảnh, logo, thiết
+                            kế, phần mềm, đều thuộc quyền sở hữu của MMO Store hoặc các bên cấp phép. Bạn không được
+                            sao chép, sử dụng hoặc phân phối bất kỳ nội dung nào mà không có sự cho phép bằng văn bản
+                            của chúng tôi.
+                        </p>
+                    </section>
+
+                    <!-- Section 8 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">8. Hành vi bị cấm</h2>
+                        <p class="text-gray-700 mb-3 leading-relaxed">Bạn không được:</p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>Sử dụng website cho mục đích bất hợp pháp hoặc vi phạm pháp luật.</li>
+                            <li>Thực hiện bất kỳ hành động nào có thể làm hỏng, vô hiệu hóa hoặc gây quá tải cho
+                                website.
+                            </li>
+                            <li>Cố gắng truy cập trái phép vào hệ thống hoặc dữ liệu của chúng tôi.</li>
+                            <li>Sử dụng bot, spider hoặc các công cụ tự động khác để truy cập website.</li>
+                            <li>Chia sẻ, bán lại hoặc sử dụng trái phép các sản phẩm đã mua.</li>
+                            <li>Gây rối, quấy rối hoặc làm phiền người dùng khác.</li>
+                        </ul>
+                    </section>
+
+                    <!-- Section 9 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">9. Miễn trừ trách nhiệm</h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                <strong>9.1. Website:</strong> Chúng tôi cung cấp website "nguyên trạng" và không đảm
+                                bảo rằng website sẽ luôn hoạt động không gián đoạn hoặc không có lỗi.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>9.2. Sản phẩm:</strong> Chúng tôi không chịu trách nhiệm về việc nhà cung cấp
+                                gốc thay đổi chính sách, khóa tài khoản hoặc ngừng cung cấp dịch vụ sau khi bạn đã mua
+                                sản phẩm.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>9.3. Tổn thất:</strong> Chúng tôi không chịu trách nhiệm về bất kỳ tổn thất
+                                trực tiếp, gián tiếp, ngẫu nhiên hoặc hậu quả nào phát sinh từ việc sử dụng hoặc không
+                                thể sử dụng dịch vụ của chúng tôi.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 10 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">10. Giới hạn trách nhiệm</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Trong phạm vi tối đa được pháp luật cho phép, trách nhiệm tổng thể của chúng tôi đối với
+                            bạn không vượt quá số tiền bạn đã thanh toán cho sản phẩm gây ra tổn thất.
+                        </p>
+                    </section>
+
+                    <!-- Section 11 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">11. Thay đổi điều khoản</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Chúng tôi có quyền thay đổi, sửa đổi hoặc cập nhật các điều khoản này bất cứ lúc nào. Các
+                            thay đổi sẽ có hiệu lực ngay sau khi được đăng tải trên website. Việc bạn tiếp tục sử dụng
+                            dịch vụ sau khi có thay đổi được coi là bạn đã chấp nhận các điều khoản mới.
+                        </p>
+                    </section>
+
+                    <!-- Section 12 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">12. Chấm dứt dịch vụ</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Chúng tôi có quyền chấm dứt hoặc tạm ngưng quyền truy cập của bạn vào website bất cứ lúc
+                            nào, vì bất kỳ lý do nào, mà không cần thông báo trước, đặc biệt nếu bạn vi phạm các điều
+                            khoản sử dụng này.
+                        </p>
+                    </section>
+
+                    <!-- Section 13 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">13. Luật áp dụng và giải quyết tranh chấp
+                        </h2>
+                        <div class="text-gray-700 space-y-3 mb-4">
+                            <p class="leading-relaxed">
+                                <strong>13.1. Luật áp dụng:</strong> Các điều khoản này được điều chỉnh bởi pháp luật
+                                Việt Nam.
+                            </p>
+                            <p class="leading-relaxed">
+                                <strong>13.2. Giải quyết tranh chấp:</strong> Mọi tranh chấp phát sinh từ hoặc liên quan
+                                đến các điều khoản này sẽ được giải quyết thông qua thương lượng. Nếu không thể thương
+                                lượng, tranh chấp sẽ được đưa ra Tòa án có thẩm quyền tại Việt Nam.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Section 14 -->
+                    <section class="mb-8">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-4">14. Liên hệ</h2>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Nếu bạn có bất kỳ câu hỏi nào về các điều khoản sử dụng này, vui lòng liên hệ với chúng tôi
+                            qua:
+                        </p>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                            <li>Email: support@mmostore.com</li>
+                            <li>Điện thoại: 1900-xxxx</li>
+                            <li>Địa chỉ: [Địa chỉ công ty]</li>
+                        </ul>
+                    </section>
+
+                    <!-- Footer Note -->
+                    <div class="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                        <p class="text-sm text-gray-600 leading-relaxed">
+                            <strong>Lưu ý:</strong> Bằng việc sử dụng dịch vụ của MMO Store, bạn xác nhận rằng bạn đã
+                            đọc, hiểu và đồng ý với tất cả các điều khoản và điều kiện được nêu trong tài liệu này.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <!-- include:./blocks/footer.html -->
+</body>
+
+</html>

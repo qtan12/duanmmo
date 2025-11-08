@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMO Store - Quản lý nội dung</title>
+    <meta name="description" content="Quản lý và chỉnh sửa nội dung bài viết, tương tự WordPress admin interface.">
+    <script type="text/javascript">
+        const API_URL = "https://panel.dongnai.net/api/v2/";
+    </script>
+    <!-- Add Inline Hidden Class for Fix CLS -->
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- all css -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+    <!-- 1. CAC THU VIEN CAN SU DUNG -->
+    <!-- Notification Library -->
+    <script src="assets/js/libs/notification.js" defer></script>
+    <!-- Initialize FastNotice -->
+    <script>
+        // Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+        document.addEventListener('DOMContentLoaded', function () {
+            window.fastNotice = new FastNotice({
+                position: 'top-center',    // Vị trí mặc định
+                duration: 3000,              // Thời gian hiển thị (ms)
+                maxNotifications: 3          // Số notification tối đa
+            });
+        });
+    </script>
+    <!-- Lucide Icons - Custom Build -->
+    <script src="assets/js/lucide-custom.min.js" defer></script>
+    <!-- jModal manager -->
+    <script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+    <!-- Load BlazeSlider Library -->
+    <script src="assets/js/libs/blaze-slider.js" defer></script>
+    <!-- Libs Tabs JS Thuần -->
+    <script src="assets/js/libs/tabs.js" defer></script>
+    <!-- Image Fallback Utility -->
+    <script src="assets/js/libs/image-fallback.js" defer></script>
+
+    <!-- 2. CAC CODE JS TU VIET. -->
+    <!-- Cart Manager Libs JS -->
+    <script src="assets/js/cart-manager.js" defer></script>
+    <!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+    <script src="assets/js/header.js" defer></script>
+    <!-- Content Management Component JS -->
+    <script src="assets/js/content-management.js" defer></script>
+
+    <!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+    <script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+
+</head>
+
+<body class="min-h-screen bg-gray-100">
+    <!-- header -->
+    <!-- include:./blocks/header.html -->
+
+    <!-- Main Content Area -->
+    <main class="sm:container mx-auto py-4 sm:py-8" x-data="contentManager()">
+        <!-- Header Section -->
+        <div class="mb-6">
+            <!-- Top Header with Screen Options and Help -->
+            <div class="flex items-center justify-between mb-4 px-4 sm:px-0">
+                <div class="flex items-center gap-4">
+                    <h1 class="text-2xl font-bold text-gray-900">Quản lý nội dung</h1>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="flex items-center gap-3 mb-4 px-4 sm:px-0">
+                <form @submit.prevent="searchPosts()" class="flex-1 max-w-md">
+                    <div class="relative">
+                        <i data-lucide="search"
+                            class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"></i>
+                        <input x-model="searchQuery" type="text" placeholder="Tìm các bài viết..."
+                            class="w-full input pl-10 bg-white text-responsive-sm">
+                    </div>
+                </form>
+                <button type="submit" @click="searchPosts()" class="btn btn-primary">
+                    <i data-lucide="search" class="size-4"></i>
+                    <span class="hidden sm:inline">Tìm các bài viết</span>
+                    <span class="sm:hidden">Tìm</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Posts Section -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <!-- Title and Add New Button -->
+            <div class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-900">Bài viết</h2>
+                <button @click="openAddPostModal()" class="btn btn-primary">
+                    <i data-lucide="plus" class="size-4"></i>
+                    <span class="hidden sm:inline">Thêm Bài Viết</span>
+                    <span class="sm:hidden">Thêm</span>
+                </button>
+            </div>
+
+            <!-- Status Filter Tabs -->
+            <div class="tabs">
+                <div class="tabs-menus overflow-x-auto scrollbar-hide">
+                    <button @click="statusFilter = 'all'"
+                        :class="statusFilter === 'all' ? 'active bg-blue-500 text-white' : 'text-gray-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="all">
+                        <i data-lucide="file-text" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Tất cả</span>
+                        <span class="badge badge-secondary" x-text="stats.all">7</span>
+                    </button>
+
+                    <button @click="statusFilter = 'mine'"
+                        :class="statusFilter === 'mine' ? 'active bg-purple-500 text-white' : 'text-purple-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="mine">
+                        <i data-lucide="user" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Của tôi</span>
+                        <span class="badge badge-secondary" x-text="stats.mine">1</span>
+                    </button>
+
+                    <button @click="statusFilter = 'published'"
+                        :class="statusFilter === 'published' ? 'active bg-green-500 text-white' : 'text-green-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="published">
+                        <i data-lucide="check-circle" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Đã xuất bản</span>
+                        <span class="badge badge-secondary" x-text="stats.published">6</span>
+                    </button>
+
+                    <button @click="statusFilter = 'draft'"
+                        :class="statusFilter === 'draft' ? 'active bg-yellow-500 text-white' : 'text-yellow-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="draft">
+                        <i data-lucide="file-edit" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Bản nháp</span>
+                        <span class="badge badge-secondary" x-text="stats.draft">1</span>
+                    </button>
+
+                    <button @click="statusFilter = 'trash'"
+                        :class="statusFilter === 'trash' ? 'active bg-red-500 text-white' : 'text-red-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="trash">
+                        <i data-lucide="trash-2" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Thùng rác</span>
+                        <span class="badge badge-secondary" x-text="stats.trash">33</span>
+                    </button>
+
+                    <button @click="statusFilter = 'core'"
+                        :class="statusFilter === 'core' ? 'active bg-emerald-500 text-white' : 'text-emerald-600'"
+                        class="tab-menu flex items-center gap-2 whitespace-nowrap" data-tab="core">
+                        <i data-lucide="star" class="size-4 flex-shrink-0"></i>
+                        <span class="truncate">Nội dung cốt lõi</span>
+                        <span class="badge badge-secondary" x-text="stats.core">0</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Action and Filter Bar -->
+            <div class="p-4 sm:p-6 border-b border-gray-200 bg-gray-50">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <!-- Bulk Actions -->
+                    <div class="flex items-center gap-2">
+                        <select x-model="bulkAction" class="input bg-white text-sm">
+                            <option value="">Hành động hàng loạt</option>
+                            <option value="edit">Chỉnh sửa</option>
+                            <option value="delete">Xóa</option>
+                            <option value="restore" x-show="statusFilter === 'trash'">Khôi phục</option>
+                            <option value="publish">Xuất bản</option>
+                            <option value="draft">Chuyển sang bản nháp</option>
+                        </select>
+                        <button @click="applyBulkAction()" class="btn btn-outline btn-sm">
+                            Áp dụng
+                        </button>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="flex  items-center gap-2 flex-1">
+                        <select x-model="dateFilter" class="input bg-white text-sm">
+                            <option value="">Tất cả các ngày</option>
+                            <option value="today">Hôm nay</option>
+                            <option value="week">Tuần này</option>
+                            <option value="month">Tháng này</option>
+                            <option value="year">Năm nay</option>
+                        </select>
+                        <select x-model="categoryFilter" class="input bg-white text-sm">
+                            <option value="">Tất cả danh mục</option>
+                            <option value="Tải Roblox">Tải Roblox</option>
+                            <option value="Game">Game</option>
+                            <option value="Tin tức">Tin tức</option>
+                        </select>
+                        <select x-model="seoFilter" class="input bg-white text-sm">
+                            <option value="">Rank Math</option>
+                            <option value="good">Tốt</option>
+                            <option value="needs-improvement">Cần cải thiện</option>
+                            <option value="bad">Xấu</option>
+                        </select>
+                        <button @click="applyFilters()" class="btn btn-outline btn-sm">
+                            <i data-lucide="filter" class="size-4"></i>
+                            Lọc
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="px-4 py-3 text-left">
+                                <input type="checkbox" @change="toggleSelectAll($event)" class="rounded">
+                            </th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                                <button @click="sortBy('title')" class="flex items-center gap-1 hover:text-gray-600">
+                                    Tiêu đề
+                                    <i data-lucide="chevron-up-down" class="size-4"></i>
+                                </button>
+                            </th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">Tác giả</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">Danh mục</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">Thẻ</th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                                <button @click="sortBy('comments')" class="flex items-center gap-1 hover:text-gray-600">
+                                    <i data-lucide="message-circle" class="size-4"></i>
+                                    <i data-lucide="chevron-up-down" class="size-4"></i>
+                                </button>
+                            </th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">
+                                <button @click="sortBy('date')" class="flex items-center gap-1 hover:text-gray-600">
+                                    Thời gian
+                                    <i data-lucide="chevron-up-down" class="size-4"></i>
+                                </button>
+                            </th>
+                            <th class="px-4 py-3 text-left text-sm font-semibold text-gray-900">Chi tiết SEO</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <template x-for="post in displayedPosts" :key="post.id">
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-4 py-3">
+                                    <input type="checkbox" :value="post.id" x-model="selectedPosts" class="rounded">
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex flex-col">
+                                        <a :href="'/edit-post.html?id=' + post.id"
+                                            class="text-sm font-medium text-blue-600 hover:text-blue-800 mb-1"
+                                            x-text="post.title"></a>
+                                        <div class="flex items-center gap-2 text-xs text-gray-500">
+                                            <span x-show="post.status === 'draft'" class="badge badge-secondary">Bản
+                                                nháp</span>
+                                            <span x-text="post.editor" class="text-gray-500"></span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-600" x-text="post.author"></td>
+                                <td class="px-4 py-3 text-sm text-gray-600" x-text="post.category"></td>
+                                <td class="px-4 py-3 text-sm text-gray-500">
+                                    <span x-show="!post.tags || post.tags.length === 0">—</span>
+                                    <template x-if="post.tags && post.tags.length > 0">
+                                        <span x-text="post.tags.join(', ')"></span>
+                                    </template>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-500">
+                                    <span x-show="!post.comments || post.comments === 0">—</span>
+                                    <span x-show="post.comments > 0" x-text="post.comments"></span>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-600">
+                                    <div class="flex flex-col">
+                                        <span x-show="post.status === 'published'" class="text-gray-500">Đã xuất
+                                            bản</span>
+                                        <span x-show="post.status === 'draft'" class="text-gray-500">Lần sửa gần
+                                            nhất</span>
+                                        <span x-text="post.date" class="text-gray-600"></span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="flex flex-col gap-1">
+                                        <button @click="editSEO(post.id)"
+                                            class="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                                            <i data-lucide="edit" class="size-3"></i>
+                                            N/A
+                                        </button>
+                                        <div class="text-xs text-gray-600">
+                                            <div>Từ khóa: <span x-text="post.seo.keywords || 'Chưa đặt'"></span></div>
+                                            <div>Schema: <span
+                                                    x-text="post.seo.schema || 'Bài viết (BlogPosting)'"></span></div>
+                                            <div class="flex items-center gap-1">
+                                                <span>Liên kết:</span>
+                                                <span>🔗 <span x-text="post.seo.links.internal || 0"></span></span>
+                                                <span>| ⎚ <span x-text="post.seo.links.external || 0"></span></span>
+                                                <span>| ⎚ <span x-text="post.seo.links.broken || 0"></span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Empty State -->
+            <div x-show="displayedPosts.length === 0" class="p-12 text-center">
+                <i data-lucide="file-text" class="size-16 text-gray-300 mx-auto mb-4"></i>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Không có bài viết</h3>
+                <p class="text-sm text-gray-600 mb-4">Chưa có bài viết nào ở trạng thái này.</p>
+                <button @click="openAddPostModal()" class="btn btn-primary">
+                    <i data-lucide="plus" class="size-4"></i>
+                    Thêm Bài Viết
+                </button>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <!-- include:./blocks/footer.html -->
+
+    <!-- Add Post Modal - Using jModal -->
+    <div id="addPostModal" class="jmodal hidden">
+        <div class="jmodal-content w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200">
+                <h3 class="text-xl font-bold text-gray-900">Thêm Bài Viết Mới</h3>
+                <button data-jmodal-close class="text-gray-400 hover:text-gray-600 transition-colors p-1">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-4 sm:p-6">
+                <form @submit.prevent="createPost()" class="space-y-6">
+                    <!-- Title -->
+                    <div>
+                        <label for="post-title" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Tiêu đề <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="post-title" x-model="newPost.title" required
+                            class="w-full input bg-gray-50 text-responsive-sm" placeholder="Nhập tiêu đề bài viết">
+                        <p class="text-xs text-gray-500 mt-1">Tiêu đề sẽ hiển thị ở đầu bài viết và trong danh sách</p>
+                    </div>
+
+                    <!-- Slug/URL -->
+                    <div>
+                        <label for="post-slug" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Đường dẫn (URL)
+                        </label>
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm text-gray-500">https://example.com/</span>
+                            <input type="text" id="post-slug" x-model="newPost.slug"
+                                class="flex-1 input bg-gray-50 text-responsive-sm" placeholder="duong-dan-bai-viet">
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1">Đường dẫn tùy chỉnh cho bài viết (tự động tạo từ tiêu đề
+                            nếu để trống)</p>
+                    </div>
+
+                    <!-- Content Editor -->
+                    <div>
+                        <label for="post-content" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Nội dung <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="post-content" x-model="newPost.content" required rows="12"
+                            class="w-full input bg-gray-50 text-responsive-sm"
+                            placeholder="Nhập nội dung bài viết..."></textarea>
+                        <p class="text-xs text-gray-500 mt-1">Sử dụng định dạng HTML hoặc Markdown để định dạng nội dung
+                        </p>
+                    </div>
+
+                    <!-- Category and Tags -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="post-category" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Danh mục <span class="text-red-500">*</span>
+                            </label>
+                            <select id="post-category" x-model="newPost.category" required
+                                class="w-full input bg-gray-50 text-responsive-sm">
+                                <option value="">Chọn danh mục</option>
+                                <option value="Tải Roblox">Tải Roblox</option>
+                                <option value="Game">Game</option>
+                                <option value="Tin tức">Tin tức</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="post-tags" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Thẻ
+                            </label>
+                            <input type="text" id="post-tags" x-model="newPost.tagsInput"
+                                class="w-full input bg-gray-50 text-responsive-sm" placeholder="tag1, tag2, tag3">
+                            <p class="text-xs text-gray-500 mt-1">Phân cách các thẻ bằng dấu phẩy</p>
+                        </div>
+                    </div>
+
+                    <!-- Featured Image -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Hình ảnh đại diện
+                        </label>
+                        <div class="flex items-center gap-4">
+                            <div class="flex-1">
+                                <input type="url" x-model="newPost.featuredImage"
+                                    class="w-full input bg-gray-50 text-responsive-sm" placeholder="URL hình ảnh">
+                            </div>
+                            <button type="button" @click="selectFeaturedImage()" class="btn btn-outline btn-sm">
+                                <i data-lucide="image" class="size-4"></i>
+                                Chọn ảnh
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SEO Settings -->
+                    <div class="border-t border-gray-200 pt-4">
+                        <h4 class="text-sm font-semibold text-gray-900 mb-3">Cài đặt SEO</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="seo-keywords" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    Từ khóa SEO
+                                </label>
+                                <input type="text" id="seo-keywords" x-model="newPost.seoKeywords"
+                                    class="w-full input bg-gray-50 text-responsive-sm"
+                                    placeholder="từ khóa 1, từ khóa 2">
+                            </div>
+                            <div>
+                                <label for="seo-description" class="block text-sm font-semibold text-gray-700 mb-2">
+                                    Mô tả SEO
+                                </label>
+                                <textarea id="seo-description" x-model="newPost.seoDescription" rows="3"
+                                    class="w-full input bg-gray-50 text-responsive-sm"
+                                    placeholder="Mô tả ngắn gọn về bài viết (150-160 ký tự)"></textarea>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    <span x-text="(newPost.seoDescription || '').length"></span>/160 ký tự
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status and Publish -->
+                    <div class="border-t border-gray-200 pt-4">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                            <div class="flex items-center gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" x-model="newPost.isDraft" class="rounded">
+                                    <span class="text-sm text-gray-700">Lưu dưới dạng bản nháp</span>
+                                </label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button type="button" @click="closeAddPostModal()" class="btn btn-outline">
+                                    Hủy
+                                </button>
+                                <button type="submit" :disabled="isCreatingPost" class="btn btn-primary">
+                                    <span x-show="!isCreatingPost" class="flex items-center gap-2">
+                                        <i data-lucide="save" class="size-4"></i>
+                                        <span x-text="newPost.isDraft ? 'Lưu bản nháp' : 'Xuất bản'"></span>
+                                    </span>
+                                    <span x-show="isCreatingPost" class="flex items-center gap-2">
+                                        <i data-lucide="loader-circle" class="size-4 animate-spin"></i>
+                                        Đang lưu...
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

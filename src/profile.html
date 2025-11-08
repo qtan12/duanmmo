@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMO Store - Hồ sơ cá nhân</title>
+    <meta name="description"
+        content="Cửa hàng bán tài khoản premium, key license, VPN và các sản phẩm số chất lượng cao với giá tốt nhất.">
+    <script type="text/javascript">
+        const API_URL = "https://panel.dongnai.net/api/v2/";
+    </script>
+    <!-- Add Inline Hidden Class for Fix CLS -->
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    <!-- all css -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+
+
+    <!-- 1. CAC THU VIEN CAN SU DUNG -->
+    <!-- Notification Library -->
+    <script src="assets/js/libs/notification.js" defer></script>
+    <!-- Initialize FastNotice -->
+    <script>
+        // Khởi tạo FastNotice với cấu hình tùy chỉnh sau khi DOM sẵn sàng
+        document.addEventListener('DOMContentLoaded', function () {
+            window.fastNotice = new FastNotice({
+                position: 'top-center',    // Vị trí mặc định
+                duration: 3000,              // Thời gian hiển thị (ms)
+                maxNotifications: 3          // Số notification tối đa
+            });
+        });
+    </script>
+    <!-- Lucide Icons - Custom Build -->
+    <script src="assets/js/lucide-custom.min.js" defer></script>
+    <!-- jModal manager -->
+    <script src="assets/js/libs/jmodal.1.1.0.js" defer></script>
+    <!-- Load BlazeSlider Library -->
+    <script src="assets/js/libs/blaze-slider.js" defer></script>
+    <!-- Libs Tabs JS Thuần -->
+    <script src="assets/js/libs/tabs.js" defer></script>
+    <!-- Image Fallback Utility -->
+    <script src="assets/js/libs/image-fallback.js" defer></script>
+
+
+    <!-- 2. CAC CODE JS TU VIET. -->
+    <!-- Cart Manager Libs JS -->
+    <script src="assets/js/cart-manager.js" defer></script>
+    <!-- Header Component JS. Vi no goi Cart nen nam sau Cart -->
+    <script src="assets/js/header.js" defer></script>
+    <!-- Profile Component JS -->
+    <script src="assets/js/profile.js" defer></script>
+
+    <!-- Alpine.js CDN. Nam duoi cung vi chay Defer va vi no AutoRun nen can load sau cung truoc -->
+    <script src="assets/js/libs/alpinejs.3.15.0.js" defer></script>
+
+
+</head>
+
+<body class="min-h-screen bg-gray-100">
+    <!-- header -->
+    <!-- include:./blocks/header.html -->
+
+    <!-- Main Content Area -->
+    <main class="sm:container mx-auto py-4 sm:py-8" x-data="profileManager()">
+        <div class="mb-8">
+            <!-- Header Section -->
+            <div class="p-4 mb-6">
+                <h1 class="card-title mb-1 sm:mb-2">Hồ sơ cá nhân</h1>
+                <p class="card-description">Quản lý và cập nhật thông tin tài khoản của bạn</p>
+            </div>
+
+        </div>
+
+        <!-- Profile Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column - Profile Overview -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <!-- Avatar Section -->
+                    <div class="text-center mb-6">
+                        <div class="relative inline-block mb-4">
+                            <div
+                                class="size-24 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-full flex items-center justify-center text-white text-3xl font-bold mx-auto shadow-lg">
+                                <span>NV</span>
+                            </div>
+                            <button @click="openAvatarModal()"
+                                class="absolute bottom-0 right-0 bg-emerald-500 text-white rounded-full p-2 shadow-md hover:bg-emerald-600 transition-colors">
+                                <i data-lucide="camera" class="size-4"></i>
+                            </button>
+                        </div>
+                        <h2 class="text-xl font-semibold text-gray-900 mb-1">Nguyễn Văn A</h2>
+                        <p class="text-sm text-gray-500">user@example.com</p>
+                        <div class="flex items-center justify-center gap-2 mt-2">
+                            <span class="badge badge-primary">Thành viên</span>
+                            <span class="badge badge-secondary">Đang hoạt động</span>
+                        </div>
+                    </div>
+
+                    <!-- Stats Section -->
+                    <div class="border-t border-gray-200 pt-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="size-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="shopping-bag" class="size-5 text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Tổng đơn hàng</p>
+                                    <p class="text-lg font-semibold text-gray-900">45</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="size-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="circle-check-big" class="size-5 text-green-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Đơn thành công</p>
+                                    <p class="text-lg font-semibold text-gray-900">35</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="size-10 bg-purple-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="wallet" class="size-5 text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Tổng chi tiêu</p>
+                                    <p class="text-lg font-semibold text-gray-900">5.000.000đ</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="size-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                                    <i data-lucide="star" class="size-5 text-orange-600"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Đánh giá</p>
+                                    <p class="text-lg font-semibold text-gray-900">4.5</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Info -->
+                    <div class="border-t border-gray-200 pt-6 mt-6">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-500">Ngày tham gia:</span>
+                                <span class="font-medium text-gray-900">1 tháng 1, 2024</span>
+                            </div>
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-500">Trạng thái:</span>
+                                <span class="badge badge-primary">Đang hoạt động</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Profile Info Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Thông tin cá nhân</h3>
+
+                    <!-- Form -->
+                    <form @submit.prevent="updateProfile()" class="space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Họ và tên</label>
+                                <input type="text" x-model="profile.name" value="Nguyễn Văn A"
+                                    class="w-full input bg-gray-50 text-responsive-sm" placeholder="Nhập họ và tên">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" x-model="profile.email" value="user@example.com"
+                                    class="w-full input bg-gray-50 text-responsive-sm" placeholder="Nhập email">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại</label>
+                                <input type="tel" x-model="profile.phone" value="0123456789"
+                                    class="w-full input bg-gray-50 text-responsive-sm" placeholder="Nhập số điện thoại">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Ngày sinh</label>
+                                <input type="date" x-model="profile.birthday" value="1990-01-01"
+                                    class="w-full input bg-gray-50 text-responsive-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Địa chỉ</label>
+                            <textarea x-model="profile.address" rows="3"
+                                class="w-full input bg-gray-50 text-responsive-sm"
+                                placeholder="Nhập địa chỉ">123 Đường ABC, Quận 1, TP.HCM</textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Giới thiệu bản thân</label>
+                            <textarea x-model="profile.bio" rows="3" class="w-full input bg-gray-50 text-responsive-sm"
+                                placeholder="Viết đôi điều về bản thân bạn">Tôi là một người yêu thích công nghệ và luôn tìm kiếm những sản phẩm số chất lượng cao.</textarea>
+                        </div>
+
+                        <div class="flex items-center justify-end gap-3 pt-4">
+                            <button type="button" @click="resetForm()" class="btn btn-outline btn-md">
+                                <i data-lucide="refresh-cw" class="size-4"></i>
+                                Đặt lại
+                            </button>
+                            <button type="submit" :disabled="isSaving" class="btn btn-primary btn-md">
+                                <span x-show="!isSaving" class="flex items-center gap-2">
+                                    <i data-lucide="save" class="size-4"></i>
+                                    Lưu thay đổi
+                                </span>
+                                <span x-show="isSaving" class="flex items-center gap-2">
+                                    <i data-lucide="loader-circle" class="size-4 animate-spin"></i>
+                                    Đang lưu...
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Social Links Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Liên kết mạng xã hội</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="facebook" class="size-5 text-blue-600"></i>
+                                <span class="text-sm font-medium text-gray-900">Facebook</span>
+                            </div>
+                            <button @click="editSocialLink('facebook')" class="btn btn-sm btn-outline">
+                                <i data-lucide="plus" class="size-4"></i>
+                                Thêm
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="twitter" class="size-5 text-blue-400"></i>
+                                <span class="text-sm font-medium text-gray-900">Twitter</span>
+                            </div>
+                            <button @click="editSocialLink('twitter')" class="btn btn-sm btn-outline">
+                                <i data-lucide="plus" class="size-4"></i>
+                                Thêm
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="instagram" class="size-5 text-pink-600"></i>
+                                <span class="text-sm font-medium text-gray-900">Instagram</span>
+                            </div>
+                            <button @click="editSocialLink('instagram')" class="btn btn-sm btn-outline">
+                                <i data-lucide="plus" class="size-4"></i>
+                                Thêm
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="linkedin" class="size-5 text-blue-700"></i>
+                                <span class="text-sm font-medium text-gray-900">LinkedIn</span>
+                            </div>
+                            <button @click="editSocialLink('linkedin')" class="btn btn-sm btn-outline">
+                                <i data-lucide="plus" class="size-4"></i>
+                                Thêm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verification Status Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Xác minh tài khoản</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="mail" class="size-5 text-gray-600"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Email</p>
+                                    <p class="text-xs text-gray-500">user@example.com</p>
+                                </div>
+                            </div>
+                            <span class="badge badge-primary">Đã xác minh</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="phone" class="size-5 text-gray-600"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">Số điện thoại</p>
+                                    <p class="text-xs text-gray-500">0123456789</p>
+                                </div>
+                            </div>
+                            <button @click="verifyPhone()" class="btn btn-sm btn-outline">
+                                Xác minh
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <i data-lucide="id-card" class="size-5 text-gray-600"></i>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-900">CMND/CCCD</p>
+                                    <p class="text-xs text-gray-500">Chưa xác minh</p>
+                                </div>
+                            </div>
+                            <button @click="verifyIdentity()" class="btn btn-sm btn-outline">
+                                Xác minh
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Timeline Section -->
+                <div class="bg-white rounded-lg shadow-sm p-6 mt-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Hoạt động gần đây</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3 pb-4 border-b border-gray-200 last:border-0">
+                            <div
+                                class="size-8 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="shopping-bag" class="size-4 text-emerald-600"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">Đặt hàng thành công</p>
+                                <p class="text-xs text-gray-500">Đơn hàng #ORD001 - Netflix Premium</p>
+                                <p class="text-xs text-gray-400 mt-1">Hôm nay lúc 15:30</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 pb-4 border-b border-gray-200 last:border-0">
+                            <div class="size-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="user" class="size-4 text-blue-600"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">Cập nhật hồ sơ</p>
+                                <p class="text-xs text-gray-500">Thay đổi thông tin cá nhân</p>
+                                <p class="text-xs text-gray-400 mt-1">Hôm qua lúc 10:15</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 pb-4 border-b border-gray-200 last:border-0">
+                            <div
+                                class="size-8 bg-purple-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="lock" class="size-4 text-purple-600"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">Đổi mật khẩu</p>
+                                <p class="text-xs text-gray-500">Mật khẩu đã được cập nhật</p>
+                                <p class="text-xs text-gray-400 mt-1">3 ngày trước</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="size-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="star" class="size-4 text-orange-600"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900">Đánh giá sản phẩm</p>
+                                <p class="text-xs text-gray-500">Đã đánh giá Spotify Premium</p>
+                                <p class="text-xs text-gray-400 mt-1">1 tuần trước</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button @click="viewAllActivity()" class="btn btn-outline w-full">
+                            Xem tất cả hoạt động
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <!-- include:./blocks/footer.html -->
+</body>
+
+</html>
